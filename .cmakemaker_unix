@@ -1,0 +1,80 @@
+{
+	name : "tbb/tbb.h"
+  lib_dir : "tbb" 
+  lib_dir : "libpthread.so" 
+}
+
+{
+	name : "GLFW/glfw3.h"
+	lib_dir : "glfw"
+}
+
+{
+	name : "nvtt/nvtt.h"
+    include_dir : "../../Dependencies/include"
+	lib_dir : "../../../Dependencies/lib/release/static/nvtt"
+}
+
+{
+	name : "fractals/fractals_interface.h"
+	lib_dir : "libstatic_fractals.a" 
+}
+
+{
+	name : "experimental/filesystem"
+	lib_dir : "libstdc++fs.a" 
+}
+
+{
+	name : "portaudio/portaudio.h"
+	lib_dir : "portaudio" 
+}
+
+{
+	name : "GL/glew.h"
+	lib_dir : "libGLEW.so"
+}
+
+{
+	name : "PxPhysicsAPI.h"
+	
+	lib_dir : "libPhysX3_x64.so"
+	lib_dir : "libPhysX3Common_x64.so"
+	lib_dir : "libPhysX3Cooking_x64.so"
+	lib_dir : "libPhysX3Extensions.a"
+	lib_dir : "libPhysX3CharacterKinematic_x64.so"
+	lib_dir : "libPxFoundation_x64.so"
+	lib_dir : "libPxPvdSDK_x64.so"
+}
+
+{
+	name : "zlib.h"
+	lib_dir : "libz.so"
+}
+
+{
+	name : "ft2build.h"
+	lib_dir : "freetype" 
+}
+
+{
+	name : "assimp/Importer.hpp"
+	lib_dir : "assimp"
+}
+
+{
+	name : "GL/GL.h"
+  lib_dir : "libOpenGL.so"
+}
+
+{
+	name : "GL/GLU.h"
+  lib_dir : "libGLU"
+}
+
+{
+	name : "gtest/gtest.h"
+	find_command : "GTest"
+  include_dir : "${GTEST_INCLUDE_DIRS}"
+  lib_dir : "${GTEST_LIBRARIES}"
+}

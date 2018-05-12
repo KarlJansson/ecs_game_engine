@@ -1,0 +1,109 @@
+(Material){(Id){stock_material}(Texture){stock}}
+([room_size]){100}
+
+// Create a room
+(ForLoop){(Start){0}(Range){2}(Increment){[room_size]*2}
+  (Operation){
+    (MeshActor){
+    	(Transform){
+        (Position){0,[room_size]/2,([room_size]-index)/2}
+        (Rotation){90,0,0}(Scale){[room_size],1,[room_size]}
+      }
+    	(Mesh){(Albedo){.3}(RME){.8,0,0}(TextureScale){1}}
+    	(Model){box.obj}(MeshId){0}(ActorType){kStatic}
+    }
+    (MeshActor){
+    	(Transform){
+        (Position){([room_size]-index)/2,[room_size]/2,0}
+        (Rotation){0,0,90}(Scale){[room_size],1,[room_size]}
+      }
+    	(Mesh){(Albedo){.3}(RME){.8,0,0}(TextureScale){1}}
+    	(Model){box.obj}(MeshId){0}(ActorType){kStatic}
+    }
+    (MeshActor){
+	    (Transform){
+        (Position){0,index/2,0}
+        (Rotation){0,0,0}(Scale){[room_size],1,[room_size]}
+      }
+	    (Mesh){(Albedo){.3}(RME){.8,0,0}(TextureScale){1}}
+	    (Model){box.obj}(MeshId){0}(ActorType){kStatic}
+    }
+  }
+}
+
+// Spawn some interactable spheres
+(ForLoop){(Start){10}(Range){5}(Increment){3}
+  (Operation){
+    (MeshActor){
+	    (Light){(Radius){15}(Type){kPoint}(Color){.5,.3,.3}(Quadratic){.04}}
+    	(Transform){(Position){10,index,0}(Rotation){0,0,0}(Scale){.35}}
+     	(Mesh){(Albedo){.5,.3,.3}(RME){.9,0,1}(TextureScale){1}}
+    	(Model){sphere.obj}(MeshId){0}
+      (ActorType){kDynamic}
+      (Interact){Pickup}
+    }
+  }
+}
+
+// Spawn some interactable cubes
+(ForLoop){(Start){10}(Range){5}(Increment){3}
+  (Operation){
+    (MeshActor){
+      (MaterialId){stock_material}
+    	(Transform){(Position){20,index,0}(Rotation){0,0,0}(Scale){.85}}
+     	(Mesh){(Albedo){1}(RME){.3,0,0}(TextureScale){1}}
+    	(Model){box.obj}(MeshId){0}
+      (ActorType){kDynamic}
+      (Interact){Pull}
+    }
+  }
+}
+
+// Create a lamp
+(MeshActor){
+	(NameId){lamp_fixture}
+	(Transform){(Position){0,55,0}(Rotation){0}(Scale){1}}
+	(Mesh){(Albedo){1}(RME){0}(TextureScale){1}}
+	(Model){box.obj}(MeshId){0}(ActorType){kStatic}
+}
+
+(MeshActor){
+	(NameId){lamp}
+	(Light){
+    (Position){0,3,0}(Radius){95}
+    (Type){kPoint}(Color){170}(Shadows){1024}
+  }
+	(Transform){(Position){-10,25,0}(Rotation){0}(Scale){2}}
+	(Mesh){(Albedo){1}(RME){0.6,0,0.8}(TextureScale){1}}
+	(Model){sphere.obj}(MeshId){0}
+	(ActorType){kDynamic}(Interact){Pull}
+}
+
+(ActorJoint){
+  (Actor1){lamp_fixture}
+  (Actor2){lamp}
+  (Joint){(Type){kDistance}(Limits){1,30}}
+}
+
+// Create a particle system
+(ParticleEmitter){
+	(Transform){(Position){0,[room_size]/2,0}(Rotation){0}(Scale){1}}
+  (ParticleDesc){
+    (EmittType){kCube}
+    (MaxParticles){1000}
+    (ParticleLife){2}
+    (EmittingSpeed){500}
+    (StartSize){0}
+    (EndSize){.12}
+    (StartColor){.9}
+    (EndColor){.6}
+    (Loop){1}
+    (TypeData){55}
+    (RandomScale){.3}
+    (CenterVelocity){-.03}
+    (RotateSpeed){.03}
+    (Gravity){.03}
+    (StartVelocity){.01}
+    (EndVelocity){.03}
+  }
+}
