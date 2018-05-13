@@ -1,3 +1,5 @@
+cmakemaker
+
 rm -rf ./_build_release_
 mkdir _build_release_
 cd _build_release_
