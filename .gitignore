@@ -3,3 +3,13 @@
 /_build_debug_
 /cscope.out
 /cscope.files
+/_stock_assets_/_stock_assets_
+/app_example/app_example
+/cmd_fract_cooking/cmd_fract_cooking
+/slib_core/slib_core
+/slib_graphics/slib_graphics
+/slib_gui/slib_gui
+/slib_input/slib_input
+/slib_physics/slib_physics
+/slib_sound/slib_sound
+/source_shared/source_shared
