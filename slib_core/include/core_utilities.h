@@ -119,7 +119,8 @@ class cu {
                                  char stop_char);
   static ct::string ParseType(ct::dyn_array<char> &buffer, size_t &cursor);
   static ct::string ParseValue(ct::dyn_array<char> &buffer, size_t &cursor,
-                               ct::hash_map<ct::string, ct::string> &var_map);
+                               ct::hash_map<ct::string, ct::string> &var_map,
+                               bool scroll = true);
   static ct::dyn_array<ct::string> SplitString(ct::string &str,
                                                ct::dyn_array<char> &&splitters);
   static bool EvalExpr(ct::string &str);

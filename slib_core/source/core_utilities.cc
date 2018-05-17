@@ -156,8 +156,10 @@ ct::string cu::ParseType(ct::dyn_array<char> &buffer, size_t &cursor) {
 }
 
 ct::string cu::ParseValue(ct::dyn_array<char> &buffer, size_t &cursor,
-                          ct::hash_map<ct::string, ct::string> &var_map) {
-  if (ScrollCursor(buffer, cursor, '{')) {
+                          ct::hash_map<ct::string, ct::string> &var_map,
+                          bool scroll) {
+  auto parse = scroll ? ScrollCursor(buffer, cursor, '{') : true;
+  if (parse) {
     auto val_token = CaptureToken(buffer, cursor, '}');
 
     size_t pos = 0;
