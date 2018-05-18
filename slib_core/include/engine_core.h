@@ -61,8 +61,8 @@ class EngineCore {
 
   EngineDebugOutput* GetDebugOutput() const;
 
-  static size_t stock_box_mesh, stock_sphere_mesh, stock_material,
-      stock_texture;
+  static size_t stock_box_mesh, stock_sphere_mesh, stock_material_textured,
+      stock_texture, stock_material_untextured;
 
  private:
   void InitEngine();

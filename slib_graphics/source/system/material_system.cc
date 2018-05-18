@@ -239,4 +239,10 @@ Material MaterialSystem::CreateTexturedMaterial(ct::string alb, ct::string norm,
   mat.textures.push_back({AddTexture2D(rme), "rma_tex"});
   return mat;
 }
+
+Material MaterialSystem::CreateUntexturedMaterial() {
+  Material mat;
+  mat.shader = GetStockShaderId(lib_graphics::MaterialSystem::kPbrUntextured);
+  return mat;
+}
 }  // namespace lib_graphics

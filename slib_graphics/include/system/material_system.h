@@ -60,6 +60,7 @@ class MaterialSystem : public lib_core::System {
 
   Material CreateTexturedMaterial(ct::string alb, ct::string norm,
                                   ct::string rme);
+  Material CreateUntexturedMaterial();
 
   size_t AddTexture2D(ct::string texture, bool blocking = false);
   size_t AddTexture3D(ct::dyn_array<ct::string> &texture);

@@ -216,7 +216,7 @@ lib_graphics::Material ScriptedSystem::ParseMaterial() {
 void ScriptedSystem::ParseActorMesh() {
   ct::string model_str;
   size_t mesh_id = 0;
-  size_t material_id = size_t(std::numeric_limits<size_t>::max);
+  size_t material_id = lib_core::EngineCore::stock_material_untextured;
   bool pickupable = false;
   bool pullable = false;
   bool ccd = false;
@@ -394,10 +394,10 @@ void ScriptedSystem::ParseParticleEmitter() {
 }
 
 size_t ScriptedSystem::MaterialId() {
-  size_t material_id = size_t(std::numeric_limits<size_t>::max);
+  size_t material_id = lib_core::EngineCore::stock_material_untextured;
   auto val_str = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
   auto it = material_map_.find(std::hash<ct::string>{}(val_str));
   if (it != material_map_.end()) material_id = it->second;
   return material_id;
 }
-}  // namespace app_fract_editor
+}  // namespace lib_core

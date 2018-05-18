@@ -24,7 +24,8 @@
 
 namespace lib_core {
 size_t EngineCore::stock_box_mesh, EngineCore::stock_sphere_mesh,
-    EngineCore::stock_material, EngineCore::stock_texture;
+    EngineCore::stock_material_untextured, EngineCore::stock_material_textured,
+    EngineCore::stock_texture;
 
 EngineCore::EngineCore() { InitEngine(); }
 
@@ -410,12 +411,6 @@ void EngineCore::InitEngine() {
   auto stock_textures =
       material_system_->LoadTexturePack("./content/stock_texpack");
   stock_texture = stock_textures[1].first;
-
-  auto stock_mat =
-      lib_graphics::AddMaterialCommand(material_system_->CreateTexturedMaterial(
-          "stock_albedo.png", "stock_normal.png", "stock_rme.png"));
-  issue_command(stock_mat);
-  stock_material = stock_mat.MaterialId();
 
   auto mesh_ids = mesh_system_->LoadModelPack("./content/stock_modelpack");
   stock_box_mesh = mesh_ids[0];

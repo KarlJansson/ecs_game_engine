@@ -647,9 +647,15 @@ void GlMaterialSystem::CreateHdrFrameBuffer(
 
 void GlMaterialSystem::CompileShaders() {
   stock_shaders_.CompileShaders(this);
-  lib_graphics::Material mat;
-  mat.shader = GetStockShaderId(lib_graphics::MaterialSystem::kPbrUntextured);
-  materials_[size_t(std::numeric_limits<size_t>::max)] = mat;
+
+  auto stock_mat = lib_graphics::AddMaterialCommand(CreateTexturedMaterial(
+      "stock_albedo.png", "stock_normal.png", "stock_rme.png"));
+  issue_command(stock_mat);
+  lib_core::EngineCore::stock_material_textured = stock_mat.MaterialId();
+
+  stock_mat = lib_graphics::AddMaterialCommand(CreateUntexturedMaterial());
+  issue_command(stock_mat);
+  lib_core::EngineCore::stock_material_untextured = stock_mat.MaterialId();
 }
 
 uint32_t GlMaterialSystem::GetCurrentShader() { return current_shader_; }
