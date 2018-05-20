@@ -7,7 +7,7 @@ GlStockShaders::GlStockShaders() {}
 
 void GlStockShaders::CommonShaderSnippets() {
   vertex_header_ =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec3 position;\n"
       "layout(location = 1) in vec3 normal;\n"
       "layout(location = 2) in vec3 tangent;\n"
@@ -163,7 +163,7 @@ void GlStockShaders::CommonShaderSnippets() {
       "}";
 
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec4 vertex;\n"
       "out vec2 TexCoords;\n\n"
 
@@ -175,7 +175,7 @@ void GlStockShaders::CommonShaderSnippets() {
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "in vec2 TexCoords;\n"
       "out vec4 color;\n\n"
 
@@ -217,7 +217,7 @@ void GlStockShaders::ForwardShaders() {
       "}";
 
   frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 FragColor;\n"
       "flat in int inst_id;\n"
 
@@ -305,7 +305,7 @@ void GlStockShaders::ForwardShaders() {
       "}";
 
   frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 FragColor;\n"
       "flat in int inst_id;\n"
 
@@ -401,7 +401,7 @@ void GlStockShaders::DeferredShaders() {
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) out vec3 g_position;\n"
       "layout(location = 1) out vec3 g_normal;\n"
       "layout(location = 2) out vec3 g_albedo;\n"
@@ -466,7 +466,7 @@ void GlStockShaders::DeferredShaders() {
       "}";
 
   frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) out vec3 g_position;\n"
       "layout(location = 1) out vec3 g_normal;\n"
       "layout(location = 2) out vec3 g_albedo;\n"
@@ -494,7 +494,7 @@ void GlStockShaders::DeferredShaders() {
                                                     ""};
 
   ct::string deferred_fragment_header =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 FragColor;\n"
       "flat in int inst_id;\n"
 
@@ -520,7 +520,7 @@ void GlStockShaders::DeferredShaders() {
       "  vec3 Lo = vec3(0.0);\n";
 
   vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"
       "layout(location = 1) in vec2 texCoords;\n"
 
@@ -557,7 +557,7 @@ void GlStockShaders::DeferredShaders() {
                                                               frag_shader, ""};
 
   frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 FragColor;\n"
 
       "in vec2 TexCoords;\n"

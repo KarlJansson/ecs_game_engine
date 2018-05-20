@@ -5,7 +5,7 @@
 namespace lib_graphics {
 GlGausianBlur::GlGausianBlur(lib_core::EngineCore *engine) : engine_(engine) {
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"
       "layout(location = 1) in vec2 texCoords;\n"
 
@@ -18,7 +18,7 @@ GlGausianBlur::GlGausianBlur(lib_core::EngineCore *engine) : engine_(engine) {
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 FragColor;\n"
       "in vec2 TexCoords;\n"
 

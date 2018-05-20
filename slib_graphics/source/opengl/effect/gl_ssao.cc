@@ -11,7 +11,7 @@ GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
                TextureDesc normal_gbuffer)
     : ssao_dim_(dim), blur_effect_(blur), engine_(engine) {
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"
       "layout(location = 1) in vec2 texCoords;\n"
 
@@ -24,7 +24,7 @@ GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out float FragColor;\n"
       "in vec2 TexCoords;\n"
 
@@ -57,10 +57,10 @@ GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
       "  float occlusion = 0.0;\n"
       "  for (int i = 0; i < kernelSize; ++i)\n"
       "  {\n"
-      "    vec3 sample = TBN * samples[i];\n"
-      "    sample = fragPos + sample * radius;\n"
+      "    vec3 kernel_sample = TBN * samples[i];\n"
+      "    kernel_sample = fragPos + kernel_sample * radius;\n"
 
-      "    vec4 offset = vec4(sample, 1.0);\n"
+      "    vec4 offset = vec4(kernel_sample, 1.0);\n"
       "    offset = projection * offset;\n"
       "    offset.xyz /= offset.w;\n"
       "    offset.xyz = offset.xyz * 0.5 + 0.5;\n"
@@ -69,7 +69,7 @@ GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
 
       "    float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - "
       "sampleDepth));\n"
-      "    occlusion += (sampleDepth >= sample.z + bias ? 1.0 : 0.0) * "
+      "    occlusion += (sampleDepth >= kernel_sample.z + bias ? 1.0 : 0.0) * "
       "rangeCheck;\n"
       "  }\n"
       "  occlusion = 1.0 - (occlusion / kernelSize);\n"

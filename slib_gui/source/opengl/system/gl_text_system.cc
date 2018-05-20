@@ -211,7 +211,7 @@ void GlTextSystem::CreateTextResources() {
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error.", __FILE__,
                   __LINE__);
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec4 vertex;\n"
       "out vec2 TexCoords;\n\n"
 
@@ -223,7 +223,7 @@ void GlTextSystem::CreateTextResources() {
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "in vec2 TexCoords;\n"
       "out vec4 color;\n\n"
 

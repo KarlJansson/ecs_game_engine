@@ -10,7 +10,7 @@ GlBloom::GlBloom(std::pair<size_t, size_t> dim, lib_core::EngineCore *engine,
                  TextureDesc hdr_buffer)
     : bloom_dim_(dim), engine_(engine), blur_effect_(blur_effect) {
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"
       "layout(location = 1) in vec2 texCoords;\n"
 
@@ -23,7 +23,7 @@ GlBloom::GlBloom(std::pair<size_t, size_t> dim, lib_core::EngineCore *engine,
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "in vec2 TexCoords;\n"
       "out vec4 color;\n"
 

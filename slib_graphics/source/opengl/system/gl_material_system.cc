@@ -1118,6 +1118,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
 
     ct::string error_str = "Vertex shader compilation failed:\n";
     error_str += info_log;
+    error_str += "\n\n" + code.vert_shader;
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
 
@@ -1127,7 +1128,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   ct::string frag_code = code.frag_shader;
   if (frag_code.empty()) {
     frag_code =
-        "#version 330 core\n"
+        "#version 430 core\n"
         "void main()\n"
         "{\n"
         "}";
@@ -1144,6 +1145,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
 
     ct::string error_str = "Fragment shader compilation failed:\n";
     error_str += info_log;
+    error_str += "\n\n" + frag_code;
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
 

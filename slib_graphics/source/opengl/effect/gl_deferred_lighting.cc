@@ -15,7 +15,7 @@ GlDeferredLighting::GlDeferredLighting(lib_core::EngineCore *engine,
                                        TextureDesc depth_tex)
     : engine_(engine) {
   ct::string vertex_header_ =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec3 position;\n"
       "layout(location = 1) in vec3 normal;\n"
       "layout(location = 2) in vec3 tangent;\n"
@@ -220,7 +220,7 @@ GlDeferredLighting::GlDeferredLighting(lib_core::EngineCore *engine,
       light_variables_dir_ + "uniform vec2 light_cutoffs[50];\n\n";
 
   ct::string deferred_fragment_header =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 FragColor;\n"
       "flat in int inst_id;\n"
 
@@ -336,7 +336,7 @@ GlDeferredLighting::GlDeferredLighting(lib_core::EngineCore *engine,
   deferred_lighting_volume_ = material_command.MaterialId();
 
   vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"
       "layout(location = 1) in vec2 texCoords;\n"
 

@@ -111,6 +111,7 @@ void GlDeferredRenderer::RenderFrame(float dt) {
                       "OpenGL error - Render Frame", __FILE__, __LINE__);
       deferred_lighting_effect_->DrawLights(cam, cam_entities->at(i),
                                             (float *)&cam.position_);
+
       skybox_effect_->DrawSkybox(cam, cam_entities->at(i));
       cu::AssertError(glGetError() == GL_NO_ERROR,
                       "OpenGL error - Render Frame", __FILE__, __LINE__);

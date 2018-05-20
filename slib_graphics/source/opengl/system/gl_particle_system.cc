@@ -10,7 +10,7 @@ namespace lib_graphics {
 GlParticleSystem::GlParticleSystem(const lib_core::EngineCore *engine)
     : ParticleSystem(engine) {
   vert_shader_ =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec4 random;\n"
       "layout(location = 1) in vec3 position;\n"
       "layout(location = 2) in vec3 velocity;\n"
@@ -93,7 +93,7 @@ GlParticleSystem::GlParticleSystem(const lib_core::EngineCore *engine)
       "}";
 
   frag_shader_ =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "in vec2 tex_coord;\n"
       "in vec4 color;\n"
 

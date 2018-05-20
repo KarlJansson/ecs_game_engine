@@ -73,7 +73,7 @@ void GlRectSystem::PurgeGpuResources() {
 
 void GlRectSystem::CreateRectResources() {
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec2 vertex;\n"
 
       "uniform mat4 projection;\n\n"
@@ -83,7 +83,7 @@ void GlRectSystem::CreateRectResources() {
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "out vec4 color;\n\n"
 
       "uniform vec4 rect_color;\n\n"

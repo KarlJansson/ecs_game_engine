@@ -10,7 +10,7 @@ namespace lib_graphics {
 GlShadowMapping::GlShadowMapping(lib_core::EngineCore *engine)
     : engine_(engine) {
   ct::string vertex_header_ =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec3 position;\n"
       "layout(location = 1) in vec3 normal;\n"
       "layout(location = 2) in vec3 tangent;\n"
@@ -27,7 +27,7 @@ GlShadowMapping::GlShadowMapping(lib_core::EngineCore *engine)
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "in vec4 FragPos;\n\n"
 
       "uniform vec3 light_pos;\n"
@@ -41,7 +41,7 @@ GlShadowMapping::GlShadowMapping(lib_core::EngineCore *engine)
       "}";
 
   ct::string geom_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(triangles) in;\n"
       "layout(triangle_strip, max_vertices = 18) out;\n\n"
 
@@ -87,7 +87,7 @@ GlShadowMapping::GlShadowMapping(lib_core::EngineCore *engine)
                 "}";
 
   frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
 
       "void main()\n"
       "{\n"

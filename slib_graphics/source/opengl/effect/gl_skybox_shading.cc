@@ -8,7 +8,7 @@ namespace lib_graphics {
 GlSkyboxShading::GlSkyboxShading(lib_core::EngineCore *engine)
     : engine_(engine) {
   ct::string vert_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "layout(location = 0) in vec3 position;\n"
       "layout(location = 1) in vec3 normal;\n"
       "layout(location = 2) in vec3 tangent;\n"
@@ -26,7 +26,7 @@ GlSkyboxShading::GlSkyboxShading(lib_core::EngineCore *engine)
       "}";
 
   ct::string frag_shader =
-      "#version 330 core\n"
+      "#version 430 core\n"
       "in vec3 TexCoords;\n"
       "out vec4 color;\n\n"
 
