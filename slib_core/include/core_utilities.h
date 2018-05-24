@@ -203,27 +203,41 @@ class cu {
   static void PrintLogFile(ct::string dest_path);
   static void PrintProfiling(ct::string dest_path);
 
+  class TerminatingException : public std::exception {
+   public:
+    explicit TerminatingException(std::string reason) : reason_(reason) {}
+    const char *what() const noexcept override { return reason_.c_str(); }
+
+   private:
+    std::string reason_;
+  };
+
   static inline void AssertError(bool condition, ct::string cause,
                                  ct::string file = "", int line = -1) {
     if (!condition) {
-      ct::string desc_str;
-      if (!file.empty())
-        desc_str += file.substr(file.find_last_of('\\') + 1, file.size());
+      ct::string desc_str = file;
+#ifdef WindowsBuild
+      auto pos = file.find_last_of('\\');
+#else
+      auto pos = file.find_last_of('/');
+#endif
+      if (pos != std::string::npos)
+        desc_str = file.substr(pos + 1, file.size());
       if (line != -1) desc_str += "(" + std::to_string(line) + ") ";
 
-      std::cout << desc_str + cause << "\n";
-      assert(condition);
-
       errors.push_back(desc_str + cause);
-
+      assert(condition);
       PrintLogFile("./logfile.txt");
-      std::terminate();
+      try {
+        throw TerminatingException(desc_str + cause);
+      } catch (...) {
+        std::terminate();
+      }
     }
   }
 
   static inline void AssertWarning(bool condition, ct::string cause,
                                    ct::string file = "", int line = -1) {
-#ifdef _DEBUG
     if (!condition) {
       ct::string desc_str;
       if (!file.empty())
@@ -235,7 +249,6 @@ class cu {
 
       warnings.push_back(desc_str + cause);
     }
-#endif  // _DEBUG
   }
 
   static inline void Log(ct::string message, ct::string file = "",
