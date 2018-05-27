@@ -4,33 +4,24 @@ cmake_minimum_required(VERSION 3.6)
 
 
 set(cpp_files
-  ./source/sound_factory.cc
   ./source/sound_system.cc
+  ./source/sound_factory.cc
   ./source/port_audio/port_audio_system.cc
+  ./include/sound_commands.h
+  ./include/sound_system.h
+  ./include/sound_factory.h
   ./include/ambient_sound.h
   ./include/effect_sound.h
   ./include/music.h
-  ./include/sound_commands.h
-  ./include/sound_factory.h
-  ./include/sound_system.h
   ./source/port_audio/port_audio_system.h
   ./test/test_sound_factory.h
   ./test/test_sound_system.h
   ./test/port_audio/test_port_audio_system.h
 )
 
-source_group(include FILES
-  ./include/ambient_sound.h
-  ./include/effect_sound.h
-  ./include/music.h
-  ./include/sound_commands.h
-  ./include/sound_factory.h
-  ./include/sound_system.h
-)
-
 source_group(source FILES
-  ./source/sound_factory.cc
   ./source/sound_system.cc
+  ./source/sound_factory.cc
 )
 
 source_group(source\\port_audio FILES
@@ -47,11 +38,18 @@ source_group(test\\port_audio FILES
   ./test/port_audio/test_port_audio_system.h
 )
 
+source_group(include FILES
+  ./include/sound_commands.h
+  ./include/sound_system.h
+  ./include/sound_factory.h
+  ./include/ambient_sound.h
+  ./include/effect_sound.h
+  ./include/music.h
+)
+
 add_library(sound STATIC ${cpp_files})
 
 include_directories(sound
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -68,10 +66,9 @@ include_directories(sound
 
 target_link_libraries(sound
   core
-  optimized ../../../Dependencies/lib/release/static/portaudio
-  debug ../../../Dependencies/lib/debug/static/portaudio
-  optimized ../../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  portaudio
+  tbb
+  libpthread.so
 )
 
 add_dependencies(sound ALL_PRE_BUILD)

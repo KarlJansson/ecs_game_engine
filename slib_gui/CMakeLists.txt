@@ -4,59 +4,42 @@ cmake_minimum_required(VERSION 3.6)
 
 
 set(cpp_files
-  ./source/gui_factory.cc
   ./source/gui_renderer.cc
+  ./source/gui_factory.cc
   ./source/opengl/gl_gui_renderer.cc
   ./source/opengl/system/gl_rect_system.cc
   ./source/opengl/system/gl_text_system.cc
-  ./source/system/rect_system.cc
   ./source/system/text_system.cc
+  ./source/system/rect_system.cc
   ./include/gui_commands.h
   ./include/gui_factory.h
   ./include/gui_renderer.h
-  ./include/component/gui_button.h
-  ./include/component/gui_checkbox.h
-  ./include/component/gui_mouse_area.h
-  ./include/component/gui_progress_bar.h
-  ./include/component/gui_rect.h
   ./include/component/gui_scroll_list.h
+  ./include/component/gui_mouse_area.h
+  ./include/component/gui_button.h
   ./include/component/gui_slider.h
+  ./include/component/gui_checkbox.h
   ./include/component/gui_text.h
-  ./include/system/rect_system.h
+  ./include/component/gui_rect.h
+  ./include/component/gui_progress_bar.h
   ./include/system/text_system.h
+  ./include/system/rect_system.h
   ./source/opengl/gl_gui_renderer.h
-  ./source/opengl/system/gl_rect_system.h
   ./source/opengl/system/gl_text_system.h
+  ./source/opengl/system/gl_rect_system.h
   ./test/opengl/test_gl_renderer.h
   ./test/opengl/systems/test_gl_rect_system.h
   ./test/systems/test_rect_system.h
 )
 
-source_group(include FILES
-  ./include/gui_commands.h
-  ./include/gui_factory.h
-  ./include/gui_renderer.h
-)
-
-source_group(include\\component FILES
-  ./include/component/gui_button.h
-  ./include/component/gui_checkbox.h
-  ./include/component/gui_mouse_area.h
-  ./include/component/gui_progress_bar.h
-  ./include/component/gui_rect.h
-  ./include/component/gui_scroll_list.h
-  ./include/component/gui_slider.h
-  ./include/component/gui_text.h
-)
-
-source_group(include\\system FILES
-  ./include/system/rect_system.h
-  ./include/system/text_system.h
-)
-
 source_group(source FILES
-  ./source/gui_factory.cc
   ./source/gui_renderer.cc
+  ./source/gui_factory.cc
+)
+
+source_group(source\\system FILES
+  ./source/system/text_system.cc
+  ./source/system/rect_system.cc
 )
 
 source_group(source\\opengl FILES
@@ -67,13 +50,8 @@ source_group(source\\opengl FILES
 source_group(source\\opengl\\system FILES
   ./source/opengl/system/gl_rect_system.cc
   ./source/opengl/system/gl_text_system.cc
-  ./source/opengl/system/gl_rect_system.h
   ./source/opengl/system/gl_text_system.h
-)
-
-source_group(source\\system FILES
-  ./source/system/rect_system.cc
-  ./source/system/text_system.cc
+  ./source/opengl/system/gl_rect_system.h
 )
 
 source_group(test FILES
@@ -91,12 +69,31 @@ source_group(test\\systems FILES
   ./test/systems/test_rect_system.h
 )
 
+source_group(include FILES
+  ./include/gui_commands.h
+  ./include/gui_factory.h
+  ./include/gui_renderer.h
+)
+
+source_group(include\\system FILES
+  ./include/system/text_system.h
+  ./include/system/rect_system.h
+)
+
+source_group(include\\component FILES
+  ./include/component/gui_scroll_list.h
+  ./include/component/gui_mouse_area.h
+  ./include/component/gui_button.h
+  ./include/component/gui_slider.h
+  ./include/component/gui_checkbox.h
+  ./include/component/gui_text.h
+  ./include/component/gui_rect.h
+  ./include/component/gui_progress_bar.h
+)
+
 add_library(gui STATIC ${cpp_files})
 
 include_directories(gui
-  ../../Dependencies/include
-  ../../Dependencies/include/freetype/freetype2 ../../Dependencies/include/freetype
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -132,12 +129,11 @@ include_directories(gui
 target_link_libraries(gui
   core
   graphics
-  "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.15063.0/um/x64/OpenGL32.Lib"
-  ../../../Dependencies/lib/release/dynamic/glew32
-  optimized ../../../Dependencies/lib/release/static/freetype
-  debug ../../../Dependencies/lib/debug/static/freetyped
-  optimized ../../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  libOpenGL.so
+  libGLEW.so
+  freetype
+  tbb
+  libpthread.so
 )
 
 add_dependencies(gui ALL_PRE_BUILD)

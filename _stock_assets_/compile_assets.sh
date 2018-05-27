@@ -1,5 +1,5 @@
-bp=../_build_release_/app_example/Build_Output/bin
-bp_dbg=../_build_debug_/app_example/Build_Output/bin
+bp=../_build_release_/app_ecs_game_engine/Build_Output/bin
+bp_dbg=../_build_debug_/app_ecs_game_engine/Build_Output/bin
 
 
 if [ -d "$bp/content" ]
@@ -46,9 +46,8 @@ done
 cp ./content/* $bp"/content/"
 cp ./content/* $bp_dbg"/content/"
 
-cp ../app_example/source/example_script.txt $bp"/content/"
-cp ../app_example/source/example_script.txt $bp_dbg"/content/"
-
+cp ../app_ecs_game_engine/source/example_script.txt $bp"/content/"
+cp ../app_ecs_game_engine/source/example_script.txt $bp_dbg"/content/"
 
 rm -rf tmp_models_packs
 rm -rf tmp_texture_packs

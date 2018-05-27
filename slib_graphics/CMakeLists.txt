@@ -4,197 +4,99 @@ cmake_minimum_required(VERSION 3.6)
 
 
 set(cpp_files
-  ./source/graphics_factory.cc
   ./source/window.cc
+  ./source/graphics_factory.cc
   ./source/component/camera.cc
   ./source/component/transform.cc
-  ./source/opengl/gl_deferred_renderer.cc
-  ./source/opengl/gl_renderer.cc
   ./source/opengl/gl_stock_shaders.cc
   ./source/opengl/gl_window.cc
+  ./source/opengl/gl_renderer.cc
+  ./source/opengl/gl_deferred_renderer.cc
   ./source/opengl/effect/gl_bloom.cc
   ./source/opengl/effect/gl_deferred_lighting.cc
-  ./source/opengl/effect/gl_deferred_shading.cc
-  ./source/opengl/effect/gl_gausian_blur.cc
-  ./source/opengl/effect/gl_shadow_mapping.cc
   ./source/opengl/effect/gl_skybox_shading.cc
+  ./source/opengl/effect/gl_shadow_mapping.cc
+  ./source/opengl/effect/gl_deferred_shading.cc
   ./source/opengl/effect/gl_smaa.cc
   ./source/opengl/effect/gl_ssao.cc
+  ./source/opengl/effect/gl_gausian_blur.cc
   ./source/opengl/system/gl_camera_system.cc
+  ./source/opengl/system/gl_particle_system.cc
   ./source/opengl/system/gl_material_system.cc
   ./source/opengl/system/gl_mesh_system.cc
-  ./source/opengl/system/gl_particle_system.cc
-  ./source/sort_trees/oc_tree.cc
   ./source/sort_trees/quad_tree.cc
-  ./source/system/culling_system.cc
-  ./source/system/light_system.cc
-  ./source/system/material_system.cc
+  ./source/sort_trees/oc_tree.cc
   ./source/system/mesh_system.cc
-  ./source/system/particle_system.cc
   ./source/system/transform_system.cc
+  ./source/system/particle_system.cc
+  ./source/system/culling_system.cc
+  ./source/system/material_system.cc
+  ./source/system/light_system.cc
   ./source/system/camera/fps_camera_system.cc
   ./source/system/camera/states/detatched_state.cc
-  ./source/system/camera/states/double_jump_state.cc
   ./source/system/camera/states/grounded_state.cc
+  ./source/system/camera/states/double_jump_state.cc
   ./source/system/camera/states/jump_state.cc
   ./source/system/camera/states/shared_state.cc
+  ./include/window.h
+  ./include/renderer.h
+  ./include/vertex.h
+  ./include/scene.h
   ./include/graphics_commands.h
   ./include/graphics_factory.h
-  ./include/renderer.h
-  ./include/scene.h
-  ./include/vertex.h
-  ./include/window.h
-  ./include/component/axis_aligned_box.h
-  ./include/component/camera.h
   ./include/component/light.h
-  ./include/component/mesh.h
-  ./include/component/particle_emitter.h
-  ./include/component/skybox.h
   ./include/component/transform.h
-  ./include/sort_trees/oc_tree.h
+  ./include/component/particle_emitter.h
+  ./include/component/axis_aligned_box.h
+  ./include/component/mesh.h
+  ./include/component/skybox.h
+  ./include/component/camera.h
   ./include/sort_trees/quad_tree.h
+  ./include/sort_trees/oc_tree.h
   ./include/system/camera_system.h
-  ./include/system/culling_system.h
-  ./include/system/light_system.h
-  ./include/system/material_system.h
-  ./include/system/mesh_system.h
   ./include/system/particle_system.h
+  ./include/system/light_system.h
+  ./include/system/mesh_system.h
+  ./include/system/material_system.h
   ./include/system/transform_system.h
+  ./include/system/culling_system.h
   ./include/system/canera/fps_camera_system.h
-  ./include/system/canera/states/detatched_state.h
   ./include/system/canera/states/double_jump_state.h
-  ./include/system/canera/states/grounded_state.h
+  ./include/system/canera/states/detatched_state.h
   ./include/system/canera/states/jump_state.h
   ./include/system/canera/states/shared_state.h
-  ./source/opengl/gl_deferred_renderer.h
-  ./source/opengl/gl_renderer.h
-  ./source/opengl/gl_stock_shaders.h
+  ./include/system/canera/states/grounded_state.h
   ./source/opengl/gl_window.h
-  ./source/opengl/effect/gl_bloom.h
-  ./source/opengl/effect/gl_deferred_lighting.h
-  ./source/opengl/effect/gl_deferred_shading.h
-  ./source/opengl/effect/gl_gausian_blur.h
-  ./source/opengl/effect/gl_shadow_mapping.h
-  ./source/opengl/effect/gl_skybox_shading.h
-  ./source/opengl/effect/gl_smaa.h
-  ./source/opengl/effect/gl_smaa_shaders.h
+  ./source/opengl/gl_deferred_renderer.h
+  ./source/opengl/gl_stock_shaders.h
+  ./source/opengl/gl_renderer.h
   ./source/opengl/effect/gl_ssao.h
-  ./source/opengl/system/gl_camera_system.h
+  ./source/opengl/effect/gl_deferred_lighting.h
+  ./source/opengl/effect/gl_smaa.h
+  ./source/opengl/effect/gl_deferred_shading.h
+  ./source/opengl/effect/gl_smaa_shaders.h
+  ./source/opengl/effect/gl_shadow_mapping.h
+  ./source/opengl/effect/gl_bloom.h
+  ./source/opengl/effect/gl_gausian_blur.h
+  ./source/opengl/effect/gl_skybox_shading.h
   ./source/opengl/system/gl_material_system.h
   ./source/opengl/system/gl_mesh_system.h
   ./source/opengl/system/gl_particle_system.h
-)
-
-source_group(include FILES
-  ./include/graphics_commands.h
-  ./include/graphics_factory.h
-  ./include/renderer.h
-  ./include/scene.h
-  ./include/vertex.h
-  ./include/window.h
-)
-
-source_group(include\\component FILES
-  ./include/component/axis_aligned_box.h
-  ./include/component/camera.h
-  ./include/component/light.h
-  ./include/component/mesh.h
-  ./include/component/particle_emitter.h
-  ./include/component/skybox.h
-  ./include/component/transform.h
-)
-
-source_group(include\\sort_trees FILES
-  ./include/sort_trees/oc_tree.h
-  ./include/sort_trees/quad_tree.h
-)
-
-source_group(include\\system FILES
-  ./include/system/camera_system.h
-  ./include/system/culling_system.h
-  ./include/system/light_system.h
-  ./include/system/material_system.h
-  ./include/system/mesh_system.h
-  ./include/system/particle_system.h
-  ./include/system/transform_system.h
-)
-
-source_group(include\\system\\canera FILES
-  ./include/system/canera/fps_camera_system.h
-)
-
-source_group(include\\system\\canera\\states FILES
-  ./include/system/canera/states/detatched_state.h
-  ./include/system/canera/states/double_jump_state.h
-  ./include/system/canera/states/grounded_state.h
-  ./include/system/canera/states/jump_state.h
-  ./include/system/canera/states/shared_state.h
+  ./source/opengl/system/gl_camera_system.h
 )
 
 source_group(source FILES
-  ./source/graphics_factory.cc
   ./source/window.cc
-)
-
-source_group(source\\component FILES
-  ./source/component/camera.cc
-  ./source/component/transform.cc
-)
-
-source_group(source\\opengl FILES
-  ./source/opengl/gl_deferred_renderer.cc
-  ./source/opengl/gl_renderer.cc
-  ./source/opengl/gl_stock_shaders.cc
-  ./source/opengl/gl_window.cc
-  ./source/opengl/gl_deferred_renderer.h
-  ./source/opengl/gl_renderer.h
-  ./source/opengl/gl_stock_shaders.h
-  ./source/opengl/gl_window.h
-)
-
-source_group(source\\opengl\\effect FILES
-  ./source/opengl/effect/gl_bloom.cc
-  ./source/opengl/effect/gl_deferred_lighting.cc
-  ./source/opengl/effect/gl_deferred_shading.cc
-  ./source/opengl/effect/gl_gausian_blur.cc
-  ./source/opengl/effect/gl_shadow_mapping.cc
-  ./source/opengl/effect/gl_skybox_shading.cc
-  ./source/opengl/effect/gl_smaa.cc
-  ./source/opengl/effect/gl_ssao.cc
-  ./source/opengl/effect/gl_bloom.h
-  ./source/opengl/effect/gl_deferred_lighting.h
-  ./source/opengl/effect/gl_deferred_shading.h
-  ./source/opengl/effect/gl_gausian_blur.h
-  ./source/opengl/effect/gl_shadow_mapping.h
-  ./source/opengl/effect/gl_skybox_shading.h
-  ./source/opengl/effect/gl_smaa.h
-  ./source/opengl/effect/gl_smaa_shaders.h
-  ./source/opengl/effect/gl_ssao.h
-)
-
-source_group(source\\opengl\\system FILES
-  ./source/opengl/system/gl_camera_system.cc
-  ./source/opengl/system/gl_material_system.cc
-  ./source/opengl/system/gl_mesh_system.cc
-  ./source/opengl/system/gl_particle_system.cc
-  ./source/opengl/system/gl_camera_system.h
-  ./source/opengl/system/gl_material_system.h
-  ./source/opengl/system/gl_mesh_system.h
-  ./source/opengl/system/gl_particle_system.h
-)
-
-source_group(source\\sort_trees FILES
-  ./source/sort_trees/oc_tree.cc
-  ./source/sort_trees/quad_tree.cc
+  ./source/graphics_factory.cc
 )
 
 source_group(source\\system FILES
-  ./source/system/culling_system.cc
-  ./source/system/light_system.cc
-  ./source/system/material_system.cc
   ./source/system/mesh_system.cc
-  ./source/system/particle_system.cc
   ./source/system/transform_system.cc
+  ./source/system/particle_system.cc
+  ./source/system/culling_system.cc
+  ./source/system/material_system.cc
+  ./source/system/light_system.cc
 )
 
 source_group(source\\system\\camera FILES
@@ -203,20 +105,113 @@ source_group(source\\system\\camera FILES
 
 source_group(source\\system\\camera\\states FILES
   ./source/system/camera/states/detatched_state.cc
-  ./source/system/camera/states/double_jump_state.cc
   ./source/system/camera/states/grounded_state.cc
+  ./source/system/camera/states/double_jump_state.cc
   ./source/system/camera/states/jump_state.cc
   ./source/system/camera/states/shared_state.cc
 )
 
-source_group(test FILES
+source_group(source\\opengl FILES
+  ./source/opengl/gl_stock_shaders.cc
+  ./source/opengl/gl_window.cc
+  ./source/opengl/gl_renderer.cc
+  ./source/opengl/gl_deferred_renderer.cc
+  ./source/opengl/gl_window.h
+  ./source/opengl/gl_deferred_renderer.h
+  ./source/opengl/gl_stock_shaders.h
+  ./source/opengl/gl_renderer.h
+)
+
+source_group(source\\opengl\\effect FILES
+  ./source/opengl/effect/gl_bloom.cc
+  ./source/opengl/effect/gl_deferred_lighting.cc
+  ./source/opengl/effect/gl_skybox_shading.cc
+  ./source/opengl/effect/gl_shadow_mapping.cc
+  ./source/opengl/effect/gl_deferred_shading.cc
+  ./source/opengl/effect/gl_smaa.cc
+  ./source/opengl/effect/gl_ssao.cc
+  ./source/opengl/effect/gl_gausian_blur.cc
+  ./source/opengl/effect/gl_ssao.h
+  ./source/opengl/effect/gl_deferred_lighting.h
+  ./source/opengl/effect/gl_smaa.h
+  ./source/opengl/effect/gl_deferred_shading.h
+  ./source/opengl/effect/gl_smaa_shaders.h
+  ./source/opengl/effect/gl_shadow_mapping.h
+  ./source/opengl/effect/gl_bloom.h
+  ./source/opengl/effect/gl_gausian_blur.h
+  ./source/opengl/effect/gl_skybox_shading.h
+)
+
+source_group(source\\opengl\\system FILES
+  ./source/opengl/system/gl_camera_system.cc
+  ./source/opengl/system/gl_particle_system.cc
+  ./source/opengl/system/gl_material_system.cc
+  ./source/opengl/system/gl_mesh_system.cc
+  ./source/opengl/system/gl_material_system.h
+  ./source/opengl/system/gl_mesh_system.h
+  ./source/opengl/system/gl_particle_system.h
+  ./source/opengl/system/gl_camera_system.h
+)
+
+source_group(source\\sort_trees FILES
+  ./source/sort_trees/quad_tree.cc
+  ./source/sort_trees/oc_tree.cc
+)
+
+source_group(source\\component FILES
+  ./source/component/camera.cc
+  ./source/component/transform.cc
+)
+
+source_group(include FILES
+  ./include/window.h
+  ./include/renderer.h
+  ./include/vertex.h
+  ./include/scene.h
+  ./include/graphics_commands.h
+  ./include/graphics_factory.h
+)
+
+source_group(include\\system FILES
+  ./include/system/camera_system.h
+  ./include/system/particle_system.h
+  ./include/system/light_system.h
+  ./include/system/mesh_system.h
+  ./include/system/material_system.h
+  ./include/system/transform_system.h
+  ./include/system/culling_system.h
+)
+
+source_group(include\\system\\canera FILES
+  ./include/system/canera/fps_camera_system.h
+)
+
+source_group(include\\system\\canera\\states FILES
+  ./include/system/canera/states/double_jump_state.h
+  ./include/system/canera/states/detatched_state.h
+  ./include/system/canera/states/jump_state.h
+  ./include/system/canera/states/shared_state.h
+  ./include/system/canera/states/grounded_state.h
+)
+
+source_group(include\\sort_trees FILES
+  ./include/sort_trees/quad_tree.h
+  ./include/sort_trees/oc_tree.h
+)
+
+source_group(include\\component FILES
+  ./include/component/light.h
+  ./include/component/transform.h
+  ./include/component/particle_emitter.h
+  ./include/component/axis_aligned_box.h
+  ./include/component/mesh.h
+  ./include/component/skybox.h
+  ./include/component/camera.h
 )
 
 add_library(graphics STATIC ${cpp_files})
 
 include_directories(graphics
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/state_machine/
@@ -263,7 +258,6 @@ include_directories(graphics
   ./source/system
   ./source/system/camera
   ./source/system/camera/states
-  ./test
 )
 
 target_link_libraries(graphics
@@ -271,10 +265,10 @@ target_link_libraries(graphics
   gui
   input
   physics
-  ../../../Dependencies/lib/release/dynamic/glew32
-  ../../../Dependencies/lib/release/static/glfw3
-  optimized ../../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  libGLEW.so
+  glfw
+  tbb
+  libpthread.so
 )
 
 add_dependencies(graphics ALL_PRE_BUILD)
