@@ -26,8 +26,9 @@ void GroundedState::OnEnter() {
     if (actor && camera) {
       auto add = 9.f;
 
-      bool run = input_system->KeyPressed(lib_input::kLeftShift) ||
-                 input_system->ButtonPressed(0, 4);
+      bool run =
+          input_system->KeyPressed(lib_input::Key::kLeftShift) ||
+          input_system->ButtonPressed(0, lib_input::PadButton::kShoulderL);
 
       if (run) add += 9.f;
 
@@ -41,20 +42,23 @@ void GroundedState::OnEnter() {
 
       lib_core::Vector3 move_delta;
       move_delta.ZeroMem();
-      if (input_system->KeyPressed(lib_input::kW))
+      if (input_system->KeyPressed(lib_input::Key::kW))
         move_delta += xz_forward * add;
-      if (input_system->KeyPressed(lib_input::kS))
+      if (input_system->KeyPressed(lib_input::Key::kS))
         move_delta += xz_forward * -add;
-      if (input_system->KeyPressed(lib_input::kD)) move_delta += xz_left * add;
-      if (input_system->KeyPressed(lib_input::kA)) move_delta += xz_left * -add;
+      if (input_system->KeyPressed(lib_input::Key::kD))
+        move_delta += xz_left * add;
+      if (input_system->KeyPressed(lib_input::Key::kA))
+        move_delta += xz_left * -add;
 
-      auto move_stick = input_system->StickPos(0, 0);
-      if (!move_stick.Zero()) {
-        auto forward_multi = std::abs(move_stick[1]) * add;
-        auto left_multi = std::abs(move_stick[0]) * add;
+      auto move_x = input_system->StickPos(0, lib_input::PadStick::kStickLx);
+      auto move_y = input_system->StickPos(0, lib_input::PadStick::kStickLy);
+      if (std::abs(move_x) + std::abs(move_y) > 0e-4) {
+        auto forward_multi = std::abs(move_y) * add;
+        auto left_multi = std::abs(move_x) * add;
 
-        move_delta += xz_forward * -move_stick[1] * forward_multi;
-        move_delta += xz_left * move_stick[0] * left_multi;
+        move_delta += xz_forward * -move_y * forward_multi;
+        move_delta += xz_left * move_x * left_multi;
       }
 
       if (move_delta.Length() > add) {
@@ -64,8 +68,9 @@ void GroundedState::OnEnter() {
 
       move_delta *= dt;
 
-      bool jump = input_system->KeyPressed(lib_input::kSpace) ||
-                  input_system->ButtonPressed(0, 0);
+      bool jump =
+          input_system->KeyPressed(lib_input::Key::kSpace) ||
+          input_system->ButtonPressed(0, lib_input::PadButton::kButton1);
 
       if (actor->grounded && in_air && jump_cooldown_ >= 0.3f) {
         orig_height_ = actor->height;
@@ -117,8 +122,9 @@ bool GroundedState::Update(float dt) {
   auto actor = g_ent_mgr.GetNewCbeR<lib_physics::Character>(cam_entity_);
 
   if (actor) {
-    if (min_life_ >= .5f && input_system->KeyPressed(lib_input::kLeftControl) &&
-        input_system->KeyPressed(lib_input::kE)) {
+    if (min_life_ >= .5f &&
+        input_system->KeyPressed(lib_input::Key::kLeftControl) &&
+        input_system->KeyPressed(lib_input::Key::kE)) {
       owner_->ReplaceTopState(
           std::make_unique<DetatchedState>(cam_entity_, engine_));
       return true;
@@ -127,4 +133,4 @@ bool GroundedState::Update(float dt) {
   }
   return true;
 }
-}  // namespace app_fract_editor
+}  // namespace lib_graphics

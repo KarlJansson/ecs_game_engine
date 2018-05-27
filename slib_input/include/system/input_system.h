@@ -1,5 +1,6 @@
 #pragma once
 #include "input_commands.h"
+#include "key_definitions.h"
 #include "system.h"
 #include "vector_def.h"
 
@@ -12,19 +13,19 @@ class InputSystem : public lib_core::System {
   void LogicUpdate(float dt);
   void SetCursor(bool enable);
 
-  virtual bool KeyPressed(int key) = 0;
-  virtual bool KeyReleased(int key) = 0;
+  virtual bool KeyPressed(Key key) = 0;
+  virtual bool KeyReleased(Key key) = 0;
 
-  virtual bool MousePressed(int key) = 0;
-  virtual bool MouseReleased(int key) = 0;
+  virtual bool MousePressed(Key key) = 0;
+  virtual bool MouseReleased(Key key) = 0;
 
-  virtual bool ButtonPressed(int stick, int button) = 0;
-  virtual bool ButtonReleased(int stick, int button) = 0;
+  virtual bool ButtonPressed(int controller, PadButton button) = 0;
+  virtual bool ButtonReleased(int controller, PadButton button) = 0;
 
   lib_core::Vector2 MousePos();
   lib_core::Vector2 MouseDelta();
 
-  lib_core::Vector2 StickPos(int controller, int stick = 0);
+  float StickPos(int controller, PadStick stick);
 
   int PresentContorllerId(int offset = 0);
 
@@ -36,6 +37,6 @@ class InputSystem : public lib_core::System {
   std::atomic<bool> cursor_disabled_ = {true};
 
   ct::dyn_array<int> present_sticks_;
-  ct::dyn_array<lib_core::Vector2> stick_pos_[16];
+  ct::dyn_array<float> stick_pos_[16];
 };
 }  // namespace lib_input

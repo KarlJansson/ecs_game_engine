@@ -73,14 +73,14 @@ lib_core::Vector2 InputSystem::MouseDelta() {
   return {mouse_speed_[0] * sensitivity, mouse_speed_[1] * sensitivity};
 }
 
-lib_core::Vector2 InputSystem::StickPos(int controller, int stick) {
-  if (controller < 16 && controller > -1 && stick > -1 &&
-      stick < stick_pos_[controller].size()) {
-    if (std::abs(stick_pos_[controller][stick][0]) > 0.3f ||
-        std::abs(stick_pos_[controller][stick][1]) > 0.3f)
-      return stick_pos_[controller][stick];
+float InputSystem::StickPos(int controller, PadStick stick) {
+  auto casted_stick = static_cast<int>(stick);
+  if (controller < 16 && controller > -1 &&
+      casted_stick < stick_pos_[controller].size()) {
+    if (std::abs(stick_pos_[controller][casted_stick]) > 0.3f)
+      return stick_pos_[controller][casted_stick];
   }
-  return {0.f};
+  return 0.f;
 }
 
 int InputSystem::PresentContorllerId(int offset) {

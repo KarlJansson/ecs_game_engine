@@ -21,7 +21,7 @@ ExampleSystem::ExampleSystem(lib_core::EngineCore* engine) : engine_(engine) {
   // Bind an exit binding to Escape
   lib_input::ToggleInput ti;
   ti.function_binding = [&](float dt) { engine_->GetWindow()->CloseWindow(); };
-  ti.key_combos.push_back({lib_input::kEscape});
+  ti.key_combos.push_back({lib_input::Key::kEscape});
   g_ent_mgr.AddComponent(CreateScopedEntity(), ti);
 
   // Create a scripted system to ease placement of objects

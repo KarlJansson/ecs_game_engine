@@ -12,14 +12,14 @@ class GlInputSystem : public InputSystem {
   void InitSystem() override;
   void LogicUpdate(float dt) override;
 
-  bool KeyPressed(int key) override;
-  bool KeyReleased(int key) override;
+  bool KeyPressed(Key key) override;
+  bool KeyReleased(Key key) override;
 
-  bool MousePressed(int key) override;
-  bool MouseReleased(int key) override;
+  bool MousePressed(Key key) override;
+  bool MouseReleased(Key key) override;
 
-  bool ButtonPressed(int stick, int button) override;
-  bool ButtonReleased(int stick, int button) override;
+  bool ButtonPressed(int controller, PadButton button) override;
+  bool ButtonReleased(int controller, PadButton button) override;
 
  private:
   lib_core::EngineCore* engine_;

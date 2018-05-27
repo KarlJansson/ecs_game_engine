@@ -55,9 +55,7 @@ void GlInputSystem::LogicUpdate(float dt) {
       ct::string joy_name = glfwGetJoystickName(GLFW_JOYSTICK_1 + i);
       int count;
       const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1 + i, &count);
-      for (int ii = 0; ii < count; ii += 2)
-        stick_pos_[i].push_back({axes[ii], axes[ii + 1]});
-
+      for (int ii = 0; ii < count; ++ii) stick_pos_[i].push_back(axes[ii]);
       present_sticks_.push_back(i);
     }
   }
@@ -65,29 +63,35 @@ void GlInputSystem::LogicUpdate(float dt) {
   InputSystem::LogicUpdate(dt);
 }
 
-bool GlInputSystem::KeyPressed(int key) {
+bool GlInputSystem::KeyPressed(Key key) {
   if (!window_) return false;
-  return glfwGetKey(window_, key) > 0;
+  return glfwGetKey(window_, static_cast<int>(key)) > 0;
 }
 
-bool GlInputSystem::KeyReleased(int key) { return !KeyPressed(key); }
-
-bool GlInputSystem::MousePressed(int key) {
-  if (!window_) return false;
-  return glfwGetMouseButton(window_, key) > 0;
+bool GlInputSystem::KeyReleased(Key key) {
+  return !KeyPressed(key);
 }
 
-bool GlInputSystem::MouseReleased(int key) { return !MousePressed(key); }
+bool GlInputSystem::MousePressed(Key key) {
+  if (!window_) return false;
+  return glfwGetMouseButton(window_, static_cast<int>(key)) > 0;
+}
 
-bool GlInputSystem::ButtonPressed(int stick, int button) {
+bool GlInputSystem::MouseReleased(Key key) {
+  return !MousePressed(key);
+}
+
+bool GlInputSystem::ButtonPressed(int stick, PadButton button) {
   int count;
+  auto casted_button = static_cast<int>(button);
   const unsigned char *axes =
       glfwGetJoystickButtons(GLFW_JOYSTICK_1 + stick, &count);
-  if (axes && button > -1 && button < count) return axes[button] > 0;
+  if (axes && casted_button > -1 && casted_button < count)
+    return axes[casted_button] > 0;
   return false;
 }
 
-bool GlInputSystem::ButtonReleased(int stick, int button) {
+bool GlInputSystem::ButtonReleased(int stick, PadButton button) {
   return !ButtonPressed(stick, button);
 }
 }  // namespace lib_input

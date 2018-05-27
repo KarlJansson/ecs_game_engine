@@ -145,48 +145,48 @@ int EngineCore::StartEngine() {
       start_point = std::chrono::high_resolution_clock::now();
       g_sys_mgr.LogicUpdate(dt * time_multiplier_);
 
-      if (input_system_->KeyPressed(lib_input::kLeftAlt)) {
-        if (!toggle_pressed && input_system_->KeyPressed(lib_input::k1)) {
+      if (input_system_->KeyPressed(lib_input::Key::kLeftAlt)) {
+        if (!toggle_pressed && input_system_->KeyPressed(lib_input::Key::k1)) {
           debug_output_->ToggleDebugOutput();
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::k2)) {
+                   input_system_->KeyPressed(lib_input::Key::k2)) {
           debug_output_->ToggleTopLeftDebugOutput();
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::k3)) {
+                   input_system_->KeyPressed(lib_input::Key::k3)) {
           debug_output_->ToggleTopRightDebugOutput();
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::k4)) {
+                   input_system_->KeyPressed(lib_input::Key::k4)) {
           debug_output_->ToggleBottomLeftDebugOutput();
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::k5)) {
+                   input_system_->KeyPressed(lib_input::Key::k5)) {
           debug_output_->ToggleBottomRightDebugOutput();
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::kZ)) {
+                   input_system_->KeyPressed(lib_input::Key::kZ)) {
           g_settings.SetSsao(!g_settings.Ssao());
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::kX)) {
+                   input_system_->KeyPressed(lib_input::Key::kX)) {
           g_settings.SetBloom(!g_settings.Bloom());
           toggle_pressed = true;
         } else if (!toggle_pressed &&
-                   input_system_->KeyPressed(lib_input::kC)) {
+                   input_system_->KeyPressed(lib_input::Key::kC)) {
           g_settings.SetSmaa(!g_settings.Smaa());
           toggle_pressed = true;
         }
 
-        if (input_system_->KeyReleased(lib_input::k1) &&
-            input_system_->KeyReleased(lib_input::k2) &&
-            input_system_->KeyReleased(lib_input::k3) &&
-            input_system_->KeyReleased(lib_input::k4) &&
-            input_system_->KeyReleased(lib_input::k5) &&
-            input_system_->KeyReleased(lib_input::kZ) &&
-            input_system_->KeyReleased(lib_input::kX) &&
-            input_system_->KeyReleased(lib_input::kC))
+        if (input_system_->KeyReleased(lib_input::Key::k1) &&
+            input_system_->KeyReleased(lib_input::Key::k2) &&
+            input_system_->KeyReleased(lib_input::Key::k3) &&
+            input_system_->KeyReleased(lib_input::Key::k4) &&
+            input_system_->KeyReleased(lib_input::Key::k5) &&
+            input_system_->KeyReleased(lib_input::Key::kZ) &&
+            input_system_->KeyReleased(lib_input::Key::kX) &&
+            input_system_->KeyReleased(lib_input::Key::kC))
           toggle_pressed = false;
       }
 

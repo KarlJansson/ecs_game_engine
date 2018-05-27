@@ -1,7 +1,7 @@
 #pragma once
 
 namespace lib_input {
-enum Key {
+enum class Key {
   kMouseLeft = 0,
   kMouseRight,
   kMouseMiddle,
@@ -141,6 +141,29 @@ enum Key {
   kRightControl,
   kRightAlt,
   kRightSuper,
-  kMenu
+  kMenu,
 };
-}
+
+enum class PadButton {
+  kButton1 = 0,
+  kButton2,
+  kButton3,
+  kButton4,
+  kShoulderL,
+  kShoulderR,
+  kButton5,
+  kStickL,
+  kStickR,
+  kDigitaly,
+  kDigitalx
+};
+
+enum class PadStick {
+  kStickLx = 0,
+  kStickLy,
+  kTriggerL,
+  kStickRx,
+  kStickRy,
+  kTriggerR
+};
+}  // namespace lib_input

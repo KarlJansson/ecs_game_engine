@@ -65,15 +65,16 @@ void FpsCameraSystem::InitSystem() {
       }
     }
 
-    auto look_stick = input_system->StickPos(0, 1);
-    if (!look_stick.Zero()) {
+    auto look_x = input_system->StickPos(0, lib_input::PadStick::kStickRx);
+    auto look_y = input_system->StickPos(0, lib_input::PadStick::kStickRy);
+    if (std::abs(look_x) + std::abs(look_y) > 0e-4) {
       auto camera_w = g_ent_mgr.GetNewCbeW<lib_graphics::Camera>(cam_entity_);
       if (camera_w) {
-        auto yaw_multi = std::abs(look_stick[0]) * 3.f;
-        auto pitch_multi = std::abs(look_stick[1]) * 3.f;
+        auto yaw_multi = std::abs(look_x) * 3.f;
+        auto pitch_multi = std::abs(look_y) * 3.f;
 
-        camera_w->Yaw(look_stick[0] * dt * yaw_multi);
-        camera_w->Pitch(-look_stick[1] * dt * pitch_multi);
+        camera_w->Yaw(look_x * dt * yaw_multi);
+        camera_w->Pitch(-look_y * dt * pitch_multi);
       }
     }
 
@@ -180,15 +181,17 @@ void FpsCameraSystem::LogicUpdate(float dt) {
   }
 
   if (camera) {
-    if (input_system->KeyPressed(lib_input::kP)) cam_exposure_ += dt * 5.0f;
-    if (input_system->KeyPressed(lib_input::kO)) cam_exposure_ -= dt * 5.0f;
+    if (input_system->KeyPressed(lib_input::Key::kP))
+      cam_exposure_ += dt * 5.0f;
+    if (input_system->KeyPressed(lib_input::Key::kO))
+      cam_exposure_ -= dt * 5.0f;
 
-    if (input_system->KeyPressed(lib_input::kK) ||
-        input_system->KeyPressed(lib_input::kL)) {
+    if (input_system->KeyPressed(lib_input::Key::kK) ||
+        input_system->KeyPressed(lib_input::Key::kL)) {
       auto camera_w = g_ent_mgr.GetNewCbeW<lib_graphics::Camera>(cam_entity_);
-      if (input_system->KeyPressed(lib_input::kK))
+      if (input_system->KeyPressed(lib_input::Key::kK))
         camera_w->SetFov(camera_w->fov_ + dt * 50.0f);
-      if (input_system->KeyPressed(lib_input::kL))
+      if (input_system->KeyPressed(lib_input::Key::kL))
         camera_w->SetFov(camera_w->fov_ - dt * 50.0f);
     }
 
@@ -281,11 +284,12 @@ void FpsCameraSystem::LogicUpdate(float dt) {
       rope_in_ = true;
     }
 
-    auto bumper_axes = input_system->StickPos(0, 2);
-    bool action_a = input_system->MousePressed(lib_input::kMouseLeft) ||
-                    input_system->ButtonPressed(0, 2);
-    bool action_b = input_system->MousePressed(lib_input::kMouseRight) ||
-                    bumper_axes[1] > .1f;
+    auto trigger = input_system->StickPos(0, lib_input::PadStick::kTriggerR);
+    bool action_a =
+        input_system->MousePressed(lib_input::Key::kMouseLeft) ||
+        input_system->ButtonPressed(0, lib_input::PadButton::kButton3);
+    bool action_b = input_system->MousePressed(lib_input::Key::kMouseRight) ||
+                    trigger > .1f;
 
     auto gui_rect = g_ent_mgr.GetNewCbeR<lib_gui::GuiRect>(reticule_entity_1);
     if (pickup_feeler_.first != -1) {
