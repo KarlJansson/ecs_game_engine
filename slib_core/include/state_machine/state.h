@@ -5,11 +5,11 @@ namespace lib_core {
 class State : public Unit {
  public:
   State() = default;
-  virtual ~State() = default;
+  ~State() override = default;
 
   virtual void OnEnter();
   virtual void OnExit();
-  virtual bool Update(float dt);
+  bool Update(float dt) override;
 
  protected:
   class StateMachine* owner_;

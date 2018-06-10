@@ -1,11 +1,13 @@
 #pragma once
+#include <utility>
+
 #include "system_manager.h"
 
 namespace lib_gui {
 class LoadFontCommand : public lib_core::Command {
  public:
   LoadFontCommand() = default;
-  LoadFontCommand(int size, ct::string path) : size(size), path(path) {
+  LoadFontCommand(int size, ct::string path) : size(size), path(std::move(path)) {
     base_id = g_sys_mgr.GenerateResourceIds(1);
   }
 

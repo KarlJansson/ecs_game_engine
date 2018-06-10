@@ -127,7 +127,7 @@ void PhysxSystem::LogicUpdate(float dt) {
       flags = physx::PxQueryFlag::eDYNAMIC;
     else if (cast_desc.stat_hits)
       flags = physx::PxQueryFlag::eSTATIC;
-    physx::PxQueryFilterData filter_data = physx::PxQueryFilterData(flags);
+    auto filter_data = physx::PxQueryFilterData(flags);
 
     bool status;
     int actor_id = -1;
@@ -191,8 +191,6 @@ physx::PxFilterFlags PhysxSystem::FilterShader(
 PhysxSystem::TbbCpuDispatcher::TbbCpuDispatcher() noexcept {
   nr_threads_ = tbb::task_scheduler_init::default_num_threads();
 }
-
-PhysxSystem::TbbCpuDispatcher::~TbbCpuDispatcher() noexcept {}
 
 void PhysxSystem::TbbCpuDispatcher::submitTask(physx::PxBaseTask &task) {
   task_group_.run([&task]() {

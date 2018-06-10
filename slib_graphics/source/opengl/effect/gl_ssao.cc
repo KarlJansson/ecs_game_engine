@@ -1,6 +1,7 @@
 #include "gl_ssao.h"
 #include <GL/glew.h>
 #include <random>
+#include <utility>
 #include "gl_gausian_blur.h"
 #include "gl_material_system.h"
 #include "gl_window.h"
@@ -9,7 +10,7 @@ namespace lib_graphics {
 GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
                lib_core::EngineCore *engine, TextureDesc pos_gbuffer,
                TextureDesc normal_gbuffer)
-    : ssao_dim_(dim), blur_effect_(blur), engine_(engine) {
+    : ssao_dim_(std::move(dim)), blur_effect_(blur), engine_(engine) {
   ct::string vert_shader =
       "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"

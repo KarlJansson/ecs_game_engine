@@ -116,9 +116,9 @@ void LightSystem::CalculateDirLightCascades(
   old_cam = &g_ent_mgr.GetOldCbt<Camera>()->at(0);
 
   Camera::FrustumInfo f[3];
-  for (int i = 0; i < 3; ++i) {
-    f[i].fov = old_cam->fov_ * (PI / 180.f) + .2f;
-    f[i].ratio = old_cam->a_ratio_;
+  for (auto & i : f) {
+    i.fov = old_cam->fov_ * (PI / 180.f) + .2f;
+    i.ratio = old_cam->a_ratio_;
   }
 
   int num_cascades = 3;
@@ -236,8 +236,8 @@ float LightSystem::ApplyCropMatrix(
   // find the extends of the frustum slice as projected in light's homogeneous
   // coordinates
   nv_mvp = shad_mvp;
-  for (int i = 0; i < 8; i++) {
-    transf = f.point[i];
+  for (auto i : f.point) {
+    transf = i;
     auto w = transf.Transform(nv_mvp);
 
     transf[0] /= w;

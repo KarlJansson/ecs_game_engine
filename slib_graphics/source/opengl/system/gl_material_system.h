@@ -6,7 +6,7 @@ namespace lib_graphics {
 class GlMaterialSystem : public MaterialSystem {
  public:
   GlMaterialSystem(lib_core::EngineCore *engine);
-  ~GlMaterialSystem();
+  ~GlMaterialSystem() override;
 
   void DrawUpdate(lib_graphics::Renderer *renderer,
                   lib_gui::TextSystem *text_renderer) override;

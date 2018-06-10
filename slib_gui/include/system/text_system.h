@@ -6,7 +6,7 @@ namespace lib_gui {
 class TextSystem : public lib_core::System {
  public:
   TextSystem() = default;
-  virtual ~TextSystem() {}
+  ~TextSystem() override = default;
 
   void DrawUpdate(lib_graphics::Renderer* renderer,
                   TextSystem* text_renderer) override;

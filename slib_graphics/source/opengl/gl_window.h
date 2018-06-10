@@ -6,7 +6,7 @@ namespace lib_graphics {
 class GlWindow : public Window {
  public:
   GlWindow();
-  ~GlWindow();
+  ~GlWindow() override;
 
   void CloseWindow() override;
   void SwapBuffers() override;

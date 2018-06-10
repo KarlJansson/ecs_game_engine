@@ -7,7 +7,7 @@ namespace lib_graphics {
 class GlCameraSystem : public CameraSystem {
  public:
   GlCameraSystem() = default;
-  ~GlCameraSystem() = default;
+  ~GlCameraSystem() override = default;
 
   void LogicUpdate(float dt) override;
 

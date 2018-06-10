@@ -12,7 +12,7 @@ namespace lib_graphics {
 class GlRenderer : public Renderer {
  public:
   GlRenderer(lib_core::EngineCore* engine);
-  ~GlRenderer() = default;
+  ~GlRenderer() override = default;
 
   void RenderFrame(float dt) override;
   void InitRenderer() override;

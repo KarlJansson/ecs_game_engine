@@ -254,17 +254,17 @@ bool GlMaterialSystem::ForceMaterial(
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error", __FILE__,
                   __LINE__);
 
-  for (int i = 0; i < mat.textures.size(); i++) {
-    auto susp_it = suspended_textures_.find(mat.textures[i].id);
+  for (auto & texture : mat.textures) {
+    auto susp_it = suspended_textures_.find(texture.id);
     if (susp_it != suspended_textures_.end()) {
-      auto source_it = texture_source_.find(mat.textures[i].id);
+      auto source_it = texture_source_.find(texture.id);
       if (source_it != texture_source_.end()) {
         LoadTexture2D(*source_it->second, true);
         suspended_textures_.erase(susp_it);
       }
     }
 
-    auto it = textures_.find(mat.textures[i].id);
+    auto it = textures_.find(texture.id);
     std::pair<GLuint, TextureType> *ogl_tex_id;
     if (it == textures_.end()) {
       fully_set = false;
@@ -278,7 +278,7 @@ bool GlMaterialSystem::ForceMaterial(
     cu::AssertError(gl_err == GL_NO_ERROR, "OpenGL error", __FILE__, __LINE__);
 
     auto tex_loc =
-        glGetUniformLocation(shader_program, mat.textures[i].name.c_str());
+        glGetUniformLocation(shader_program, texture.name.c_str());
     if (tex_loc != -1) {
       glActiveTexture(GL_TEXTURE0 + tex_id);
       gl_err = glGetError();
@@ -353,7 +353,7 @@ void GlMaterialSystem::RebuildTextures() {
       auto *tex = &textures_[frame_buffer.second.textures[0].id];
       tex->first = tex_gluid;
 
-      const GLuint tex_width = GLuint(frame_buffer.second.dim.first),
+      const auto tex_width = GLuint(frame_buffer.second.dim.first),
                    tex_height = GLuint(frame_buffer.second.dim.second);
       glBindTexture(GL_TEXTURE_2D, tex->first);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -362,7 +362,7 @@ void GlMaterialSystem::RebuildTextures() {
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_width, tex_height, 0, GL_RGB,
-                   GL_UNSIGNED_BYTE, NULL);
+                   GL_UNSIGNED_BYTE, nullptr);
       glBindTexture(GL_TEXTURE_2D, 0);
 
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
@@ -534,7 +534,7 @@ void GlMaterialSystem::CreateDeferredRendererFrameBuffer(
   auto *tex = &textures_[command.PositionTextureId()];
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, int(command.width),
-               int(command.height), 0, GL_RGB, GL_FLOAT, NULL);
+               int(command.height), 0, GL_RGB, GL_FLOAT, nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
@@ -545,7 +545,7 @@ void GlMaterialSystem::CreateDeferredRendererFrameBuffer(
   tex = &textures_[command.NormalTextureId()];
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, int(command.width),
-               int(command.height), 0, GL_RGB, GL_FLOAT, NULL);
+               int(command.height), 0, GL_RGB, GL_FLOAT, nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D,
@@ -556,7 +556,7 @@ void GlMaterialSystem::CreateDeferredRendererFrameBuffer(
   tex = &textures_[command.AlbedoTextureId()];
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, int(command.width),
-               int(command.height), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+               int(command.height), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D,
@@ -567,7 +567,7 @@ void GlMaterialSystem::CreateDeferredRendererFrameBuffer(
   tex = &textures_[command.RmeTextureId()];
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, int(command.width),
-               int(command.height), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+               int(command.height), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D,
@@ -582,7 +582,7 @@ void GlMaterialSystem::CreateDeferredRendererFrameBuffer(
   tex = &textures_[command.DepthTextureId()];
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, int(command.width),
-               int(command.height), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+               int(command.height), 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
   /*glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, int(command.width),
                int(command.height), 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8,
@@ -616,7 +616,7 @@ void GlMaterialSystem::CreateHdrFrameBuffer(
   auto tex = &textures_[command.HdrTextureId()];
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, int(command.width),
-               int(command.height), 0, GL_RGB, GL_FLOAT, NULL);
+               int(command.height), 0, GL_RGB, GL_FLOAT, nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
@@ -630,7 +630,7 @@ void GlMaterialSystem::CreateHdrFrameBuffer(
                int(command.height), 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8,
                NULL);*/
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, int(command.width),
-               int(command.height), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+               int(command.height), 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -883,12 +883,12 @@ size_t GlMaterialSystem::CreateCubeMapShadowTarget(size_t res) {
   CreateTexture2D(base_id + 1);
   auto tex = &textures_[base_id + 1];
 
-  const GLuint SHADOW_WIDTH = GLuint(res), SHADOW_HEIGHT = GLuint(res);
+  const auto SHADOW_WIDTH = GLuint(res), SHADOW_HEIGHT = GLuint(res);
   glBindTexture(GL_TEXTURE_CUBE_MAP, tex->first);
   for (GLuint i = 0; i < 6; ++i)
     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT,
                  SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
-                 NULL);
+                 nullptr);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -922,10 +922,10 @@ size_t GlMaterialSystem::Create2DShadowTarget(size_t res_x, size_t res_y) {
 
   CreateTexture2D(base_id + 1);
   auto tex = &textures_[base_id + 1];
-  const GLuint SHADOW_WIDTH = GLuint(res_x), SHADOW_HEIGHT = GLuint(res_y);
+  const auto SHADOW_WIDTH = GLuint(res_x), SHADOW_HEIGHT = GLuint(res_y);
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH,
-               SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+               SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -981,7 +981,7 @@ void GlMaterialSystem::Create2DTextureTarget(
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error", __FILE__,
                   __LINE__);
   auto *tex = &textures_[fb_command.TextureId()];
-  const GLuint tex_width = GLuint(fb_command.width),
+  const auto tex_width = GLuint(fb_command.width),
                tex_height = GLuint(fb_command.height);
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -990,7 +990,7 @@ void GlMaterialSystem::Create2DTextureTarget(
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_width, tex_height, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, NULL);
+               GL_UNSIGNED_BYTE, nullptr);
   glBindTexture(GL_TEXTURE_2D, 0);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          tex->first, 0);
@@ -1025,7 +1025,7 @@ void GlMaterialSystem::CreateBlurTargets(
     auto *tex = &textures_[tex_ids[i]];
     glBindTexture(GL_TEXTURE_2D, tex->first);
     glTexImage2D(GL_TEXTURE_2D, 0, command.texture_type, int(command.width),
-                 int(command.height), 0, GL_RGB, GL_FLOAT, NULL);
+                 int(command.height), 0, GL_RGB, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -1106,7 +1106,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
   const char *code_char = code.vert_shader.c_str();
-  glShaderSource(vertex_shader, 1, &code_char, NULL);
+  glShaderSource(vertex_shader, 1, &code_char, nullptr);
   glCompileShader(vertex_shader);
 
   GLint success;
@@ -1114,7 +1114,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
+    glGetShaderInfoLog(vertex_shader, 512, nullptr, info_log);
 
     ct::string error_str = "Vertex shader compilation failed:\n";
     error_str += info_log;
@@ -1135,13 +1135,13 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   }
 
   code_char = frag_code.c_str();
-  glShaderSource(fragment_shader, 1, &code_char, NULL);
+  glShaderSource(fragment_shader, 1, &code_char, nullptr);
   glCompileShader(fragment_shader);
 
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
+    glGetShaderInfoLog(fragment_shader, 512, nullptr, info_log);
 
     ct::string error_str = "Fragment shader compilation failed:\n";
     error_str += info_log;
@@ -1154,13 +1154,13 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
     geometry_shader = glCreateShader(GL_GEOMETRY_SHADER);
 
     code_char = code.geom_shader.c_str();
-    glShaderSource(geometry_shader, 1, &code_char, NULL);
+    glShaderSource(geometry_shader, 1, &code_char, nullptr);
     glCompileShader(geometry_shader);
 
     glGetShaderiv(geometry_shader, GL_COMPILE_STATUS, &success);
 
     if (!success) {
-      glGetShaderInfoLog(geometry_shader, 512, NULL, info_log);
+      glGetShaderInfoLog(geometry_shader, 512, nullptr, info_log);
 
       ct::string error_str = "Geometry shader compilation failed:\n";
       error_str += info_log;
@@ -1178,7 +1178,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
 
   glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
   if (!success) {
-    glGetProgramInfoLog(shader_program, 512, NULL, info_log);
+    glGetProgramInfoLog(shader_program, 512, nullptr, info_log);
 
     ct::string error_str = "Shader linking failed:\n";
     error_str += info_log;

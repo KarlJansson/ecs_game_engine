@@ -12,7 +12,7 @@ namespace lib_physics {
 class PhysxSystem : public PhysicsSystem {
  public:
   PhysxSystem();
-  ~PhysxSystem();
+  ~PhysxSystem() override;
 
   void LogicUpdate(float dt) override;
 
@@ -27,7 +27,7 @@ class PhysxSystem : public PhysicsSystem {
   class TbbCpuDispatcher : public physx::PxCpuDispatcher {
    public:
     TbbCpuDispatcher() noexcept;
-    ~TbbCpuDispatcher() noexcept;
+    ~TbbCpuDispatcher() noexcept override {}  // NOLINT
 
     void submitTask(physx::PxBaseTask& task) override;
     uint32_t getWorkerCount() const override;
@@ -39,14 +39,14 @@ class PhysxSystem : public PhysicsSystem {
   class PhysxErrorCallback : public physx::PxErrorCallback {
    public:
     void reportError(physx::PxErrorCode::Enum code, const char* message,
-                     const char* file, int line);
+                     const char* file, int line) override;
   };
 
   class PhysxAllocatorCallback : public physx::PxAllocatorCallback {
    public:
     void* allocate(size_t size, const char* typeName, const char* filename,
-                   int line);
-    void deallocate(void* ptr);
+                   int line) override;
+    void deallocate(void* ptr) override;
 
     size_t total_allocation_ = 0;
     ct::hash_map<void*, size_t> allocation_map_;

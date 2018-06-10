@@ -1,5 +1,5 @@
 #include "quad_tree.h"
 
 namespace lib_graphics {
-QuadTree::QuadTree() {}
+QuadTree::QuadTree() = default;
 }  // namespace lib_graphics

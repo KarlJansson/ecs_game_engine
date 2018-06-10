@@ -18,9 +18,9 @@
 #include "gui_rect.h"
 
 namespace lib_gui {
-GlRectSystem::GlRectSystem() {}
+GlRectSystem::GlRectSystem() = default;
 
-GlRectSystem::~GlRectSystem() {}
+GlRectSystem::~GlRectSystem() = default;
 
 void GlRectSystem::DrawUpdate(lib_graphics::Renderer *renderer,
                               lib_gui::TextSystem *text_renderer) {
@@ -96,9 +96,10 @@ void GlRectSystem::CreateRectResources() {
   glGenBuffers(1, &rect_vbo_);
   glBindVertexArray(rect_vao_);
   glBindBuffer(GL_ARRAY_BUFFER, rect_vbo_);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 2, NULL, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 2, nullptr,
+               GL_DYNAMIC_DRAW);
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
@@ -106,7 +107,7 @@ void GlRectSystem::CreateRectResources() {
   vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
   const char *code_char = vert_shader.c_str();
-  glShaderSource(vertex_shader, 1, &code_char, NULL);
+  glShaderSource(vertex_shader, 1, &code_char, nullptr);
   glCompileShader(vertex_shader);
 
   GLint success;
@@ -114,7 +115,7 @@ void GlRectSystem::CreateRectResources() {
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
+    glGetShaderInfoLog(vertex_shader, 512, nullptr, info_log);
 
     ct::string error = "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n";
     error += info_log;
@@ -125,13 +126,13 @@ void GlRectSystem::CreateRectResources() {
   fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
   code_char = frag_shader.c_str();
-  glShaderSource(fragment_shader, 1, &code_char, NULL);
+  glShaderSource(fragment_shader, 1, &code_char, nullptr);
   glCompileShader(fragment_shader);
 
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
+    glGetShaderInfoLog(fragment_shader, 512, nullptr, info_log);
 
     ct::string error = "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n";
     error += info_log;
@@ -145,7 +146,7 @@ void GlRectSystem::CreateRectResources() {
 
   glGetProgramiv(shader_, GL_LINK_STATUS, &success);
   if (!success) {
-    glGetProgramInfoLog(shader_, 512, NULL, info_log);
+    glGetProgramInfoLog(shader_, 512, nullptr, info_log);
 
     ct::string error_str = "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n";
     error_str += info_log;

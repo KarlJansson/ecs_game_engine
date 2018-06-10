@@ -6,7 +6,7 @@ namespace lib_graphics {
 class GroundedState : public lib_core::State {
  public:
   GroundedState(lib_core::Entity cam_ent, lib_core::EngineCore* engine);
-  ~GroundedState() = default;
+  ~GroundedState() override = default;
 
   void OnEnter() override;
   void OnExit() override;

@@ -5,7 +5,7 @@ namespace lib_gui {
 class GlGuiRenderer : public GuiRenderer {
  public:
   GlGuiRenderer(lib_core::EngineCore* engine);
-  ~GlGuiRenderer() = default;
+  ~GlGuiRenderer() override = default;
 
   void Draw(lib_core::Vector2 screen_dim) override;
 

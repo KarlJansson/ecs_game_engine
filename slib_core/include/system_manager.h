@@ -54,7 +54,7 @@ class SystemManager {
   }
 
  private:
-  SystemManager(){}
+  SystemManager()= default;
 
   struct IssueCommandStruct {
     std::function<void(ct::hash_map<size_t, any_type>&)> command;

@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "core_utilities.h"
 #include "vector_def.h"
 
@@ -14,7 +16,7 @@ class GuiText {
         position(pos),
         half_size(hs),
         rgba(col),
-        text(t),
+        text(std::move(t)),
         h_alignment(h_align) {}
   ~GuiText() = default;
 

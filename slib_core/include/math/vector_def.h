@@ -1,6 +1,6 @@
 #pragma once
-#include <math.h>
-#include <stdint.h>
+#include <cmath>
+#include <cstdint>
 #include <cstring>
 #include "matrix3x3.h"
 #include "matrix4x4.h"
@@ -105,7 +105,7 @@ class TVector {
   bool operator!=(const TVector<I, T>& rhs) const { return !(*this == rhs); }
 
   T Length() const {
-    T val = T(.0);
+    auto val = T(.0);
     for (uint8_t i = 0; i < I; ++i) val += data_[i] * data_[i];
     return sqrt(val);
   }

@@ -9,7 +9,7 @@
 #elif WindowsBuild
 #include "portaudio/portaudio.h"
 #endif
-#include <assert.h>
+#include <cassert>
 
 namespace lib_sound {
 int portaudio_callback(const void *input, void *output, unsigned long frames,
@@ -39,7 +39,7 @@ int sound_callback(void *output, unsigned long frames,
   volumes[4] = g_settings.MasterVolume();
 
   size_t fi;
-  T *out = static_cast<T *>(output);
+  auto *out = static_cast<T *>(output);
   auto &samples = info->sample_storage.get_value<ct::dyn_array<T>>();
   for (int i = 0; i < 4; ++i) {
     std::memset(samples.data(), 0, samples.size() * sizeof(T));

@@ -64,7 +64,7 @@ void GlDeferredShading::DrawGBuffers(
     cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error - Draw Gbuffers",
                     __FILE__, __LINE__);
 
-    int count = int(pack.mesh_count);
+    auto count = int(pack.mesh_count);
     while (count > 0) {
       glUniformMatrix4fv(
           it->second[2], count > max_inst_ ? max_inst_ : count, GL_FALSE,
@@ -171,7 +171,7 @@ void GlDeferredShading::DrawTranslucents(
     cu::AssertError(glGetError() == GL_NO_ERROR,
                     "OpenGL error - Draw translucent", __FILE__, __LINE__);
 
-    int count = int(pack.mesh_count);
+    auto count = int(pack.mesh_count);
     while (count > 0) {
       glUniformMatrix4fv(
           it->second[2], count > max_inst_ ? max_inst_ : count, GL_FALSE,

@@ -3,7 +3,7 @@
 namespace lib_graphics {
 class Skybox {
  public:
-  Skybox() {}
+  Skybox() = default;
   Skybox(size_t texture) : texture_(texture) {}
   ~Skybox() = default;
 

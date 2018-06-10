@@ -1,5 +1,7 @@
 #include "gl_bloom.h"
 #include <GL/glew.h>
+
+#include <utility>
 #include "gl_gausian_blur.h"
 #include "gl_material_system.h"
 #include "gl_window.h"
@@ -8,7 +10,7 @@ namespace lib_graphics {
 GlBloom::GlBloom(std::pair<size_t, size_t> dim, lib_core::EngineCore *engine,
                  GlGausianBlur *blur_effect, TextureDesc rme_gbuffer,
                  TextureDesc hdr_buffer)
-    : bloom_dim_(dim), engine_(engine), blur_effect_(blur_effect) {
+    : bloom_dim_(std::move(dim)), engine_(engine), blur_effect_(blur_effect) {
   ct::string vert_shader =
       "#version 430 core\n"
       "layout(location = 0) in vec2 position;\n"

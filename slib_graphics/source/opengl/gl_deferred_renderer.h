@@ -11,7 +11,7 @@ namespace lib_graphics {
 class GlDeferredRenderer : public Renderer {
  public:
   GlDeferredRenderer(lib_core::EngineCore* engine);
-  ~GlDeferredRenderer();
+  ~GlDeferredRenderer() override;
 
   void RenderFrame(float dt) override;
   void InitRenderer() override;

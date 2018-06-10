@@ -238,9 +238,10 @@ void GlTextSystem::CreateTextResources() {
   glGenBuffers(1, &text_vbo);
   glBindVertexArray(text_vao);
   glBindBuffer(GL_ARRAY_BUFFER, text_vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr,
+               GL_DYNAMIC_DRAW);
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
@@ -248,7 +249,7 @@ void GlTextSystem::CreateTextResources() {
   vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
   const char *code_char = vert_shader.c_str();
-  glShaderSource(vertex_shader, 1, &code_char, NULL);
+  glShaderSource(vertex_shader, 1, &code_char, nullptr);
   glCompileShader(vertex_shader);
 
   GLint success;
@@ -256,7 +257,7 @@ void GlTextSystem::CreateTextResources() {
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
+    glGetShaderInfoLog(vertex_shader, 512, nullptr, info_log);
 
     ct::string error_str = "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n";
     error_str += info_log;
@@ -267,13 +268,13 @@ void GlTextSystem::CreateTextResources() {
   fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
   code_char = frag_shader.c_str();
-  glShaderSource(fragment_shader, 1, &code_char, NULL);
+  glShaderSource(fragment_shader, 1, &code_char, nullptr);
   glCompileShader(fragment_shader);
 
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
+    glGetShaderInfoLog(fragment_shader, 512, nullptr, info_log);
     ct::string error_str = "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n";
     error_str += info_log;
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
@@ -286,7 +287,7 @@ void GlTextSystem::CreateTextResources() {
 
   glGetProgramiv(shader_, GL_LINK_STATUS, &success);
   if (!success) {
-    glGetProgramInfoLog(shader_, 512, NULL, info_log);
+    glGetProgramInfoLog(shader_, 512, nullptr, info_log);
     ct::string error_str = "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n";
     error_str += info_log;
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);

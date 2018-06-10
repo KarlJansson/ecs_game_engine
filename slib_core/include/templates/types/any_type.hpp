@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <utility>
 
 struct any_type {
   template <typename T>
@@ -14,12 +15,12 @@ struct any_type {
 
  private:
   struct placeholder {
-    virtual ~placeholder() {}
+    virtual ~placeholder() = default;
   };
 
   template <typename T>
   struct impl : placeholder {
-    explicit impl(T t) : val(t) {}
+    explicit impl(T t) : val(std::move(t)) {}
     T& get_value() { return val; }
     T val;
   };

@@ -135,7 +135,7 @@ void GlWindow::CreateRenderWindow() {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor_version[i]);
 
         window_ = glfwCreateWindow(current_dim_.first, current_dim_.second,
-                                   "Fract Editor", primary_monitor, NULL);
+                                   "Fract Editor", primary_monitor, nullptr);
         if (window_) break;
       }
     } else {
@@ -144,7 +144,7 @@ void GlWindow::CreateRenderWindow() {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor_version[i]);
 
         window_ = glfwCreateWindow(current_dim_.first, current_dim_.second,
-                                   "Fract Editor", primary_monitor, NULL);
+                                   "Fract Editor", primary_monitor, nullptr);
         if (window_) break;
       }
     }
@@ -155,14 +155,14 @@ void GlWindow::CreateRenderWindow() {
       glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor_version[i]);
 
       window_ = glfwCreateWindow(current_dim_.first, current_dim_.second,
-                                 "Fract Editor", NULL, NULL);
+                                 "Fract Editor", nullptr, nullptr);
       if (window_) break;
     }
   }
 
   if (window_) {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-    load_context_ = glfwCreateWindow(640, 480, "load window", NULL,
+    load_context_ = glfwCreateWindow(640, 480, "load window", nullptr,
                                      static_cast<GLFWwindow *>(window_));
     glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
   }

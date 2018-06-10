@@ -5,7 +5,7 @@ namespace lib_graphics {
 class JumpState : public lib_core::State {
  public:
   JumpState() = default;
-  ~JumpState() = default;
+  ~JumpState() override = default;
 
  protected:
  private:

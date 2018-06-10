@@ -3,7 +3,7 @@
 #include "renderer.h"
 
 namespace lib_graphics {
-GlStockShaders::GlStockShaders() {}
+GlStockShaders::GlStockShaders() = default;
 
 void GlStockShaders::CommonShaderSnippets() {
   vertex_header_ =

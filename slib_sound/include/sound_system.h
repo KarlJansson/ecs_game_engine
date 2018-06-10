@@ -8,7 +8,7 @@ namespace lib_sound {
 class SoundSystem : public lib_core::System {
  public:
   SoundSystem();
-  virtual ~SoundSystem();
+  ~SoundSystem() override;
 
   void RegisterSoundBank(ct::string path);
   void UnloadSoundBank(ct::string path);

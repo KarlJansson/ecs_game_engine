@@ -8,9 +8,9 @@ namespace lib_input {
 class InputSystem : public lib_core::System {
  public:
   InputSystem() = default;
-  virtual ~InputSystem() = default;
+  ~InputSystem() override = default;
 
-  void LogicUpdate(float dt);
+  void LogicUpdate(float dt) override;
   void SetCursor(bool enable);
 
   virtual bool KeyPressed(Key key) = 0;

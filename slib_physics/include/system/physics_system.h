@@ -7,7 +7,7 @@ namespace lib_physics {
 class PhysicsSystem : public lib_core::System {
  public:
   PhysicsSystem() = default;
-  virtual ~PhysicsSystem() = default;
+  ~PhysicsSystem() override = default;
 
   struct RayCastDesc {
     lib_core::Vector3 origin = {0.f};

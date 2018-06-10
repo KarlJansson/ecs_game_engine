@@ -9,7 +9,7 @@ namespace lib_graphics {
 class TransformSystem : public lib_core::System {
  public:
   TransformSystem() = default;
-  virtual ~TransformSystem() {}
+  ~TransformSystem() override = default;
 
   void LogicUpdate(float dt) override;
   void UpdateTransform(class Transform& trans, class Transform& old,

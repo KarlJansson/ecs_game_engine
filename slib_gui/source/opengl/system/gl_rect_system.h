@@ -7,7 +7,7 @@ namespace lib_gui {
 class GlRectSystem : public RectSystem {
  public:
   GlRectSystem();
-  ~GlRectSystem();
+  ~GlRectSystem() override;
 
   void DrawUpdate(lib_graphics::Renderer *renderer,
                   lib_gui::TextSystem *text_renderer) override;

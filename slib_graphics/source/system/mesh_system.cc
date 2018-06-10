@@ -170,14 +170,14 @@ void MeshSystem::ModelLoaderThread() {
       compressed.clear();
 
       auto it = decompressed.begin();
-      for (int i = 0; i < job.mesh_ids.size(); ++i) {
+      for (unsigned long mesh_id : job.mesh_ids) {
         MeshInit mesh_init;
         SerializationUtilities::ReadFromBuffer(it, mesh_init.center);
         SerializationUtilities::ReadFromBuffer(it, mesh_init.extent);
         SerializationUtilities::ReadFromBuffer(it, mesh_init.vertices);
         SerializationUtilities::ReadFromBuffer(it, mesh_init.indices);
 
-        issue_command(AddModelMeshCommand(job.mesh_ids[i], mesh_init));
+        issue_command(AddModelMeshCommand(mesh_id, mesh_init));
       }
       decompressed.clear();
     }

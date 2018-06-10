@@ -8,7 +8,7 @@ class Joint {
  public:
   enum JointType { kRevolute, kDistance, kFixed, kSpherical, kPrismatic };
 
-  Joint() {}
+  Joint() = default;
   explicit Joint(JointType t, lib_core::Entity a1, lib_core::Entity a2,
                  lib_core::Vector3 pos1 = {.0f}, lib_core::Vector3 rot1 = {.0f},
                  lib_core::Vector3 pos2 = {.0f}, lib_core::Vector3 rot2 = {.0f},

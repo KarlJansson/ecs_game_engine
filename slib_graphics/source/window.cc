@@ -2,7 +2,7 @@
 #include "engine_settings.h"
 
 namespace lib_graphics {
-Window::Window() {}
+Window::Window() = default;
 
 std::pair<int, int> Window::GetWindowDim() const { return current_dim_; }
 

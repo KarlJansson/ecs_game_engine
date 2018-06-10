@@ -11,7 +11,7 @@ namespace lib_graphics {
 GlMeshSystem::GlMeshSystem(lib_core::EngineCore *engine) : MeshSystem(engine) {}
 
 GlMeshSystem::~GlMeshSystem() {
-  GLsizei size = GLsizei(meshes_.size());
+  auto size = GLsizei(meshes_.size());
   ct::dyn_array<GLuint> vaos, vbos, ebos;
 
   for (auto &mesh : meshes_) {
@@ -67,7 +67,7 @@ void GlMeshSystem::DrawUpdate(lib_graphics::Renderer *renderer,
     // Vertex Positions
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          (GLvoid *)0);
+                          (GLvoid *)nullptr);
 
     // Vertex Normals
     glEnableVertexAttribArray(1);
@@ -177,7 +177,7 @@ void GlMeshSystem::RebuildResources() {
     // Vertex Positions
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          (GLvoid *)0);
+                          (GLvoid *)nullptr);
 
     // Vertex Normals
     glEnableVertexAttribArray(1);

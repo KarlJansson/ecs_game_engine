@@ -56,9 +56,7 @@ class BoundingFrustum {
     float dp;
     int px, py, pz;
 
-    for (int i = 0; i < 6; ++i) {
-      auto& p = planes_.planes[i];
-
+    for (auto p : planes_.planes) {
       px = static_cast<int>(p.normal[0] > 0.0f);
       py = static_cast<int>(p.normal[1] > 0.0f);
       pz = static_cast<int>(p.normal[2] > 0.0f);
@@ -78,12 +76,10 @@ class BoundingFrustum {
     min_max[1] = volume.center + volume.extent;
 
     float dp;
-    for (int i = 0; i < 2; ++i) {
-      for (int ii = 0; ii < 6; ++ii) {
-        auto& p = planes_.planes[ii];
-
-        dp = (p.normal[0] * min_max[i][0]) + (p.normal[1] * min_max[i][1]) +
-             (p.normal[2] * min_max[i][2]);
+    for (auto & i : min_max) {
+      for (auto p : planes_.planes) {
+        dp = (p.normal[0] * i[0]) + (p.normal[1] * i[1]) +
+             (p.normal[2] * i[2]);
 
         if (dp < -p.w) return false;
       }
@@ -92,12 +88,10 @@ class BoundingFrustum {
     min_max[0][2] += volume.extent[2];
     min_max[1][2] -= volume.extent[2];
 
-    for (int i = 0; i < 2; ++i) {
-      for (int ii = 0; ii < 6; ++ii) {
-        auto& p = planes_.planes[ii];
-
-        dp = (p.normal[0] * min_max[i][0]) + (p.normal[1] * min_max[i][1]) +
-             (p.normal[2] * min_max[i][2]);
+    for (auto & i : min_max) {
+      for (auto p : planes_.planes) {
+        dp = (p.normal[0] * i[0]) + (p.normal[1] * i[1]) +
+             (p.normal[2] * i[2]);
 
         if (dp < -p.w) return false;
       }

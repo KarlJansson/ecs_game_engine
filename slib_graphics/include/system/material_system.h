@@ -53,7 +53,7 @@ class MaterialSystem : public lib_core::System {
   };
 
   MaterialSystem(lib_core::EngineCore *engine);
-  virtual ~MaterialSystem();
+  ~MaterialSystem() override;
 
   void StartLoadThread();
   void TerminateLoadThread();

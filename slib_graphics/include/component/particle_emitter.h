@@ -5,7 +5,7 @@
 namespace lib_graphics {
 class ParticleEmitter {
  public:
-  ParticleEmitter() {}
+  ParticleEmitter() = default;
   ParticleEmitter(size_t max_particles, size_t particle_texture_id)
       : max_particles(max_particles), particle_texture(particle_texture_id) {}
 

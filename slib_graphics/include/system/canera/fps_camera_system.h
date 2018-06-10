@@ -10,7 +10,7 @@ namespace lib_graphics {
 class FpsCameraSystem : public lib_core::System {
  public:
   FpsCameraSystem(lib_core::EngineCore *engine);
-  ~FpsCameraSystem() = default;
+  ~FpsCameraSystem() override = default;
 
   // System component tags
   class Pullable {

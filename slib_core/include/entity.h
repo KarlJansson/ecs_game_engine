@@ -4,7 +4,7 @@
 namespace lib_core {
 class Entity {
  public:
-  Entity();
+  Entity() = default;
   explicit Entity(size_t id);
   ~Entity() = default;
 
@@ -16,7 +16,7 @@ class Entity {
   bool operator<=(const Entity& rhs) const { return !operator>(rhs); }
   bool operator>=(const Entity& rhs) const { return !operator<(rhs); }
 
-  size_t id_;
+  size_t id_{0};
 };
 }  // namespace lib_core
 

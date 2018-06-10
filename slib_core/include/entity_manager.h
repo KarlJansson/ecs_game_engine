@@ -8,7 +8,7 @@
 namespace lib_core {
 class EntityManager {
  private:
-  EntityManager() {}
+  EntityManager() = default;
 
   struct ComponentFunction {
     size_t hash;

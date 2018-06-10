@@ -10,7 +10,7 @@ class ScriptedSystem : public lib_core::System {
  public:
   ScriptedSystem(lib_core::EngineCore *engine, ct::string script_path,
                  lib_core::Vector3 offset);
-  ~ScriptedSystem() {}
+  ~ScriptedSystem() override = default;
 
   void InitSystem() override;
   void LogicUpdate(float dt) override;

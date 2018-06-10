@@ -1,5 +1,5 @@
 #pragma once
-#include <assert.h>
+#include <cassert>
 #include <tbb/tbb.h>
 #include <chrono>
 #include <cmath>
@@ -11,6 +11,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #define PI 3.14159265359f
@@ -74,7 +75,7 @@ static T ease_in_out_sine_fn(T t) {
 
 template <typename T>
 static T ease_in_back_fn(T t) {
-  T s = T(1.70158);
+  auto s = T(1.70158);
   return t * t * ((s + T(1.)) * t - s);
 };
 
@@ -205,7 +206,7 @@ class cu {
 
   class TerminatingException : public std::exception {
    public:
-    explicit TerminatingException(std::string reason) : reason_(reason) {}
+    explicit TerminatingException(std::string reason) : reason_(std::move(reason)) {}
     const char *what() const noexcept override { return reason_.c_str(); }
 
    private:

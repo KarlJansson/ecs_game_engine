@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "system_manager.h"
 
 namespace lib_core {
@@ -8,7 +10,7 @@ class AddSystemCommand : public Command {
 
   AddSystemCommand() = default;
   AddSystemCommand(std::shared_ptr<lib_core::System> system, size_t priority)
-      : system(system), priority(priority) {
+      : system(std::move(system)), priority(priority) {
     base_id = g_sys_mgr.GenerateResourceIds(1);
   }
 

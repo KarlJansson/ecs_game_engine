@@ -6,7 +6,7 @@ namespace lib_gui {
 class GlTextSystem : public TextSystem {
  public:
   GlTextSystem() = default;
-  ~GlTextSystem() = default;
+  ~GlTextSystem() override = default;
 
   void DrawUpdate(lib_graphics::Renderer *renderer,
                   lib_gui::TextSystem *text_renderer) override;

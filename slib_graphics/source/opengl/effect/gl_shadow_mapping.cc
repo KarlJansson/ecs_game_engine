@@ -168,7 +168,7 @@ void GlShadowMapping::DrawShadowMap(std::pair<lib_core::Entity, Light> &light) {
     glClear(GL_DEPTH_BUFFER_BIT);
 
     for (auto &pack : *light_mesh_packs) {
-      int count = int(pack.mesh_count);
+      auto count = int(pack.mesh_count);
       while (count > 0) {
         if (world_loc != -1)
           glUniformMatrix4fv(

@@ -16,7 +16,7 @@ namespace lib_graphics {
 class CullingSystem : public lib_core::System {
  public:
   CullingSystem(lib_core::EngineCore *engine);
-  ~CullingSystem();
+  ~CullingSystem() override;
 
   void LogicUpdate(float dt) override;
   void DrawUpdate(lib_graphics::Renderer *renderer,

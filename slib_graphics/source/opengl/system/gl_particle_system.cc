@@ -220,7 +220,7 @@ void GlParticleSystem::DrawParticleEmitter(lib_core::Entity entity,
 
       // Add new particles
       gpu_data.delta_rest += emitter->emitter_time - gpu_data.last_time;
-      int add_count = int(gpu_data.delta_rest * emitter->emitting_speed);
+      auto add_count = int(gpu_data.delta_rest * emitter->emitting_speed);
       if (add_count > 0) {
         gpu_data.delta_rest -= add_count * (1.f / emitter->emitting_speed);
 
@@ -372,7 +372,7 @@ void GlParticleSystem::DrawParticleEmitter(lib_core::Entity entity,
                          (void *)(sizeof(GLuint) * gpu_data.head * 6));
           glDrawElements(GL_TRIANGLES,
                          GLsizei((gpu_data.particle_count - first_batch) * 6),
-                         GL_UNSIGNED_INT, (void *)0);
+                         GL_UNSIGNED_INT, (void *)nullptr);
           cu::AssertError(glGetError() == GL_NO_ERROR,
                           "OpenGL error - Draw Particles", __FILE__, __LINE__);
         } else {
@@ -528,7 +528,7 @@ void GlParticleSystem::AddParticleEmitter(lib_core::Entity ent,
 
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex),
-                        (GLvoid *)0);
+                        (GLvoid *)nullptr);
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex),
                         (GLvoid *)offsetof(ParticleVertex, position));

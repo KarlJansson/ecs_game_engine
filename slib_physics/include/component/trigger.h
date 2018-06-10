@@ -7,7 +7,7 @@ class Trigger {
  public:
   enum TriggerType { kBox, kSphere };
 
-  Trigger() {}
+  Trigger() = default;
   Trigger(TriggerType t, lib_core::Vector3 pos = {.0f},
           lib_core::Vector3 rot = {.0f}, lib_core::Vector3 size = {1.f});
   ~Trigger() = default;

@@ -14,7 +14,7 @@ namespace lib_core {
 class System : public Unit {
  public:
   System() = default;
-  virtual ~System() = default;
+  ~System() override = default;
 
   virtual void InitSystem() {}
   virtual void FinalizeSystem() {}

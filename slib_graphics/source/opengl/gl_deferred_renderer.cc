@@ -23,7 +23,7 @@ namespace lib_graphics {
 GlDeferredRenderer::GlDeferredRenderer(lib_core::EngineCore *engine)
     : engine_(engine) {
   static_cast<GlMaterialSystem *>(engine_->GetMaterial())->CompileShaders();
-  for (int i = 0; i < 20; ++i) shader_locs_[i] = -1;
+  for (int & shader_loc : shader_locs_) shader_loc = -1;
 }
 
 GlDeferredRenderer::~GlDeferredRenderer() {
@@ -253,7 +253,7 @@ void GlDeferredRenderer::InitRenderer() {
   // Vertex Positions
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVert),
-                        (GLvoid *)0);
+                        (GLvoid *)nullptr);
 
   // Vertex Texcoord
   glEnableVertexAttribArray(1);

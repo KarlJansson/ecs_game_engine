@@ -8,7 +8,7 @@ namespace lib_graphics {
 class DetatchedState : public lib_core::State {
  public:
   DetatchedState(lib_core::Entity cam_ent, lib_core::EngineCore* engine);
-  ~DetatchedState() = default;
+  ~DetatchedState() override = default;
 
   void OnEnter() override;
   void OnExit() override;

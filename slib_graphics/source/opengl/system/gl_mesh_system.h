@@ -7,7 +7,7 @@ namespace lib_graphics {
 class GlMeshSystem : public MeshSystem {
  public:
   GlMeshSystem(lib_core::EngineCore* engine);
-  ~GlMeshSystem();
+  ~GlMeshSystem() override;
 
   void DrawMesh(size_t mesh_id, int amount = 1, bool force = false) override;
 

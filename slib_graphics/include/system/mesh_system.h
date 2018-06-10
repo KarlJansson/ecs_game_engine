@@ -10,7 +10,7 @@ namespace lib_graphics {
 class MeshSystem : public lib_core::System {
  public:
   MeshSystem(const lib_core::EngineCore* engine);
-  virtual ~MeshSystem();
+  ~MeshSystem() override;
 
   struct Model {
     size_t start;

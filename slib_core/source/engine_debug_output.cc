@@ -13,8 +13,8 @@ EngineDebugOutput::EngineDebugOutput() {
 }
 
 EngineDebugOutput::~EngineDebugOutput() {
-  for (int i = 0; i < 4; ++i)
-    for (auto e : text_ents_[i]) g_ent_mgr.RemoveEntity(e);
+  for (auto & text_ent : text_ents_)
+    for (auto e : text_ent) g_ent_mgr.RemoveEntity(e);
 }
 
 void EngineDebugOutput::GenerateFont(int size) {
@@ -40,7 +40,7 @@ void EngineDebugOutput::ToggleBottomLeftDebugOutput() { ToggleDebugText(2); }
 void EngineDebugOutput::ToggleBottomRightDebugOutput() { ToggleDebugText(3); }
 
 int EngineDebugOutput::AddTopLeftLine(ct::string str) {
-  int line = int(text_strings_[0].size());
+  auto line = int(text_strings_[0].size());
   text_strings_[0].push_back(str);
   text_ents_[0].push_back(g_ent_mgr.CreateEntity());
   UpdateActiveText(0, line);
@@ -48,7 +48,7 @@ int EngineDebugOutput::AddTopLeftLine(ct::string str) {
 }
 
 int EngineDebugOutput::AddTopRightLine(ct::string str) {
-  int line = int(text_strings_[1].size());
+  auto line = int(text_strings_[1].size());
   text_strings_[1].push_back(str);
   text_ents_[1].push_back(g_ent_mgr.CreateEntity());
   UpdateActiveText(1, line);
@@ -56,7 +56,7 @@ int EngineDebugOutput::AddTopRightLine(ct::string str) {
 }
 
 int EngineDebugOutput::AddBottomLeftLine(ct::string str) {
-  int line = int(text_strings_[2].size());
+  auto line = int(text_strings_[2].size());
   text_strings_[2].push_back(str);
   text_ents_[2].push_back(g_ent_mgr.CreateEntity());
   UpdateActiveText(2, line);
@@ -64,7 +64,7 @@ int EngineDebugOutput::AddBottomLeftLine(ct::string str) {
 }
 
 int EngineDebugOutput::AddBottomRightLine(ct::string str) {
-  int line = int(text_strings_[3].size());
+  auto line = int(text_strings_[3].size());
   text_strings_[3].push_back(str);
   text_ents_[3].push_back(g_ent_mgr.CreateEntity());
   UpdateActiveText(3, line);

@@ -16,7 +16,7 @@ GlSmaa::GlSmaa(lib_core::EngineCore *engine) : engine_(engine) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, render_dim.first, render_dim.second,
-               0, GL_RGBA, GL_FLOAT, 0);
+               0, GL_RGBA, GL_FLOAT, nullptr);
 
   glGenTextures(1, &blend_tex_);
   glBindTexture(GL_TEXTURE_2D, blend_tex_);
@@ -25,7 +25,7 @@ GlSmaa::GlSmaa(lib_core::EngineCore *engine) : engine_(engine) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, render_dim.first, render_dim.second,
-               0, GL_RGBA, GL_FLOAT, 0);
+               0, GL_RGBA, GL_FLOAT, nullptr);
 
   glGenTextures(1, &albedo_tex_);
   glBindTexture(GL_TEXTURE_2D, albedo_tex_);
@@ -34,7 +34,7 @@ GlSmaa::GlSmaa(lib_core::EngineCore *engine) : engine_(engine) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, render_dim.first, render_dim.second,
-               0, GL_RGBA, GL_FLOAT, 0);
+               0, GL_RGBA, GL_FLOAT, nullptr);
 
   std::ifstream smaa_area("./content/smaa_area.raw", std::ios::binary);
   cu::AssertError(!smaa_area.fail(), "Opening smaa area texture failed.",
@@ -255,12 +255,12 @@ void GlSmaa::CreateShader(std::string vs_text, std::string ps_text,
   GLchar info_log[512];
 
   shader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(shader, 1, text_ptr, 0);
+  glShaderSource(shader, 1, text_ptr, nullptr);
   glCompileShader(shader);
 
   glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
   if (!success) {
-    glGetShaderInfoLog(shader, 512, NULL, info_log);
+    glGetShaderInfoLog(shader, 512, nullptr, info_log);
 
     ct::string error_str = "Vertex shader compilation failed:\n";
     error_str += info_log;
@@ -274,12 +274,12 @@ void GlSmaa::CreateShader(std::string vs_text, std::string ps_text,
   text_ptr[0] = ps_text.c_str();
 
   shader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(shader, 1, text_ptr, 0);
+  glShaderSource(shader, 1, text_ptr, nullptr);
   glCompileShader(shader);
 
   glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
   if (!success) {
-    glGetShaderInfoLog(shader, 512, NULL, info_log);
+    glGetShaderInfoLog(shader, 512, nullptr, info_log);
 
     ct::string error_str = "Fragment shader compilation failed:\n";
     error_str += info_log;

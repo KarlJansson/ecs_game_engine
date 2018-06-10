@@ -7,7 +7,7 @@ namespace lib_input {
 class GlInputSystem : public InputSystem {
  public:
   GlInputSystem(lib_core::EngineCore* engine);
-  ~GlInputSystem() = default;
+  ~GlInputSystem() override = default;
 
   void InitSystem() override;
   void LogicUpdate(float dt) override;

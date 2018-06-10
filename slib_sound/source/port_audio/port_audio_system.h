@@ -5,7 +5,7 @@ namespace lib_sound {
 class PortAudioSystem : public SoundSystem {
  public:
   PortAudioSystem();
-  ~PortAudioSystem();
+  ~PortAudioSystem() override;
 
   void InitSystem() override;
   void FinalizeSystem() override;

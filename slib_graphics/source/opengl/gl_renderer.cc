@@ -77,7 +77,7 @@ void GlRenderer::RenderFrame(float dt) {
         GLint world_inv_trans_loc =
             glGetUniformLocation(shader_id, "world_inv_trans[0]");
 
-        int count = int(pack.mesh_count);
+        auto count = int(pack.mesh_count);
         while (count > 0) {
           glUniformMatrix4fv(
               world_loc, count > 50 ? 50 : count, GL_FALSE,

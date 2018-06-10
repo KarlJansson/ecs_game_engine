@@ -13,7 +13,7 @@ Camera::Camera(lib_core::Vector3 pos, lib_core::Vector3 rot, float a_ratio,
 
   exposure_ = 1.0f;
 
-  for (int i = 0; i < 6; ++i) set_flags_[i] = false;
+  for (bool & set_flag : set_flags_) set_flag = false;
 
   constexpr auto rad_convert = (PI / 180.0f);
   rotation_ = std::move(rot);

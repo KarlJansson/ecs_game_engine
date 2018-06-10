@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "system_manager.h"
 #include "vector_def.h"
 #include "vertex.h"
@@ -37,7 +39,7 @@ class RenderToTextureCommand : public lib_core::Command {
       size_t fb_id,
       std::function<void(class Renderer* renderer, lib_gui::TextSystem* text)>
           func)
-      : frame_buffer(fb_id), render_function(func) {}
+      : frame_buffer(fb_id), render_function(std::move(func)) {}
 
   size_t frame_buffer;
   std::function<void(class Renderer* renderer, lib_gui::TextSystem* text)>
@@ -98,9 +100,9 @@ class AddShaderCommand : public lib_core::Command {
   AddShaderCommand() = default;
   AddShaderCommand(ct::string vert_shader, ct::string frag_shader = "",
                    ct::string geom_shader = "")
-      : vert_shader(vert_shader),
-        frag_shader(frag_shader),
-        geom_shader(geom_shader) {
+      : vert_shader(std::move(vert_shader)),
+        frag_shader(std::move(frag_shader)),
+        geom_shader(std::move(geom_shader)) {
     base_id = g_sys_mgr.GenerateResourceIds(1);
   }
 
@@ -120,7 +122,7 @@ class RemoveShaderCommand : public lib_core::Command {
 class AddMeshCommand : public lib_core::Command {
  public:
   AddMeshCommand() = default;
-  AddMeshCommand(MeshInit mesh_init) : mesh_init(mesh_init) {
+  AddMeshCommand(MeshInit mesh_init) : mesh_init(std::move(mesh_init)) {
     base_id = g_sys_mgr.GenerateResourceIds(1);
   }
 
@@ -133,7 +135,7 @@ class AddModelMeshCommand : public lib_core::Command {
  public:
   AddModelMeshCommand() = default;
   AddModelMeshCommand(size_t mesh_id, MeshInit mesh_init)
-      : mesh_id(mesh_id), mesh_init(mesh_init) {}
+      : mesh_id(mesh_id), mesh_init(std::move(mesh_init)) {}
 
   size_t MeshId() { return mesh_id; }
 

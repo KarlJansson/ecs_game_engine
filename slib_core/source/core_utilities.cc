@@ -34,9 +34,9 @@ void cu::DecompressMemory(ct::dyn_array<uint8_t> &in_data,
   ct::dyn_array<uint8_t> temp_buffer(BUFFSIZE);
 
   z_stream strm;
-  strm.opaque = 0;
-  strm.zalloc = 0;
-  strm.zfree = 0;
+  strm.opaque = nullptr;
+  strm.zalloc = nullptr;
+  strm.zfree = nullptr;
   strm.next_in = in_data.data();
   strm.avail_in = uInt(in_data.size());
   strm.next_out = temp_buffer.data();
@@ -87,8 +87,8 @@ void cu::CompressMemory(ct::dyn_array<uint8_t> &in_data,
   ct::dyn_array<uint8_t> temp_buffer(BUFFSIZE);
 
   z_stream strm;
-  strm.zalloc = 0;
-  strm.zfree = 0;
+  strm.zalloc = nullptr;
+  strm.zfree = nullptr;
   strm.next_in = in_data.data();
   strm.avail_in = uInt(in_data.size());
   strm.next_out = temp_buffer.data();
