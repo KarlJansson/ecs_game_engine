@@ -1,5 +1,5 @@
 ---
-Checks:          '-*,modernize-*,performance-*'
+Checks:          '-*,clang-analyzer-*,modernize-*,performance-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
