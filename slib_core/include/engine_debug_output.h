@@ -15,10 +15,10 @@ class EngineDebugOutput {
   void ToggleBottomLeftDebugOutput();
   void ToggleBottomRightDebugOutput();
 
-  int AddTopLeftLine(ct::string str = "");
-  int AddTopRightLine(ct::string str = "");
-  int AddBottomLeftLine(ct::string str = "");
-  int AddBottomRightLine(ct::string str = "");
+  int AddTopLeftLine(const ct::string& str = "");
+  int AddTopRightLine(const ct::string& str = "");
+  int AddBottomLeftLine(const ct::string& str = "");
+  int AddBottomRightLine(const ct::string& str = "");
 
   void UpdateTopLeftLine(int line, ct::string str = "");
   void UpdateTopRightLine(int line, ct::string str = "");

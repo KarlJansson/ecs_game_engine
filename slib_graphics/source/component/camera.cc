@@ -1,11 +1,13 @@
 #include "camera.h"
+
+#include <cmath>
 #include "quaternion.h"
 
 namespace lib_graphics {
 Camera::Camera(lib_core::Vector3 pos, lib_core::Vector3 rot, float a_ratio,
                float fov, float n_plane, float f_plane)
     : fov_(fov), a_ratio_(a_ratio), near_(n_plane), far_(f_plane) {
-  position_ = std::move(pos);
+  position_ = pos;
 
   memset(view_.data, 0, sizeof(float) * 16);
   memset(view_proj_.data, 0, sizeof(float) * 16);
@@ -16,7 +18,7 @@ Camera::Camera(lib_core::Vector3 pos, lib_core::Vector3 rot, float a_ratio,
   for (bool & set_flag : set_flags_) set_flag = false;
 
   constexpr auto rad_convert = (PI / 180.0f);
-  rotation_ = std::move(rot);
+  rotation_ = rot;
   rotation_[0] *= rad_convert;
   rotation_[1] *= rad_convert;
   rotation_[2] *= rad_convert;
@@ -69,8 +71,8 @@ Camera::FrustumInfo Camera::CalculateFrustumInfo(Camera& cam) {
   auto near_center = cam.position_ - cam.forward_ * cam.near_;
   auto far_center = cam.position_ - cam.forward_ * cam.far_;
 
-  auto near_height = 2.f * tan(b.fov * .5f) * cam.near_;
-  auto far_height = 2.f * tan(b.fov * .5f) * cam.far_;
+  auto near_height = 2.f * std::tan(b.fov * .5f) * cam.near_;
+  auto far_height = 2.f * std::tan(b.fov * .5f) * cam.far_;
   auto near_width = near_height * cam.a_ratio_;
   auto far_width = far_height * cam.a_ratio_;
 
@@ -177,7 +179,7 @@ void Camera::SetFarPlane(float far_plane) {
 
 void Camera::SetRotation(lib_core::Vector3 rot) {
   constexpr auto rad_convert = (PI / 180.0f);
-  delta_rot_ = std::move(rot);
+  delta_rot_ = rot;
   delta_rot_[0] *= rad_convert;
   delta_rot_[1] *= rad_convert;
   delta_rot_[2] *= rad_convert;

@@ -6,8 +6,8 @@ namespace lib_graphics {
 class GlBloom {
  public:
   GlBloom(std::pair<size_t, size_t> dim, lib_core::EngineCore *engine,
-          class GlGausianBlur *blur_effect, TextureDesc rme_gbuffer,
-          TextureDesc hdr_buffer);
+          class GlGausianBlur *blur_effect, const TextureDesc &rme_gbuffer,
+          const TextureDesc &hdr_buffer);
   ~GlBloom();
 
   void ApplyBloomEffect();

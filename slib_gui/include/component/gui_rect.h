@@ -7,10 +7,7 @@ class GuiRect {
  public:
   GuiRect(lib_core::Vector2 pos, lib_core::Vector2 hs, lib_core::Vector4 col,
           uint8_t l = 0)
-      : position_(std::move(pos)),
-        half_size_(std::move(hs)),
-        rgba_(std::move(col)),
-        layer(std::move(l)) {}
+      : position_(pos), half_size_(hs), rgba_(col), layer(l) {}
   GuiRect() = default;
   ~GuiRect() = default;
 

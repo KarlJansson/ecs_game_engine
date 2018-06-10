@@ -62,12 +62,12 @@ class MaterialSystem : public lib_core::System {
                                   ct::string rme);
   Material CreateUntexturedMaterial();
 
-  size_t AddTexture2D(ct::string texture, bool blocking = false);
+  size_t AddTexture2D(const ct::string &texture, bool blocking = false);
   size_t AddTexture3D(ct::dyn_array<ct::string> &texture);
   ct::dyn_array<std::pair<size_t, ct::string>> LoadTexturePack(
-      ct::string pack_path);
+      const ct::string &pack_path);
   size_t GetTextureId(size_t tex_hash);
-  size_t GetTextureId(ct::string tex_name);
+  size_t GetTextureId(const ct::string &tex_name);
 
   void ApplyMaterial(
       size_t mat_id,

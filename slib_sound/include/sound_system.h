@@ -10,10 +10,10 @@ class SoundSystem : public lib_core::System {
   SoundSystem();
   ~SoundSystem() override;
 
-  void RegisterSoundBank(ct::string path);
-  void UnloadSoundBank(ct::string path);
+  void RegisterSoundBank(const ct::string& path);
+  void UnloadSoundBank(const ct::string& path);
 
-  size_t LoadSound(ct::string name);
+  size_t LoadSound(const ct::string& name);
   void LogicUpdate(float dt) override;
 
   enum SoundType { kMusic, kEffect, kAmbient, kVoice };

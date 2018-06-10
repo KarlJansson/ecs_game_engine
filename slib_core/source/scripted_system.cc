@@ -2,6 +2,7 @@
 #include <experimental/filesystem>
 #include <fstream>
 #include <regex>
+#include <utility>
 #include "actor.h"
 #include "fps_camera_system.h"
 #include "graphics_commands.h"
@@ -60,8 +61,9 @@ void ScriptedSystem::LogicUpdate(float dt) {
 
 void ScriptedSystem::FinalizeSystem() { PurgeSystem(); }
 
-void ScriptedSystem::AddType(std::string name, std::function<void(void)> func) {
-  valid_types_[name] = func;
+void ScriptedSystem::AddType(const std::string &name,
+                             std::function<void(void)> func) {
+  valid_types_[name] = std::move(func);
 }
 
 void ScriptedSystem::Activate() {

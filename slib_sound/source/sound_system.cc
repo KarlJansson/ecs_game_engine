@@ -30,11 +30,15 @@ SoundSystem::~SoundSystem() {
   g_ent_mgr.UnregisterAddComponentCallback<AmbientSound>(callback_ids[2]);
 }
 
-void SoundSystem::RegisterSoundBank(ct::string path) { add_packs_.push(path); }
+void SoundSystem::RegisterSoundBank(const ct::string &path) {
+  add_packs_.push(path);
+}
 
-void SoundSystem::UnloadSoundBank(ct::string path) { remove_packs_.push(path); }
+void SoundSystem::UnloadSoundBank(const ct::string &path) {
+  remove_packs_.push(path);
+}
 
-size_t SoundSystem::LoadSound(ct::string name) {
+size_t SoundSystem::LoadSound(const ct::string &name) {
   auto sound_hash = std::hash<ct::string>{}(name);
   return sound_hash;
 }

@@ -63,8 +63,7 @@ void CullingSystem::DrawUpdate(lib_graphics::Renderer *renderer,
 
   auto add_mesh_aabb_command = g_sys_mgr.GetCommands<AddMeshAabbCommand>();
   if (add_mesh_aabb_command && !add_mesh_aabb_command->empty()) {
-    for (auto &c : *add_mesh_aabb_command)
-      mesh_aabb_[c.mesh_id] = std::move(c.aabb);
+    for (auto &c : *add_mesh_aabb_command) mesh_aabb_[c.mesh_id] = c.aabb;
     add_mesh_aabb_command->clear();
   }
 
@@ -131,7 +130,7 @@ void CullingSystem::DrawUpdate(lib_graphics::Renderer *renderer,
           light_world.Translate(light->data_pos);
           light_world.Scale(lib_core::Vector3(
               light->max_radius, light->max_radius, light->max_radius));
-          light_matrices_[light_p.first].emplace_back(std::move(light_world));
+          light_matrices_[light_p.first].emplace_back(light_world);
         } else {
           auto light_r = g_ent_mgr.GetOldCbeW<Light>(light_ent);
           auto mat = LightSystem::GetShadowMatrices(*light_r);

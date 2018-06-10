@@ -5,18 +5,18 @@ namespace lib_graphics {
 Transform::Transform(lib_core::Vector3 pos, lib_core::Vector3 rot,
                      lib_core::Vector3 scale, lib_core::Vector3 orb,
                      lib_core::Vector3 orb_rot) {
-  position_ = std::move(pos);
-  orbit_offset_ = std::move(orb);
-  orbit_rotation_ = std::move(orb_rot);
+  position_ = pos;
+  orbit_offset_ = orb;
+  orbit_rotation_ = orb_rot;
 
   auto rad_convert = (PI / 180.0f);
-  rotation_ = std::move(rot);
+  rotation_ = rot;
   rotation_[0] *= rad_convert, rotation_[1] *= rad_convert,
       rotation_[2] *= rad_convert;
   orbit_rotation_[0] *= rad_convert, orbit_rotation_[1] *= rad_convert,
       orbit_rotation_[2] *= rad_convert;
 
-  scale_ = std::move(scale);
+  scale_ = scale;
 
   std::memset(world_.data, 0, sizeof(float) * 16);
   world_.data[0] = world_.data[5] = world_.data[11] = world_.data[15] = 1.0f;

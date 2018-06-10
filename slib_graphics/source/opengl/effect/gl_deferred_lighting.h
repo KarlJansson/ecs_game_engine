@@ -10,9 +10,11 @@
 namespace lib_graphics {
 class GlDeferredLighting {
  public:
-  GlDeferredLighting(lib_core::EngineCore *engine, TextureDesc position_tex,
-                     TextureDesc normal_tex, TextureDesc albedo_tex,
-                     TextureDesc rme_tex, TextureDesc depth_tex);
+  GlDeferredLighting(lib_core::EngineCore* engine,
+                     const TextureDesc& position_tex,
+                     const TextureDesc& normal_tex,
+                     const TextureDesc& albedo_tex, const TextureDesc& rme_tex,
+                     const TextureDesc& depth_tex);
   ~GlDeferredLighting();
 
   void DrawLights(Camera &cam, lib_core::Entity cam_entity, float cam_pos[3]);

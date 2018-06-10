@@ -1,5 +1,6 @@
 #pragma once
 #include <atomic>
+#include <utility>
 #include "any_type.hpp"
 #include "barrier.hpp"
 #include "core_utilities.h"
@@ -101,8 +102,8 @@ class EntityManager {
                   new_comp_vec[loc_it->second] = std::move(new_comp_vec.back());
                   old_comp_vec[loc_it->second] = std::move(old_comp_vec.back());
 
-                  new_update[loc_it->second] = std::move(new_update.back());
-                  old_update[loc_it->second] = std::move(old_update.back());
+                  new_update[loc_it->second] = new_update.back();
+                  old_update[loc_it->second] = old_update.back();
                 }
                 new_comp_vec.pop_back(), old_comp_vec.pop_back();
                 new_update.pop_back(), old_update.pop_back();
@@ -200,7 +201,7 @@ class EntityManager {
       std::function<void(lib_core::Entity)> callback) {
     auto hash = typeid(T).hash_code();
     auto id = add_callback_id_++;
-    comp_add_callback_.push({id, hash, callback});
+    comp_add_callback_.push({id, hash, std::move(callback)});
     return id;
   }
 
@@ -215,7 +216,7 @@ class EntityManager {
       std::function<void(lib_core::Entity)> callback) {
     auto hash = typeid(T).hash_code();
     auto id = remove_callback_id_++;
-    comp_remove_callback_.push({id, hash, callback});
+    comp_remove_callback_.push({id, hash, std::move(callback)});
     return id;
   }
 

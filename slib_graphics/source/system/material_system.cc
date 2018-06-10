@@ -1,5 +1,6 @@
 #include "material_system.h"
 #include <fstream>
+#include <utility>
 #include "core_utilities.h"
 #include "engine_core.h"
 #include "entity_manager.h"
@@ -7,7 +8,7 @@
 #include "window.h"
 
 namespace lib_graphics {
-size_t MaterialSystem::AddTexture2D(ct::string texture, bool blocking) {
+size_t MaterialSystem::AddTexture2D(const ct::string &texture, bool blocking) {
   auto name_hash = std::hash<ct::string>{}(texture);
   auto it = texture_map_.find(name_hash);
   if (it == texture_map_.end()) return 0;
@@ -63,7 +64,7 @@ size_t MaterialSystem::AddTexture3D(ct::dyn_array<ct::string> &texture) {
 }
 
 ct::dyn_array<std::pair<size_t, ct::string>> MaterialSystem::LoadTexturePack(
-    ct::string pack_path) {
+    const ct::string &pack_path) {
   auto name_hash = std::hash<ct::string>{}(pack_path);
   auto tex_it = loaded_tex_packs_.find(name_hash);
   if (tex_it != loaded_tex_packs_.end()) return tex_it->second;
@@ -209,7 +210,7 @@ size_t MaterialSystem::GetTextureId(size_t tex_hash) {
   return id;
 }
 
-size_t MaterialSystem::GetTextureId(ct::string tex_name) {
+size_t MaterialSystem::GetTextureId(const ct::string &tex_name) {
   return GetTextureId(std::hash<ct::string>{}(tex_name));
 }
 
@@ -234,9 +235,9 @@ Material MaterialSystem::CreateTexturedMaterial(ct::string alb, ct::string norm,
                                                 ct::string rme) {
   Material mat;
   mat.shader = GetStockShaderId(lib_graphics::MaterialSystem::kPbrTextured);
-  mat.textures.push_back({AddTexture2D(alb), "albedo_tex"});
-  mat.textures.push_back({AddTexture2D(norm), "normal_tex"});
-  mat.textures.push_back({AddTexture2D(rme), "rma_tex"});
+  mat.textures.push_back({AddTexture2D(std::move(alb)), "albedo_tex"});
+  mat.textures.push_back({AddTexture2D(std::move(norm)), "normal_tex"});
+  mat.textures.push_back({AddTexture2D(std::move(rme)), "rma_tex"});
   return mat;
 }
 

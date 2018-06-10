@@ -55,12 +55,12 @@ static T smooth_step_fn(T t) {
 
 template <typename T>
 static T ease_in_sine_fn(T t) {
-  return T(1.) - cos(t * PI_HALF);
+  return T(1.) - std::cos(t * PI_HALF);
 };
 
 template <typename T>
 static T sine_fn(T t) {
-  return (sin(t * PI2 - PI_HALF) + T(1.)) / T(2.);
+  return (std::sin(t * PI2 - PI_HALF) + T(1.)) / T(2.);
 };
 
 template <typename T>
@@ -70,7 +70,7 @@ static T ease_out_sine_fn(T t) {
 
 template <typename T>
 static T ease_in_out_sine_fn(T t) {
-  return T(-0.5) * (cos(PI * t) - T(1.));
+  return T(-0.5) * (std::cos(PI * t) - T(1.));
 };
 
 template <typename T>
@@ -104,13 +104,13 @@ static T lerp(const T &a, const T &b, float factor) {
 
 class cu {
  public:
-  static void LoadAndDecompress(ct::string load_path,
+  static void LoadAndDecompress(const ct::string &load_path,
                                 ct::dyn_array<uint8_t> &out_data);
   static void DecompressMemory(ct::dyn_array<uint8_t> &in_data,
                                ct::dyn_array<uint8_t> &out_data);
-  static void CompressAndSave(ct::string save_path,
+  static void CompressAndSave(const ct::string &save_path,
                               ct::dyn_array<uint8_t> &buffer);
-  static void Save(ct::string save_path, ct::dyn_array<uint8_t> &buffer);
+  static void Save(const ct::string &save_path, ct::dyn_array<uint8_t> &buffer);
   static void CompressMemory(ct::dyn_array<uint8_t> &in_data,
                              ct::dyn_array<uint8_t> &out_data);
 
@@ -127,14 +127,14 @@ class cu {
   static bool EvalExpr(ct::string &str);
 
   template <typename T>
-  static T Parse(ct::string val, T result = T()) {
+  static T Parse(const ct::string &val, T result = T()) {
     std::stringstream ss;
     ss << val, ss >> result;
     return result;
   }
 
   template <typename T>
-  static ct::dyn_array<T> ParseArray(ct::string val) {
+  static ct::dyn_array<T> ParseArray(const ct::string &val) {
     ct::dyn_array<T> result;
     size_t start = 0, end = 0;
     while ((end = val.find_first_of(',', start)) != std::string::npos) {
@@ -154,7 +154,7 @@ class cu {
   }
 
   template <typename T>
-  static ct::dyn_array<T> ParsePairArray(ct::string val) {
+  static ct::dyn_array<T> ParsePairArray(const ct::string &val) {
     ct::dyn_array<T> result;
 
     T pair;
@@ -201,8 +201,8 @@ class cu {
     return result;
   }
 
-  static void PrintLogFile(ct::string dest_path);
-  static void PrintProfiling(ct::string dest_path);
+  static void PrintLogFile(const ct::string &dest_path);
+  static void PrintProfiling(const ct::string &dest_path);
 
   class TerminatingException : public std::exception {
    public:
@@ -213,8 +213,8 @@ class cu {
     std::string reason_;
   };
 
-  static inline void AssertError(bool condition, ct::string cause,
-                                 ct::string file = "", int line = -1) {
+  static inline void AssertError(bool condition, const ct::string &cause,
+                                 const ct::string &file = "", int line = -1) {
     if (!condition) {
       ct::string desc_str = file;
 #ifdef WindowsBuild
@@ -237,8 +237,8 @@ class cu {
     }
   }
 
-  static inline void AssertWarning(bool condition, ct::string cause,
-                                   ct::string file = "", int line = -1) {
+  static inline void AssertWarning(bool condition, const ct::string &cause,
+                                   const ct::string &file = "", int line = -1) {
     if (!condition) {
       ct::string desc_str;
       if (!file.empty())
@@ -252,7 +252,7 @@ class cu {
     }
   }
 
-  static inline void Log(ct::string message, ct::string file = "",
+  static inline void Log(const ct::string &message, const ct::string &file = "",
                          int line = -1) {
     ct::string desc_str;
     if (!file.empty())
@@ -266,13 +266,13 @@ class cu {
     str_map.insert({hash, name});
     profile_starts.insert({hash, std::chrono::high_resolution_clock::now()});
   }
-  static inline void ProfileStop(ct::string name) {
+  static inline void ProfileStop(const ct::string &name) {
     profile_ends.insert({std::hash<ct::string>{}(name),
                          std::chrono::high_resolution_clock::now()});
   }
 
   template <class T>
-  static inline float ProfileTime(ct::string name) {
+  static inline float ProfileTime(const ct::string &name) {
     auto hash = std::hash<ct::string>{}(name);
     decltype(profile_starts)::accessor it1, it2;
     if (profile_starts.find(it1, hash) && profile_ends.find(it2, hash)) {
@@ -307,7 +307,7 @@ class cu {
   static bool EvalSub(ct::string &str);
 
   static bool EvalAny(ct::string &str, ct::dyn_array<ct::string> &parts,
-                      std::function<float(float, float)> ops);
+                      const std::function<float(float, float)> &ops);
 
   cu() = default;
   ~cu() = default;

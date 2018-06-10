@@ -20,7 +20,7 @@ class ScriptedSystem : public lib_core::System {
 
   virtual void PurgeSystem();
 
-  void AddType(std::string name, std::function<void(void)> func);
+  void AddType(const std::string &name, std::function<void(void)> func);
 
  protected:
   void ParseScript();

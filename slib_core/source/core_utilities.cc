@@ -13,7 +13,7 @@ tbb::concurrent_hash_map<
     size_t, std::chrono::time_point<std::chrono::high_resolution_clock>>
     cu::profile_starts, cu::profile_ends;
 
-void cu::LoadAndDecompress(ct::string load_path,
+void cu::LoadAndDecompress(const ct::string &load_path,
                            ct::dyn_array<uint8_t> &out_data) {
   std::ifstream open(load_path, std::ios::binary | std::ios::ate);
   if (open.fail()) return;
@@ -64,7 +64,8 @@ void cu::DecompressMemory(ct::dyn_array<uint8_t> &in_data,
   out_data.swap(buffer);
 }
 
-void cu::CompressAndSave(ct::string save_path, ct::dyn_array<uint8_t> &buffer) {
+void cu::CompressAndSave(const ct::string &save_path,
+                         ct::dyn_array<uint8_t> &buffer) {
   ct::dyn_array<uint8_t> compressed;
   CompressMemory(buffer, compressed);
 
@@ -73,7 +74,7 @@ void cu::CompressAndSave(ct::string save_path, ct::dyn_array<uint8_t> &buffer) {
   open.close();
 }
 
-void cu::Save(ct::string save_path, ct::dyn_array<uint8_t> &buffer) {
+void cu::Save(const ct::string &save_path, ct::dyn_array<uint8_t> &buffer) {
   std::ofstream open(save_path, std::ios::binary);
   open.write(reinterpret_cast<char *>(buffer.data()), buffer.size());
   open.close();
@@ -299,7 +300,7 @@ bool cu::EvalSub(ct::string &str) {
 }
 
 bool cu::EvalAny(ct::string &str, ct::dyn_array<ct::string> &parts,
-                 std::function<float(float, float)> ops) {
+                 const std::function<float(float, float)> &ops) {
   str = parts[0];
   parts.erase(parts.begin());
   for (auto &s : parts) {
@@ -314,7 +315,7 @@ bool cu::EvalAny(ct::string &str, ct::dyn_array<ct::string> &parts,
   return true;
 }
 
-void cu::PrintLogFile(ct::string dest_path) {
+void cu::PrintLogFile(const ct::string &dest_path) {
   std::ofstream out(dest_path);
   out << "-----------------------Logs---------------------------\n";
   for (auto &p : logs) out << p << "\n";
@@ -325,7 +326,7 @@ void cu::PrintLogFile(ct::string dest_path) {
   out.close();
 }
 
-void cu::PrintProfiling(ct::string dest_path) {
+void cu::PrintProfiling(const ct::string &dest_path) {
   std::ofstream out(dest_path);
   out << "-----------------------Profiling----------------------\n";
   for (auto &p : profile_starts) {

@@ -85,8 +85,8 @@ void Quaternion::FromAngle(const Vector3& vec) {
 }
 
 void Quaternion::FromAxisAngle(Vector3 axis, float angle) {
-  float const s = sin(angle * 0.5f);
-  w = cos(angle * 0.5f);
+  float const s = std::sin(angle * 0.5f);
+  w = std::cos(angle * 0.5f);
   x = axis[0] * s;
   y = axis[1] * s;
   z = axis[2] * s;
@@ -157,7 +157,7 @@ void Quaternion::RotationBetweenVectors(Vector3 vec1, Vector3 vec2) {
 
   rotation_axis = vec1.Cross(vec2);
 
-  float s = sqrt((1 + cos_theta) * 2);
+  float s = std::sqrt((1 + cos_theta) * 2);
   float invs = 1 / s;
 
   w = s * 0.5f;
@@ -173,7 +173,7 @@ void Quaternion::RotateVector(Vector3& vec) {
 }
 
 void Quaternion::Normalize() {
-  float n = sqrt(x * x + y * y + z * z + w * w);
+  float n = std::sqrt(x * x + y * y + z * z + w * w);
   x /= n, y /= n, z /= n, w /= n;
 }
 

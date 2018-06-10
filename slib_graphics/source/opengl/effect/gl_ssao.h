@@ -7,8 +7,8 @@ namespace lib_graphics {
 class GlSsao {
  public:
   GlSsao(std::pair<size_t, size_t> dim, class GlGausianBlur *blur,
-         lib_core::EngineCore *engine, TextureDesc pos_gbuffer,
-         TextureDesc normal_gbuffer);
+         lib_core::EngineCore *engine, const TextureDesc &pos_gbuffer,
+         const TextureDesc &normal_gbuffer);
   ~GlSsao();
 
   void ApplySsaoEffect(Camera &cam);

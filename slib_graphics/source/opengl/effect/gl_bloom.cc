@@ -8,8 +8,8 @@
 
 namespace lib_graphics {
 GlBloom::GlBloom(std::pair<size_t, size_t> dim, lib_core::EngineCore *engine,
-                 GlGausianBlur *blur_effect, TextureDesc rme_gbuffer,
-                 TextureDesc hdr_buffer)
+                 GlGausianBlur *blur_effect, const TextureDesc &rme_gbuffer,
+                 const TextureDesc &hdr_buffer)
     : bloom_dim_(std::move(dim)), engine_(engine), blur_effect_(blur_effect) {
   ct::string vert_shader =
       "#version 430 core\n"

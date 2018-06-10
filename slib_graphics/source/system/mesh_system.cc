@@ -1,5 +1,6 @@
 #include "mesh_system.h"
 #include <fstream>
+#include <utility>
 #include "../../source_shared/include/serialization_utilities.hpp"
 #include "axis_aligned_box.h"
 #include "core_utilities.h"
@@ -52,7 +53,7 @@ void MeshSystem::LogicUpdate(float dt) {
   }
 }
 
-ct::dyn_array<size_t> MeshSystem::LoadModelPack(ct::string path) {
+ct::dyn_array<size_t> MeshSystem::LoadModelPack(const ct::string& path) {
   ct::dyn_array<size_t> return_array;
   auto path_hash = std::hash<ct::string>{}(path);
   auto pack_it = loaded_model_packs_.find(path_hash);
@@ -107,7 +108,7 @@ ct::dyn_array<size_t> MeshSystem::LoadModelPack(ct::string path) {
   return return_array;
 }
 
-size_t MeshSystem::GetModelHash(ct::string name) const {
+size_t MeshSystem::GetModelHash(const ct::string& name) const {
   return std::hash<ct::string>{}(name);
 }
 
@@ -122,7 +123,7 @@ const MeshSystem::Model* MeshSystem::GetModel(size_t model_hash) const {
 }
 
 const MeshSystem::Model* MeshSystem::GetModel(ct::string name) const {
-  return GetModel(GetModelHash(name));
+  return GetModel(GetModelHash(std::move(name)));
 }
 
 const MeshInit* MeshSystem::GetMeshSource(size_t mesh_id) const {

@@ -8,8 +8,8 @@
 
 namespace lib_graphics {
 GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
-               lib_core::EngineCore *engine, TextureDesc pos_gbuffer,
-               TextureDesc normal_gbuffer)
+               lib_core::EngineCore *engine, const TextureDesc &pos_gbuffer,
+               const TextureDesc &normal_gbuffer)
     : ssao_dim_(std::move(dim)), blur_effect_(blur), engine_(engine) {
   ct::string vert_shader =
       "#version 430 core\n"

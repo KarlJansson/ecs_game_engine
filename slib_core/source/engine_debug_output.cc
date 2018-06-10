@@ -1,4 +1,6 @@
 #include "engine_debug_output.h"
+
+#include <utility>
 #include "entity.h"
 #include "entity_manager.h"
 #include "gui_rect.h"
@@ -39,7 +41,7 @@ void EngineDebugOutput::ToggleTopRightDebugOutput() { ToggleDebugText(1); }
 void EngineDebugOutput::ToggleBottomLeftDebugOutput() { ToggleDebugText(2); }
 void EngineDebugOutput::ToggleBottomRightDebugOutput() { ToggleDebugText(3); }
 
-int EngineDebugOutput::AddTopLeftLine(ct::string str) {
+int EngineDebugOutput::AddTopLeftLine(const ct::string& str) {
   auto line = int(text_strings_[0].size());
   text_strings_[0].push_back(str);
   text_ents_[0].push_back(g_ent_mgr.CreateEntity());
@@ -47,7 +49,7 @@ int EngineDebugOutput::AddTopLeftLine(ct::string str) {
   return line;
 }
 
-int EngineDebugOutput::AddTopRightLine(ct::string str) {
+int EngineDebugOutput::AddTopRightLine(const ct::string& str) {
   auto line = int(text_strings_[1].size());
   text_strings_[1].push_back(str);
   text_ents_[1].push_back(g_ent_mgr.CreateEntity());
@@ -55,7 +57,7 @@ int EngineDebugOutput::AddTopRightLine(ct::string str) {
   return line;
 }
 
-int EngineDebugOutput::AddBottomLeftLine(ct::string str) {
+int EngineDebugOutput::AddBottomLeftLine(const ct::string& str) {
   auto line = int(text_strings_[2].size());
   text_strings_[2].push_back(str);
   text_ents_[2].push_back(g_ent_mgr.CreateEntity());
@@ -63,7 +65,7 @@ int EngineDebugOutput::AddBottomLeftLine(ct::string str) {
   return line;
 }
 
-int EngineDebugOutput::AddBottomRightLine(ct::string str) {
+int EngineDebugOutput::AddBottomRightLine(const ct::string& str) {
   auto line = int(text_strings_[3].size());
   text_strings_[3].push_back(str);
   text_ents_[3].push_back(g_ent_mgr.CreateEntity());
@@ -73,25 +75,25 @@ int EngineDebugOutput::AddBottomRightLine(ct::string str) {
 
 void EngineDebugOutput::UpdateTopLeftLine(int line, ct::string str) {
   while (line >= text_strings_[0].size()) text_strings_[0].push_back("");
-  text_strings_[0][line] = str;
+  text_strings_[0][line] = std::move(str);
   UpdateActiveText(0, line);
 }
 
 void EngineDebugOutput::UpdateTopRightLine(int line, ct::string str) {
   while (line >= text_strings_[1].size()) text_strings_[1].push_back("");
-  text_strings_[1][line] = str;
+  text_strings_[1][line] = std::move(str);
   UpdateActiveText(1, line);
 }
 
 void EngineDebugOutput::UpdateBottomLeftLine(int line, ct::string str) {
   while (line >= text_strings_[2].size()) text_strings_[2].push_back("");
-  text_strings_[2][line] = str;
+  text_strings_[2][line] = std::move(str);
   UpdateActiveText(2, line);
 }
 
 void EngineDebugOutput::UpdateBottomRightLine(int line, ct::string str) {
   while (line >= text_strings_[3].size()) text_strings_[3].push_back("");
-  text_strings_[3][line] = str;
+  text_strings_[3][line] = std::move(str);
   UpdateActiveText(3, line);
 }
 

@@ -24,9 +24,9 @@ class MeshSystem : public lib_core::System {
   virtual void RebuildResources() = 0;
   virtual void DrawMesh(size_t mesh_id, int amount = 1, bool force = false) = 0;
 
-  ct::dyn_array<size_t> LoadModelPack(ct::string path);
+  ct::dyn_array<size_t> LoadModelPack(const ct::string& path);
 
-  size_t GetModelHash(ct::string name) const;
+  size_t GetModelHash(const ct::string& name) const;
   const Model* GetModel(size_t model_hash) const;
   const Model* GetModel(ct::string name) const;
   const MeshInit* GetMeshSource(size_t mesh_id) const;

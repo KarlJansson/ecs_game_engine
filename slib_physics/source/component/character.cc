@@ -11,7 +11,7 @@ Character::Character(lib_core::Vector3 pos, float height, float radius,
 void Character::Move(lib_core::Vector3 dp) { disp += dp; }
 
 void Character::Teleport(lib_core::Vector3 pos) {
-  port_loc = std::move(pos);
+  port_loc = pos;
   teleport = true;
 }
 

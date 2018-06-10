@@ -8,11 +8,11 @@
 
 namespace lib_graphics {
 GlDeferredLighting::GlDeferredLighting(lib_core::EngineCore *engine,
-                                       TextureDesc position_tex,
-                                       TextureDesc normal_tex,
-                                       TextureDesc albedo_tex,
-                                       TextureDesc rme_tex,
-                                       TextureDesc depth_tex)
+                                       const TextureDesc &position_tex,
+                                       const TextureDesc &normal_tex,
+                                       const TextureDesc &albedo_tex,
+                                       const TextureDesc &rme_tex,
+                                       const TextureDesc &depth_tex)
     : engine_(engine) {
   ct::string vertex_header_ =
       "#version 430 core\n"

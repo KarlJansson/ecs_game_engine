@@ -201,7 +201,7 @@ void GlSmaa::ShaderInclude(std::string &shader) {
   while ((start_pos = shader.find(include_dir, start_pos)) !=
          std::string::npos) {
     auto pos = start_pos + include_dir.length() + 1;
-    auto length = shader.find("\"", pos);
+    auto length = shader.find('\"', pos);
     std::string file = shader.substr(pos, length - pos);
     std::string content = "";
 

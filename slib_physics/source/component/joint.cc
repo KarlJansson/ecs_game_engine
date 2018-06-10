@@ -9,15 +9,15 @@ Joint::Joint(JointType t, lib_core::Entity a1, lib_core::Entity a2,
   actor_1 = a1;
   actor_2 = a2;
 
-  pos_1 = std::move(pos1);
-  pos_2 = std::move(pos2);
+  pos_1 = pos1;
+  pos_2 = pos2;
 
-  rot_1 = std::move(rot1);
-  rot_2 = std::move(rot2);
+  rot_1 = rot1;
+  rot_2 = rot2;
 
-  limits = std::move(lim);
+  limits = lim;
 
-  break_force_torque = std::move(break_ft);
+  break_force_torque = break_ft;
 }
 
 void Joint::SetLimits(float lim1, float lim2) {

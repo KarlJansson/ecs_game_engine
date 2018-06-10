@@ -18,8 +18,8 @@ class Light {
 
   Light(lib_core::Vector3 pos, lib_core::Vector3 col, float radius,
         bool shadow = false) {
-    data_pos = std::move(pos);
-    color = std::move(col);
+    data_pos = pos;
+    color = col;
     delta_pos.ZeroMem();
 
     max_radius = radius;
@@ -33,9 +33,9 @@ class Light {
 
   Light(lib_core::Vector3 pos, lib_core::Vector3 dir, lib_core::Vector3 col,
         bool shadow = false) {
-    data_pos = std::move(pos);
-    data_dir = std::move(dir);
-    color = std::move(col);
+    data_pos = pos;
+    data_dir = dir;
+    color = col;
     delta_pos.ZeroMem();
 
     cast_shadows = shadow;
@@ -50,10 +50,10 @@ class Light {
 
   Light(lib_core::Vector3 pos, lib_core::Vector3 dir, lib_core::Vector3 col,
         lib_core::Vector2 cutoffs, bool shadow = false) {
-    data_pos = std::move(pos);
-    data_dir = std::move(dir);
-    data_cutoffs = std::move(cutoffs);
-    color = std::move(col);
+    data_pos = pos;
+    data_dir = dir;
+    data_cutoffs = cutoffs;
+    color = col;
     delta_pos.ZeroMem();
 
     cast_shadows = shadow;
