@@ -58,8 +58,8 @@ class MaterialSystem : public lib_core::System {
   void StartLoadThread();
   void TerminateLoadThread();
 
-  Material CreateTexturedMaterial(ct::string alb, ct::string norm,
-                                  ct::string rme);
+  Material CreateTexturedMaterial(const ct::string &alb, const ct::string &norm,
+                                  const ct::string &rme);
   Material CreateUntexturedMaterial();
 
   size_t AddTexture2D(const ct::string &texture, bool blocking = false);

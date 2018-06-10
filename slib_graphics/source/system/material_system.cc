@@ -231,13 +231,14 @@ void MaterialSystem::TerminateLoadThread() {
 
 MaterialSystem::~MaterialSystem() { TerminateLoadThread(); }
 
-Material MaterialSystem::CreateTexturedMaterial(ct::string alb, ct::string norm,
-                                                ct::string rme) {
+Material MaterialSystem::CreateTexturedMaterial(const ct::string &alb,
+                                                const ct::string &norm,
+                                                const ct::string &rme) {
   Material mat;
   mat.shader = GetStockShaderId(lib_graphics::MaterialSystem::kPbrTextured);
-  mat.textures.push_back({AddTexture2D(std::move(alb)), "albedo_tex"});
-  mat.textures.push_back({AddTexture2D(std::move(norm)), "normal_tex"});
-  mat.textures.push_back({AddTexture2D(std::move(rme)), "rma_tex"});
+  mat.textures.push_back({AddTexture2D(alb), "albedo_tex"});
+  mat.textures.push_back({AddTexture2D(norm), "normal_tex"});
+  mat.textures.push_back({AddTexture2D(rme), "rma_tex"});
   return mat;
 }
 

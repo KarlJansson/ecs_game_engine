@@ -122,8 +122,8 @@ const MeshSystem::Model* MeshSystem::GetModel(size_t model_hash) const {
   return &it_3->second;
 }
 
-const MeshSystem::Model* MeshSystem::GetModel(ct::string name) const {
-  return GetModel(GetModelHash(std::move(name)));
+const MeshSystem::Model* MeshSystem::GetModel(const ct::string& name) const {
+  return GetModel(GetModelHash(name));
 }
 
 const MeshInit* MeshSystem::GetMeshSource(size_t mesh_id) const {

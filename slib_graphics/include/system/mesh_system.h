@@ -28,7 +28,7 @@ class MeshSystem : public lib_core::System {
 
   size_t GetModelHash(const ct::string& name) const;
   const Model* GetModel(size_t model_hash) const;
-  const Model* GetModel(ct::string name) const;
+  const Model* GetModel(const ct::string& name) const;
   const MeshInit* GetMeshSource(size_t mesh_id) const;
 
   void StartLoadThread();
