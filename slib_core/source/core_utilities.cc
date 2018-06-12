@@ -280,7 +280,7 @@ bool cu::EvalSub(ct::string &str) {
   bool add_minus = false;
   if (token_parts.size() > 1) {
     for (auto &s : token_parts) {
-      if (!s.empty() && add_minus) s = "-" + s;
+      if (!s.empty() && add_minus) s.insert(0, "-");
       add_minus = s.empty() ? true : false;
     }
     for (size_t i = token_parts.size(); i > 0; --i)
