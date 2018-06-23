@@ -296,7 +296,7 @@ void EngineSettings::SetDefaults() {
   SetWindowedHeight(1080);
   SetFullscreenWidth(1920);
   SetFullscreenHeight(1080);
-  SetMaxShadowResolution(2048);
+  SetMaxShadowResolution(4096);
   SetMaxTextureResolution(2048);
 }
 
