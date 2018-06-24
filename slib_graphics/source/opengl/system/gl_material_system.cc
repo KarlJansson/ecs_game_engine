@@ -838,10 +838,9 @@ void GlMaterialSystem::DrawUpdate(lib_graphics::Renderer *renderer,
 
       fb->second.last_command = render_commands->front();
 
-      render_commands->pop_front();
-      mipmap_generation_queue_.emplace_back(fb->second.textures[0].id);
-    } else
-      render_commands->pop_front();
+      //mipmap_generation_queue_.emplace_back(fb->second.textures[0].id);
+    } 
+    render_commands->pop_front();
   }
 
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error", __FILE__,
@@ -859,9 +858,9 @@ void GlMaterialSystem::DrawUpdate(lib_graphics::Renderer *renderer,
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
 
       glGenerateMipmap(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, 0);
-      mipmap_generation_queue_.pop_back();
+      glBindTexture(GL_TEXTURE_2D, 0); 
     }
+    mipmap_generation_queue_.pop_back();
   }
 
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error", __FILE__,
