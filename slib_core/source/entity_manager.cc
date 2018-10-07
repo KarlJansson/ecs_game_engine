@@ -21,49 +21,49 @@ size_t EntityManager::CreateScene() {
 
 void EntityManager::LogicUpdate() {
   // Sync up with render thread
-  sync_point.Wait();
+  sync_point_.Wait();
 
   std::swap(old_, new_);
   SyncEntities();
   g_sys_mgr.SyncSystems();
 
   // Sync up with render thread
-  sync_point.Wait();
+  sync_point_.Wait();
 
-  if (!first_update) {
-    elapsed = std::chrono::high_resolution_clock::now() - start_point;
-    g_sys_mgr.SyncInputSystems(elapsed.count());
+  if (!first_update_) {
+    elapsed_ = std::chrono::high_resolution_clock::now() - start_point_;
+    g_sys_mgr.SyncInputSystems(elapsed_.count());
   } else {
     g_sys_mgr.SyncInputSystems(0.f);
-    first_update = false;
+    first_update_ = false;
   }
-  start_point = std::chrono::high_resolution_clock::now();
+  start_point_ = std::chrono::high_resolution_clock::now();
 
   // Sync up with update thread
-  sync_point.Wait();
+  sync_point_.Wait();
 }
 
 void EntityManager::DrawUpdate() {
-  if (first_sync) {
-    sync_point.Wait();
-    first_sync = false;
+  if (first_sync_) {
+    sync_point_.Wait();
+    first_sync_ = false;
   }
 
   // Sync up with update thread
-  sync_point.Wait();
+  sync_point_.Wait();
 
   // Sync up with update thread
-  sync_point.Wait();
+  sync_point_.Wait();
 }
 
 void EntityManager::FrameFinished() {
   // Sync up with update thread
-  sync_point.Wait();
+  sync_point_.Wait();
 }
 
 void EntityManager::ResetSync() {
-  first_sync = true;
-  first_update = true;
+  first_sync_ = true;
+  first_update_ = true;
 }
 
 void EntityManager::SyncEntities() {

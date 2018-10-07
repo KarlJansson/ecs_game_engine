@@ -344,12 +344,12 @@ class EntityManager {
   ct::hash_map<size_t, ct::dyn_array<Entity>> entity_vecs_;
   ct::hash_map<Entity, ct::hash_map<size_t, size_t>> entity_comps_;
 
-  Barrier sync_point = Barrier(2);
-  bool first_sync = true;
-  bool first_update = true;
+  Barrier sync_point_ = Barrier(2);
+  bool first_sync_ = true;
+  bool first_update_ = true;
 
-  std::chrono::duration<float> elapsed;
-  std::chrono::time_point<std::chrono::high_resolution_clock> start_point;
+  std::chrono::duration<float> elapsed_;
+  std::chrono::time_point<std::chrono::high_resolution_clock> start_point_;
 };
 }  // namespace lib_core
 
