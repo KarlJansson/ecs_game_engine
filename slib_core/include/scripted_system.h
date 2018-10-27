@@ -43,13 +43,12 @@ class ScriptedSystem : public lib_core::System {
   ct::hash_map<ct::string, std::function<void(void)>> valid_types_;
 
   ct::hash_map<ct::string, lib_core::Entity> actor_map_;
-  ct::hash_map<ct::string, ct::string> variable_map_;
 
   size_t script_cursor_;
   lib_core::EngineCore *engine_;
   ct::string script_path_;
 
   lib_core::Vector3 offset_;
-  ct::dyn_array<char> script_buffer_;
+  std::string script_buffer_;
 };
 }  // namespace lib_core

@@ -106,8 +106,8 @@ void ScriptedSystem::ParseScript() {
             type_it->second();
         } else if (type_token.compare("Light") == 0) {
           auto ent = CreateScopedEntity();
-          auto light = lib_graphics::Light::Parse(
-              script_buffer_, script_cursor_, variable_map_);
+          auto light =
+              lib_graphics::Light::Parse(script_buffer_, script_cursor_);
           light.data_pos[0] *= mod_;
           light.data_pos += offset_;
           g_ent_mgr.AddComponent(
@@ -115,8 +115,13 @@ void ScriptedSystem::ParseScript() {
           g_ent_mgr.AddComponent(ent, light);
         } else {
           if (type_token[0] == '[' && type_token.back() == ']') {
-            variable_map_[type_token] =
-                cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+            auto str = cu::ParseValue(script_buffer_, script_cursor_);
+            script_cursor_ += static_cast<int>(str.size()) -
+                              static_cast<int>(type_token.size());
+            type_token.pop_back();
+            type_token = type_token.substr(1, type_token.size());
+            script_buffer_ = std::regex_replace(
+                script_buffer_, std::regex("\\[" + type_token + "\\]"), str);
           } else {
             // Skip unknown type
             cu::ScrollCursor(script_buffer_, script_cursor_, '{');
@@ -147,18 +152,16 @@ void ScriptedSystem::ParseForLoop() {
   ct::string type = cu::ParseType(script_buffer_, script_cursor_);
   while (!type.empty()) {
     if (type.compare("Increment") == 0) {
-      increment = cu::Parse<float>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      increment =
+          cu::Parse<float>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("Start") == 0) {
-      start = cu::Parse<float>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      start = cu::Parse<float>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("IndexId") == 0) {
-      ind_id = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      ind_id = cu::ParseValue(script_buffer_, script_cursor_);
     } else if (type.compare("Range") == 0) {
-      range = cu::Parse<int>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      range = cu::Parse<int>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("Operation") == 0) {
-      ops = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      ops = cu::ParseValue(script_buffer_, script_cursor_);
     }
 
     type = cu::ParseType(script_buffer_, script_cursor_);
@@ -184,9 +187,9 @@ lib_graphics::Material ScriptedSystem::ParseMaterial() {
   ct::string type = cu::ParseType(script_buffer_, script_cursor_);
   while (!type.empty()) {
     if (type.compare("Id") == 0) {
-      id = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      id = cu::ParseValue(script_buffer_, script_cursor_);
     } else if (type.compare("Texture") == 0) {
-      value = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      value = cu::ParseValue(script_buffer_, script_cursor_);
 
       int int_val;
       std::stringstream ss;
@@ -237,30 +240,28 @@ void ScriptedSystem::ParseActorMesh() {
     if (type.compare("MaterialId") == 0) {
       material_id = MaterialId();
     } else if (type.compare("NameId") == 0) {
-      name_id = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      name_id = cu::ParseValue(script_buffer_, script_cursor_);
     } else if (type.compare("Transform") == 0) {
-      transform = lib_graphics::Transform::Parse(script_buffer_, script_cursor_,
-                                                 variable_map_);
+      transform =
+          lib_graphics::Transform::Parse(script_buffer_, script_cursor_);
     } else if (type.compare("Light") == 0) {
       add_light = true;
-      light = lib_graphics::Light::Parse(script_buffer_, script_cursor_,
-                                         variable_map_);
+      light = lib_graphics::Light::Parse(script_buffer_, script_cursor_);
     } else if (type.compare("Mesh") == 0) {
-      mesh = lib_graphics::Mesh::Parse(script_buffer_, script_cursor_,
-                                       variable_map_);
+      mesh = lib_graphics::Mesh::Parse(script_buffer_, script_cursor_);
     } else if (type.compare("Interact") == 0) {
-      auto val = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      auto val = cu::ParseValue(script_buffer_, script_cursor_);
       if (val.compare("Pickup") == 0)
         pickupable = true;
       else if (val.compare("Pull") == 0)
         pullable = true;
     } else if (type.compare("Model") == 0) {
-      model_str = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      model_str = cu::ParseValue(script_buffer_, script_cursor_);
     } else if (type.compare("MeshId") == 0) {
-      mesh_id = cu::Parse<size_t>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      mesh_id =
+          cu::Parse<size_t>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("ActorType") == 0) {
-      auto val = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      auto val = cu::ParseValue(script_buffer_, script_cursor_);
       if (val.compare("kDynamic") == 0) {
         actor_type = lib_physics::Actor::kDynamic;
         ccd = true;
@@ -271,17 +272,17 @@ void ScriptedSystem::ParseActorMesh() {
       else if (val.compare("kPlane") == 0)
         actor_type = lib_physics::Actor::kPlane;
     } else if (type.compare("Density") == 0) {
-      density = cu::Parse<float>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      density =
+          cu::Parse<float>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("DynamicFriction") == 0) {
-      dyn_friction = cu::Parse<float>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      dyn_friction =
+          cu::Parse<float>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("StaticFriction") == 0) {
-      stat_friction = cu::Parse<float>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      stat_friction =
+          cu::Parse<float>(cu::ParseValue(script_buffer_, script_cursor_));
     } else if (type.compare("Restitution") == 0) {
-      restitution = cu::Parse<float>(
-          cu::ParseValue(script_buffer_, script_cursor_, variable_map_));
+      restitution =
+          cu::Parse<float>(cu::ParseValue(script_buffer_, script_cursor_));
     }
     type = cu::ParseType(script_buffer_, script_cursor_);
   }
@@ -334,14 +335,13 @@ void ScriptedSystem::ParseActorJoint() {
   ct::string type = cu::ParseType(script_buffer_, script_cursor_);
   while (!type.empty()) {
     if (type.compare("Joint") == 0) {
-      joint = lib_physics::Joint::Parse(script_buffer_, script_cursor_,
-                                        variable_map_);
+      joint = lib_physics::Joint::Parse(script_buffer_, script_cursor_);
     } else if (type.compare("Actor1") == 0) {
-      auto val = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      auto val = cu::ParseValue(script_buffer_, script_cursor_);
       auto it = actor_map_.find(val);
       if (it != actor_map_.end()) actor_1 = it->second;
     } else if (type.compare("Actor2") == 0) {
-      auto val = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      auto val = cu::ParseValue(script_buffer_, script_cursor_);
       auto it = actor_map_.find(val);
       if (it != actor_map_.end()) actor_2 = it->second;
     }
@@ -362,17 +362,17 @@ void ScriptedSystem::ParseParticleEmitter() {
   ct::string type = cu::ParseType(script_buffer_, script_cursor_);
   while (!type.empty()) {
     if (type.compare("ParticleTexture") == 0) {
-      auto val = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      auto val = cu::ParseValue(script_buffer_, script_cursor_);
       particle_tex_id = engine_->GetMaterial()->AddTexture2D(val);
     } else if (type.compare("ParticleDesc") == 0) {
-      emitter = lib_graphics::ParticleEmitter::Parse(
-          script_buffer_, script_cursor_, variable_map_);
+      emitter =
+          lib_graphics::ParticleEmitter::Parse(script_buffer_, script_cursor_);
     } else if (type.compare("Transform") == 0) {
-      transform = lib_graphics::Transform::Parse(script_buffer_, script_cursor_,
-                                                 variable_map_);
+      transform =
+          lib_graphics::Transform::Parse(script_buffer_, script_cursor_);
       transform_set = true;
     } else if (type.compare("AttachPoint") == 0) {
-      auto val = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+      auto val = cu::ParseValue(script_buffer_, script_cursor_);
       auto it = actor_map_.find(val);
       if (it != actor_map_.end()) attach_point = it->second;
     }
@@ -397,7 +397,7 @@ void ScriptedSystem::ParseParticleEmitter() {
 
 size_t ScriptedSystem::MaterialId() {
   size_t material_id = lib_core::EngineCore::stock_material_untextured;
-  auto val_str = cu::ParseValue(script_buffer_, script_cursor_, variable_map_);
+  auto val_str = cu::ParseValue(script_buffer_, script_cursor_);
   auto it = material_map_.find(std::hash<ct::string>{}(val_str));
   if (it != material_map_.end()) material_id = it->second;
   return material_id;

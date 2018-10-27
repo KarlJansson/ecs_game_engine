@@ -28,13 +28,12 @@ class Joint {
   bool broken = false;
   bool set_limits = false;
 
-  static Joint Parse(ct::dyn_array<char> &buffer, size_t &cursor,
-                     ct::hash_map<ct::string, ct::string> &val_map) {
+  static Joint Parse(ct::string &buffer, size_t &cursor) {
     Joint j;
     if (cu::ScrollCursor(buffer, cursor, '{')) {
       auto type = cu::ParseType(buffer, cursor);
       while (!type.empty()) {
-        auto val = cu::ParseValue(buffer, cursor, val_map);
+        auto val = cu::ParseValue(buffer, cursor);
         if (type.compare("Limits") == 0) {
           j.limits = cu::ParseVector<lib_core::Vector2, 2>(val);
         } else if (type.compare("Type") == 0) {

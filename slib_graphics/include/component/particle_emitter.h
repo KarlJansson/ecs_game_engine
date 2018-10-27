@@ -36,58 +36,57 @@ class ParticleEmitter {
 
   lib_core::Vector2 rotate_speed{.1f, .5f};
 
-  static ParticleEmitter Parse(ct::dyn_array<char> &buffer, size_t &cursor,
-                               ct::hash_map<ct::string, ct::string> &val_map) {
+  static ParticleEmitter Parse(ct::string &buffer, size_t &cursor) {
     ParticleEmitter e;
     if (cu::ScrollCursor(buffer, cursor, '{')) {
       auto type = cu::ParseType(buffer, cursor);
       while (!type.empty()) {
         if (type.compare("StartVelocity") == 0)
           e.start_velocity = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("StartColor") == 0)
           e.start_color = cu::ParseVector<lib_core::Vector4, 4>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("EndColor") == 0)
           e.end_color = cu::ParseVector<lib_core::Vector4, 4>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("TypeData") == 0)
           e.type_data = cu::ParseVector<lib_core::Vector4, 4>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("RandomScale") == 0)
           e.random_scale = cu::ParseVector<lib_core::Vector4, 4>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("Gravity") == 0)
           e.gravity = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("StartSize") == 0)
           e.start_size = cu::ParseVector<lib_core::Vector2, 2>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("EndSize") == 0)
           e.end_size = cu::ParseVector<lib_core::Vector2, 2>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("RotateSpeed") == 0)
           e.rotate_speed = cu::ParseVector<lib_core::Vector2, 2>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("MaxParticles") == 0)
           e.max_particles =
-              cu::Parse<size_t>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<size_t>(cu::ParseValue(buffer, cursor));
         else if (type.compare("EmittingSpeed") == 0)
           e.emitting_speed =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         else if (type.compare("EndVelocity") == 0)
           e.end_velocity =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         else if (type.compare("ParticleLife") == 0)
           e.particle_life =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         else if (type.compare("CenterVelocity") == 0)
           e.center_velocity =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         else if (type.compare("Loop") == 0)
-          e.loop = cu::Parse<bool>(cu::ParseValue(buffer, cursor, val_map));
+          e.loop = cu::Parse<bool>(cu::ParseValue(buffer, cursor));
         else if (type.compare("EmittType") == 0) {
-          auto val = cu::ParseValue(buffer, cursor, val_map);
+          auto val = cu::ParseValue(buffer, cursor);
           if (val.compare("kPoint") == 0)
             e.emitt_type = kPoint;
           else if (val.compare("kCircle") == 0)

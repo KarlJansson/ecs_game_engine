@@ -37,8 +37,7 @@ class Transform {
   lib_core::Vector3 left_, up_, forward_;
   lib_core::Matrix4x4 world_;
 
-  static Transform Parse(ct::dyn_array<char> &buffer, size_t &cursor,
-                         ct::hash_map<ct::string, ct::string> &val_map) {
+  static Transform Parse(ct::string &buffer, size_t &cursor) {
     lib_core::Vector3 pos = {0.f}, rot = {0.f}, scale = {1.f}, orb_off = {0.f},
                       orb_rot = {0.f};
     if (cu::ScrollCursor(buffer, cursor, '{')) {
@@ -46,19 +45,19 @@ class Transform {
       while (!type.empty()) {
         if (type.compare("Position") == 0)
           pos = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("Rotation") == 0)
           rot = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("Scale") == 0)
           scale = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("OrbitOffset") == 0)
           orb_off = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("OrbitRotation") == 0)
           orb_rot = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
 
         type = cu::ParseType(buffer, cursor);
       }

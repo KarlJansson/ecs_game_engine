@@ -1,6 +1,6 @@
 #pragma once
-#include <cassert>
 #include <tbb/tbb.h>
+#include <cassert>
 #include <chrono>
 #include <cmath>
 #include <deque>
@@ -114,13 +114,11 @@ class cu {
   static void CompressMemory(ct::dyn_array<uint8_t> &in_data,
                              ct::dyn_array<uint8_t> &out_data);
 
-  static bool ScrollCursor(ct::dyn_array<char> &buffer, size_t &cursor,
-                           char stop_char);
-  static ct::string CaptureToken(ct::dyn_array<char> &buffer, size_t &cursor,
+  static bool ScrollCursor(ct::string &buffer, size_t &cursor, char stop_char);
+  static ct::string CaptureToken(ct::string &buffer, size_t &cursor,
                                  char stop_char);
-  static ct::string ParseType(ct::dyn_array<char> &buffer, size_t &cursor);
-  static ct::string ParseValue(ct::dyn_array<char> &buffer, size_t &cursor,
-                               ct::hash_map<ct::string, ct::string> &var_map,
+  static ct::string ParseType(ct::string &buffer, size_t &cursor);
+  static ct::string ParseValue(ct::string &buffer, size_t &cursor,
                                bool scroll = true);
   static ct::dyn_array<ct::string> SplitString(ct::string &str,
                                                ct::dyn_array<char> &&splitters);
@@ -206,7 +204,8 @@ class cu {
 
   class TerminatingException : public std::exception {
    public:
-    explicit TerminatingException(std::string reason) : reason_(std::move(reason)) {}
+    explicit TerminatingException(std::string reason)
+        : reason_(std::move(reason)) {}
     const char *what() const noexcept override { return reason_.c_str(); }
 
    private:

@@ -93,29 +93,28 @@ class Light {
   float view_depth[3];
   int shadow_resolutions[3];
 
-  static Light Parse(ct::dyn_array<char> &buffer, size_t &cursor,
-                     ct::hash_map<ct::string, ct::string> &val_map) {
+  static Light Parse(ct::string &buffer, size_t &cursor) {
     Light l;
     if (cu::ScrollCursor(buffer, cursor, '{')) {
       auto type = cu::ParseType(buffer, cursor);
       while (!type.empty()) {
         if (type.compare("Position") == 0)
           l.data_pos = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("Direction") == 0)
           l.data_dir = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         else if (type.compare("Shadows") == 0) {
-          auto val = cu::ParseValue(buffer, cursor, val_map);
+          auto val = cu::ParseValue(buffer, cursor);
           if (!val.empty()) {
             l.shadow_resolutions[0] = cu::Parse<int>(val);
           }
           l.cast_shadows = true;
         } else if (type.compare("Radius") == 0) {
           l.max_radius =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         } else if (type.compare("Type") == 0) {
-          auto val = cu::ParseValue(buffer, cursor, val_map);
+          auto val = cu::ParseValue(buffer, cursor);
           if (val.compare("kPoint") == 0)
             l.type = kPoint;
           else if (val.compare("kSpot") == 0)
@@ -124,18 +123,18 @@ class Light {
             l.type = kDir;
         } else if (type.compare("Color") == 0) {
           l.color = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         } else if (type.compare("Cutoffs") == 0) {
           l.data_cutoffs = cu::ParseVector<lib_core::Vector2, 2>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         } else if (type.compare("Linear") == 0) {
-          l.linear = cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+          l.linear = cu::Parse<float>(cu::ParseValue(buffer, cursor));
         } else if (type.compare("Constant") == 0) {
           l.constant =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         } else if (type.compare("Quadratic") == 0) {
           l.quadratic =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         }
 
         type = cu::ParseType(buffer, cursor);

@@ -25,27 +25,26 @@ class Mesh {
   float translucency = 1.f;
   float fade_in = 0.f;
 
-  static Mesh Parse(ct::dyn_array<char> &buffer, size_t &cursor,
-                    ct::hash_map<ct::string, ct::string> &val_map) {
+  static Mesh Parse(ct::string &buffer, size_t &cursor) {
     Mesh m;
     if (cu::ScrollCursor(buffer, cursor, '{')) {
       auto type = cu::ParseType(buffer, cursor);
       while (!type.empty()) {
         if (type.compare("Albedo") == 0) {
           m.albedo = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         } else if (type.compare("RME") == 0) {
           m.rme = cu::ParseVector<lib_core::Vector3, 3>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         } else if (type.compare("TextureScale") == 0) {
           m.texture_scale = cu::ParseVector<lib_core::Vector2, 2>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         } else if (type.compare("TextureOffset") == 0) {
           m.texture_offset = cu::ParseVector<lib_core::Vector2, 2>(
-              cu::ParseValue(buffer, cursor, val_map));
+              cu::ParseValue(buffer, cursor));
         } else if (type.compare("Translucency") == 0) {
           m.translucency =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor, val_map));
+              cu::Parse<float>(cu::ParseValue(buffer, cursor));
         }
 
         type = cu::ParseType(buffer, cursor);

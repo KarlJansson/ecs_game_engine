@@ -124,8 +124,7 @@ void cu::CompressMemory(ct::dyn_array<uint8_t> &in_data,
   out_data.swap(buffer);
 }
 
-bool cu::ScrollCursor(ct::dyn_array<char> &buffer, size_t &cursor,
-                      char stop_char) {
+bool cu::ScrollCursor(ct::string &buffer, size_t &cursor, char stop_char) {
   while (cursor < buffer.size() && buffer[cursor] != '}' &&
          buffer[cursor++] != stop_char) {
   }
@@ -134,7 +133,7 @@ bool cu::ScrollCursor(ct::dyn_array<char> &buffer, size_t &cursor,
   return false;
 }
 
-ct::string cu::CaptureToken(ct::dyn_array<char> &buffer, size_t &cursor,
+ct::string cu::CaptureToken(ct::string &buffer, size_t &cursor,
                             char stop_char) {
   int scopes = 0;
   ct::string type_token;
@@ -150,36 +149,16 @@ ct::string cu::CaptureToken(ct::dyn_array<char> &buffer, size_t &cursor,
   return type_token;
 }
 
-ct::string cu::ParseType(ct::dyn_array<char> &buffer, size_t &cursor) {
+ct::string cu::ParseType(ct::string &buffer, size_t &cursor) {
   if (ScrollCursor(buffer, cursor, '('))
     return CaptureToken(buffer, cursor, ')');
   return "";
 }
 
-ct::string cu::ParseValue(ct::dyn_array<char> &buffer, size_t &cursor,
-                          ct::hash_map<ct::string, ct::string> &var_map,
-                          bool scroll) {
+ct::string cu::ParseValue(ct::string &buffer, size_t &cursor, bool scroll) {
   auto parse = scroll ? ScrollCursor(buffer, cursor, '{') : true;
   if (parse) {
     auto val_token = CaptureToken(buffer, cursor, '}');
-
-    size_t pos = 0;
-    while ((pos = val_token.find_first_of('[', pos)) != ct::string::npos) {
-      size_t pos2 = val_token.find_first_of(']', pos);
-      ct::string var = val_token.substr(pos, (pos2 - pos) + 1);
-      auto it = var_map.find(var);
-      if (it != var_map.end()) {
-        val_token = std::regex_replace(
-            val_token, std::regex(var.substr(1, var.size() - 2)), it->second);
-        pos = pos2 + (it->second.size() - (var.size() - 2));
-      } else
-        pos = pos2;
-    }
-    val_token.erase(std::remove(val_token.begin(), val_token.end(), '['),
-                    val_token.end());
-    val_token.erase(std::remove(val_token.begin(), val_token.end(), ']'),
-                    val_token.end());
-
     auto valid_expr = true;
     auto token_parts = SplitString(val_token, {','});
     for (auto &str : token_parts)
