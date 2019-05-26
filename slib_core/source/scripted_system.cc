@@ -211,8 +211,8 @@ lib_graphics::Material ScriptedSystem::ParseMaterial() {
 
   if (!id.empty()) {
     auto cmd = lib_graphics::AddMaterialCommand(material);
-    issue_command(cmd);
     material_map_[std::hash<ct::string>{}(id)] = cmd.MaterialId();
+    issue_command(cmd);
   }
 
   return material;

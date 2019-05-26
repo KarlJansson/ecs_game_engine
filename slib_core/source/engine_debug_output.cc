@@ -22,8 +22,8 @@ EngineDebugOutput::~EngineDebugOutput() {
 void EngineDebugOutput::GenerateFont(int size) {
   if (font_ != -1) issue_command(lib_gui::UnloadFontCommand(font_));
   auto times_font = lib_gui::LoadFontCommand(size, "./content/timess.ttf");
-  issue_command(times_font);
   font_ = times_font.FontId();
+  issue_command(times_font);
   for (int i = 0; i < 4; ++i) {
     if (toggles_[i]) {
       ToggleDebugText(i);
