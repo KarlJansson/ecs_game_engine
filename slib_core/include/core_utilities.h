@@ -206,7 +206,9 @@ class cu {
    public:
     explicit TerminatingException(std::string reason)
         : reason_(std::move(reason)) {}
-    const char *what() const noexcept override { return reason_.c_str(); }
+    [[nodiscard]] const char *what() const noexcept override {
+      return reason_.c_str();
+    }
 
    private:
     std::string reason_;
@@ -260,7 +262,7 @@ class cu {
     logs.push_back(desc_str + message);
   }
 
-  static inline void ProfileStart(ct::string name) {
+  static inline void ProfileStart(const ct::string &name) {
     auto hash = std::hash<ct::string>{}(name);
     str_map.insert({hash, name});
     profile_starts.insert({hash, std::chrono::high_resolution_clock::now()});

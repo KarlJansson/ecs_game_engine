@@ -9,6 +9,6 @@ class Matrix3x3 {
   Matrix3x3 operator*(const Matrix3x3& rhs);
   void operator*=(const Matrix3x3& rhs);
 
-  float data[9];
+  float data[9]; // NOLINT
 };
 }  // namespace lib_core

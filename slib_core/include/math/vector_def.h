@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -11,6 +12,8 @@ class TVector {
  public:
   TVector() = default;
   ~TVector() = default;
+
+  [[nodiscard]] const T* data() const { return data_.data(); }
 
   T& operator[](size_t idx) { return data_[idx]; }
 
@@ -104,32 +107,32 @@ class TVector {
 
   bool operator!=(const TVector<I, T>& rhs) const { return !(*this == rhs); }
 
-  T Length() const {
+  [[nodiscard]] T Length() const {
     auto val = T(.0);
     for (uint8_t i = 0; i < I; ++i) val += data_[i] * data_[i];
     return sqrt(val);
   }
 
-  bool Zero() const {
+  [[nodiscard]] bool Zero() const {
     for (uint8_t i = 0; i < I; ++i)
       if (data_[i] != T(.0)) return false;
     return true;
   }
 
-  void ZeroMem() { std::memset(data_, 0, sizeof(T) * I); }
+  void ZeroMem() { std::memset(data_.data(), 0, sizeof(T) * I); }
 
   void Normalize() {
     T l = Length();
     for (uint8_t i = 0; i < I; ++i) data_[i] /= l;
   }
 
-  T Dot(const TVector<I, T>& rhs) const {
+  [[nodiscard]] T Dot(const TVector<I, T>& rhs) const {
     T val = .0f;
     for (uint8_t i = 0; i < I; ++i) val += data_[i] * rhs.data_[i];
     return val;
   }
 
-  T Angle(const TVector<I, T>& rhs) const {
+  [[nodiscard]] T Angle(const TVector<I, T>& rhs) const {
     auto prod_1 = *this * rhs.Length();
     auto prod_2 = rhs * this->Length();
     auto length = (prod_1 + prod_2).Length();
@@ -138,7 +141,7 @@ class TVector {
     return T(2.) * atan((prod_1 - prod_2).Length() / length);
   }
 
-  TVector<I, T> Midpoint(const TVector<I, T>& rhs) const {
+  [[nodiscard]] TVector<I, T> Midpoint(const TVector<I, T>& rhs) const {
     TVector<I, T> out;
     for (uint8_t i = 0; i < I; ++i)
       out.data_[i] = (data_[i] + rhs.data_[i]) * T(.5);
@@ -146,7 +149,7 @@ class TVector {
   }
 
  protected:
-  T data_[I];
+  std::array<T, I> data_;
 };
 
 class Vector2 : public TVector<2, float> {

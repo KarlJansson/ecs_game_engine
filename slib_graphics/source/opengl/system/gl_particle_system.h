@@ -45,7 +45,7 @@ class GlParticleSystem : public ParticleSystem {
 
   bool get_uniform_locations_ = true;
   Material particle_material_;
-  int shader_uniforms_[14];
+  std::array<int, 14> shader_uniforms_;
 
   std::default_random_engine rng_engine_;
 

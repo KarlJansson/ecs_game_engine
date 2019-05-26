@@ -361,52 +361,51 @@ void EngineCore::InitEngine() {
 
   lib_core::AddSystemCommand mesh_command(std::move(mesh_up),
                                           lib_core::AddSystemCommand::Prerun);
+  mesh_system_id_ = mesh_command.SystemId();
   issue_command(mesh_command);
   lib_core::AddSystemCommand text_command(std::move(text_up),
                                           lib_core::AddSystemCommand::Prerun);
+  text_system_id_ = text_command.SystemId();
   issue_command(std::move(text_command));
   lib_core::AddSystemCommand material_command(
       std::move(material_up), lib_core::AddSystemCommand::Prerun);
+  material_system_id_ = material_command.SystemId();
   issue_command(std::move(material_command));
   lib_core::AddSystemCommand rect_command(std::move(rect_up),
                                           lib_core::AddSystemCommand::Prerun);
+  rect_system_id_ = rect_command.SystemId();
   issue_command(std::move(rect_command));
   lib_core::AddSystemCommand sound_command(std::move(sound_up),
                                            lib_core::AddSystemCommand::Prerun);
+  sound_system_id_ = sound_command.SystemId();
   issue_command(std::move(sound_command));
   lib_core::AddSystemCommand ps_command(std::move(ps_up),
                                         lib_core::AddSystemCommand::Prerun);
+  particle_system_id_ = ps_command.SystemId();
   issue_command(std::move(ps_command));
 
   lib_core::AddSystemCommand input_command(
       std::move(input_up), lib_core::AddSystemCommand::Prerender);
+  input_system_id_ = input_command.SystemId();
   issue_command(std::move(input_command));
   lib_core::AddSystemCommand camera_command(
       std::move(camera_up), lib_core::AddSystemCommand::Prerender);
+  camera_system_id_ = camera_command.SystemId();
   issue_command(std::move(camera_command));
   lib_core::AddSystemCommand culling_command(
       std::move(cull_up), lib_core::AddSystemCommand::Prerender);
   issue_command(std::move(culling_command));
+  culling_system_id_ = culling_command.SystemId();
 
   lib_core::AddSystemCommand physics_command(std::move(physic_up), 1000);
+  physics_system_id_ = physics_command.SystemId();
   issue_command(std::move(physics_command));
   lib_core::AddSystemCommand transform_command(std::move(trans_up), 1000);
+  transform_system_id_ = transform_command.SystemId();
   issue_command(std::move(transform_command));
   lib_core::AddSystemCommand light_command(std::move(light_up), 1000);
-  issue_command(std::move(light_command));
-
-  particle_system_id_ = ps_command.SystemId();
-  input_system_id_ = input_command.SystemId();
-  physics_system_id_ = physics_command.SystemId();
-  text_system_id_ = text_command.SystemId();
-  rect_system_id_ = rect_command.SystemId();
-  mesh_system_id_ = mesh_command.SystemId();
-  camera_system_id_ = camera_command.SystemId();
-  transform_system_id_ = transform_command.SystemId();
-  material_system_id_ = material_command.SystemId();
-  culling_system_id_ = culling_command.SystemId();
   light_system_id_ = light_command.SystemId();
-  sound_system_id_ = sound_command.SystemId();
+  issue_command(std::move(light_command));
 
   auto stock_textures =
       material_system_->LoadTexturePack("./content/stock_texpack");

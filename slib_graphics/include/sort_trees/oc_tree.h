@@ -48,10 +48,12 @@ class OcTree {
   inline BoundingVolume ComputeNodeVolume(uint64_t loc_code);
   inline size_t ComputeNodeDepth(uint64_t loc_code);
 
-  const lib_core::Vector3 octants_[8] = {{1.f, 1.f, 1.f},   {-1.f, 1.f, 1.f},
-                                         {1.f, 1.f, -1.f},  {-1.f, 1.f, -1.f},
-                                         {1.f, -1.f, 1.f},  {-1.f, -1.f, 1.f},
-                                         {1.f, -1.f, -1.f}, {-1.f, -1.f, -1.f}};
+  const std::array<lib_core::Vector3, 8> octants_ = {
+      lib_core::Vector3(1.f, 1.f, 1.f),   lib_core::Vector3(-1.f, 1.f, 1.f),
+      lib_core::Vector3(1.f, 1.f, -1.f),  lib_core::Vector3(-1.f, 1.f, -1.f),
+      lib_core::Vector3(1.f, -1.f, 1.f),  lib_core::Vector3(-1.f, -1.f, 1.f),
+      lib_core::Vector3(1.f, -1.f, -1.f), lib_core::Vector3(-1.f, -1.f, -1.f),
+  };
   BoundingVolume root_;
   ct::hash_map<uint64_t, OccNode> node_map_;
   ct::hash_map<lib_core::Entity, uint64_t> entity_locations_;

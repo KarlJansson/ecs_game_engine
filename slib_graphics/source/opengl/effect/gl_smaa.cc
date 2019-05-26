@@ -9,11 +9,11 @@ namespace lib_graphics {
 GlSmaa::GlSmaa(lib_core::EngineCore *engine) : engine_(engine) {}
 
 GlSmaa::~GlSmaa() {
-  GLuint textures[] = {edge_tex_, blend_tex_, area_tex_, search_tex_,
-                       albedo_tex_};
-  glDeleteTextures(5, &textures[0]);
+  std::array<GLuint, 5> textures = {edge_tex_, blend_tex_, area_tex_,
+                                    search_tex_, albedo_tex_};
+  glDeleteTextures(5, textures.data());
 
-  GLuint fbs[] = {edge_fbo_, blend_fbo_, output_fbo_};
+  std::array<GLuint, 3> fbs = {edge_fbo_, blend_fbo_, output_fbo_};
   glDeleteFramebuffers(3, &fbs[0]);
 
   glDeleteProgram(edge_shader_);
@@ -95,11 +95,11 @@ void GlSmaa::ShaderInclude(std::string &shader) {
     f.open(("./content/" + file).c_str());
 
     if (f.is_open()) {
-      char buffer[1024];
+      std::array<char, 1024> buffer;
 
       while (!f.eof()) {
-        f.getline(buffer, 1024);
-        content += buffer;
+        f.getline(buffer.data(), 1024);
+        content += buffer.data();
         content += "\n";
       }
     } else {
@@ -125,7 +125,7 @@ void GlSmaa::ReplaceAll(std::string &str, const std::string &from,
 void GlSmaa::CreateShader(std::string vs_text, std::string ps_text,
                           unsigned *program) {
   GLuint shader;
-  const GLchar *text_ptr[1];
+  const GLchar *text_ptr;
   std::string log;
   GLint success;
 
@@ -137,19 +137,19 @@ void GlSmaa::CreateShader(std::string vs_text, std::string ps_text,
   *program = glCreateProgram();
 
   // VERTEX SHADER
-  text_ptr[0] = vs_text.c_str();
-  GLchar info_log[512];
+  text_ptr = vs_text.c_str();
+  std::array<GLchar, 512> info_log;
 
   shader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(shader, 1, text_ptr, nullptr);
+  glShaderSource(shader, 1, &text_ptr, nullptr);
   glCompileShader(shader);
 
   glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
   if (!success) {
-    glGetShaderInfoLog(shader, 512, nullptr, info_log);
+    glGetShaderInfoLog(shader, 512, nullptr, info_log.data());
 
     ct::string error_str = "Vertex shader compilation failed:\n";
-    error_str += info_log;
+    error_str += info_log.data();
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
 
@@ -157,18 +157,18 @@ void GlSmaa::CreateShader(std::string vs_text, std::string ps_text,
   glDeleteShader(shader);
 
   // PIXEL SHADER
-  text_ptr[0] = ps_text.c_str();
+  text_ptr = ps_text.c_str();
 
   shader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(shader, 1, text_ptr, nullptr);
+  glShaderSource(shader, 1, &text_ptr, nullptr);
   glCompileShader(shader);
 
   glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
   if (!success) {
-    glGetShaderInfoLog(shader, 512, nullptr, info_log);
+    glGetShaderInfoLog(shader, 512, nullptr, info_log.data());
 
     ct::string error_str = "Fragment shader compilation failed:\n";
-    error_str += info_log;
+    error_str += info_log.data();
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
 
@@ -245,22 +245,22 @@ void GlSmaa::InitializeShaders() {
   glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, (GLsizei)66, (GLsizei)33, 0, GL_RED,
                GL_UNSIGNED_BYTE, buffer.data());
 
-  GLenum modes[] = {GL_COLOR_ATTACHMENT0};
+  std::array<GLenum, 1> modes = {GL_COLOR_ATTACHMENT0};
   glGenFramebuffers(1, &edge_fbo_);
   glBindFramebuffer(GL_FRAMEBUFFER, edge_fbo_);
-  glDrawBuffers(1, modes);
+  glDrawBuffers(1, modes.data());
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          edge_tex_, 0);
 
   glGenFramebuffers(1, &blend_fbo_);
   glBindFramebuffer(GL_FRAMEBUFFER, blend_fbo_);
-  glDrawBuffers(1, modes);
+  glDrawBuffers(1, modes.data());
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          blend_tex_, 0);
 
   glGenFramebuffers(1, &output_fbo_);
   glBindFramebuffer(GL_FRAMEBUFFER, output_fbo_);
-  glDrawBuffers(1, modes);
+  glDrawBuffers(1, modes.data());
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          albedo_tex_, 0);
 

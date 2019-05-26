@@ -488,7 +488,7 @@ GlDeferredLighting::~GlDeferredLighting() {
 }
 
 void GlDeferredLighting::DrawLights(Camera &cam, lib_core::Entity cam_entity,
-                                    float cam_pos[3]) {
+                                    lib_core::Vector3 cam_pos) {
   auto lighting_timer = cu::TimerStart();
   auto cull_system = engine_->GetCulling();
 
@@ -534,7 +534,7 @@ void GlDeferredLighting::DrawLights(Camera &cam, lib_core::Entity cam_entity,
 void GlDeferredLighting::SetScreenQuad(unsigned quad) { screen_quad_ = quad; }
 
 void GlDeferredLighting::StencilDraw(Camera &cam, lib_core::Entity cam_entity,
-                                     float cam_pos[3]) {
+                                     lib_core::Vector3 cam_pos) {
   auto mat_system = static_cast<GlMaterialSystem *>(engine_->GetMaterial());
   auto mesh_system = engine_->GetMesh();
   auto window = engine_->GetWindow();
@@ -588,7 +588,7 @@ void GlDeferredLighting::StencilDraw(Camera &cam, lib_core::Entity cam_entity,
         if (stencil_world_loc_ == -1)
           stencil_world_loc_ = glGetUniformLocation(shader_program, "world[0]");
         glUniformMatrix4fv(stencil_world_loc_, int(light_pack.size()), GL_FALSE,
-                           (float *)&mats[inst_count]);
+                           mats[inst_count].data);
 
         mesh_system->DrawMesh(lib_core::EngineCore::stock_sphere_mesh,
                               int(light_pack.size()), true);
@@ -628,18 +628,18 @@ void GlDeferredLighting::StencilDraw(Camera &cam, lib_core::Entity cam_entity,
         loc_it = shader_locations_.find(shader_program);
       }
 
-      float scr_dim[] = {float(window->GetRenderDim().first),
-                         float(window->GetRenderDim().second)};
+      std::array<float, 2> scr_dim = {float(window->GetRenderDim().first),
+                                      float(window->GetRenderDim().second)};
 
       glUniform3fv(loc_it->second[0], 1, &cam_pos[0]);
-      glUniform2fv(loc_it->second[1], 1, scr_dim);
+      glUniform2fv(loc_it->second[1], 1, scr_dim.data());
       glUniformMatrix4fv(loc_it->second[2], 1, GL_FALSE, cam.view_proj_.data);
       if (l_pack.first == deferred_lighting_dir_shadow_quad_)
         glUniformMatrix4fv(loc_it->second[3], 3, GL_FALSE,
                            mats[inst_count].data);
       else
         glUniformMatrix4fv(loc_it->second[3], int(light_pack.size()), GL_FALSE,
-                           (float *)&mats[inst_count]);
+                           mats[inst_count].data);
 
       inst_count += int(light_pack.size());
 
@@ -663,7 +663,7 @@ void GlDeferredLighting::StencilDraw(Camera &cam, lib_core::Entity cam_entity,
 }
 
 void GlDeferredLighting::InstanceDraw(Camera &cam, lib_core::Entity cam_entity,
-                                      float cam_pos[3]) {
+                                      lib_core::Vector3 cam_pos) {
   auto mat_system = engine_->GetMaterial();
   auto mesh_system = engine_->GetMesh();
   auto window = engine_->GetWindow();
@@ -711,18 +711,18 @@ void GlDeferredLighting::InstanceDraw(Camera &cam, lib_core::Entity cam_entity,
         loc_it = shader_locations_.find(shader_program);
       }
 
-      float scr_dim[] = {float(window->GetRenderDim().first),
-                         float(window->GetRenderDim().second)};
+      std::array<float, 2> scr_dim = {float(window->GetRenderDim().first),
+                                      float(window->GetRenderDim().second)};
 
       glUniform3fv(loc_it->second[0], 1, &cam_pos[0]);
-      glUniform2fv(loc_it->second[1], 1, scr_dim);
+      glUniform2fv(loc_it->second[1], 1, scr_dim.data());
       glUniformMatrix4fv(loc_it->second[2], 1, GL_FALSE, cam.view_proj_.data);
       if (l_pack.first == deferred_lighting_dir_shadow_quad_)
         glUniformMatrix4fv(loc_it->second[3], 3, GL_FALSE,
                            mats[inst_count].data);
       else
         glUniformMatrix4fv(loc_it->second[3], int(light_pack.size()), GL_FALSE,
-                           (float *)&mats[inst_count]);
+                           mats[inst_count].data);
 
       inst_count += int(light_pack.size());
 

@@ -11,7 +11,7 @@ class LoadFontCommand : public lib_core::Command {
     base_id = g_sys_mgr.GenerateResourceIds(1);
   }
 
-  size_t FontId() const { return base_id; }
+  [[nodiscard]] size_t FontId() const { return base_id; }
 
   int size;
   ct::string path;

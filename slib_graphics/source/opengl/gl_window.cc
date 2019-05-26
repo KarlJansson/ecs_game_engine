@@ -100,8 +100,8 @@ bool GlWindow::CheckCapabilities() {
 void GlWindow::CreateRenderWindow() {
   render_claimed_ = false;
   load_claimed_ = false;
-  int major_version[] = {4, 4, 4, 4, 4, 4, 4, 3};
-  int minor_version[] = {6, 5, 4, 3, 2, 1, 0, 3};
+  std::array<int, 8> major_version = {4, 4, 4, 4, 4, 4, 4, 3};
+  std::array<int, 8> minor_version = {6, 5, 4, 3, 2, 1, 0, 3};
   window_ = nullptr;
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);

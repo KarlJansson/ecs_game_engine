@@ -171,7 +171,7 @@ bool GlMaterialSystem::ForceMaterial(
             shader_program,
             ("light_position[" + std::to_string(i) + "]").c_str());
         if (light_loc == -1) break;
-        glUniform3fv(light_loc, 1, (float *)&light.second.data_pos);
+        glUniform3fv(light_loc, 1, light.second.data_pos.data());
 
         glUniform3fv(glGetUniformLocation(
                          shader_program,
@@ -186,14 +186,13 @@ bool GlMaterialSystem::ForceMaterial(
         light_loc = glGetUniformLocation(
             shader_program,
             ("light_directions[" + std::to_string(i) + "]").c_str());
-        if (light_loc)
-          glUniform3fv(light_loc, 1, (float *)&light.second.data_dir);
+        if (light_loc) glUniform3fv(light_loc, 1, light.second.data_dir.data());
       }
 
       glUniform3fv(glGetUniformLocation(
                        shader_program,
                        ("light_color[" + std::to_string(i) + "]").c_str()),
-                   1, (float *)&light.second.color);
+                   1, light.second.color.data());
 
       if (light.second.cast_shadows) {
         if (light.second.type == Light::kPoint) {
@@ -254,7 +253,7 @@ bool GlMaterialSystem::ForceMaterial(
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error", __FILE__,
                   __LINE__);
 
-  for (auto & texture : mat.textures) {
+  for (auto &texture : mat.textures) {
     auto susp_it = suspended_textures_.find(texture.id);
     if (susp_it != suspended_textures_.end()) {
       auto source_it = texture_source_.find(texture.id);
@@ -277,8 +276,7 @@ bool GlMaterialSystem::ForceMaterial(
     auto gl_err = glGetError();
     cu::AssertError(gl_err == GL_NO_ERROR, "OpenGL error", __FILE__, __LINE__);
 
-    auto tex_loc =
-        glGetUniformLocation(shader_program, texture.name.c_str());
+    auto tex_loc = glGetUniformLocation(shader_program, texture.name.c_str());
     if (tex_loc != -1) {
       glActiveTexture(GL_TEXTURE0 + tex_id);
       gl_err = glGetError();
@@ -354,7 +352,7 @@ void GlMaterialSystem::RebuildTextures() {
       tex->first = tex_gluid;
 
       const auto tex_width = GLuint(frame_buffer.second.dim.first),
-                   tex_height = GLuint(frame_buffer.second.dim.second);
+                 tex_height = GLuint(frame_buffer.second.dim.second);
       glBindTexture(GL_TEXTURE_2D, tex->first);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -574,9 +572,10 @@ void GlMaterialSystem::CreateDeferredRendererFrameBuffer(
                          tex->first, 0);
   fbuffer.textures.push_back({command.RmeTextureId(), "g_rma"});
 
-  GLuint attachments[4] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
-                           GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
-  glDrawBuffers(4, attachments);
+  std::array<GLuint, 4> attachments = {
+      GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+      GL_COLOR_ATTACHMENT3};
+  glDrawBuffers(4, attachments.data());
 
   CreateTexture2D(command.DepthTextureId());
   tex = &textures_[command.DepthTextureId()];
@@ -650,12 +649,12 @@ void GlMaterialSystem::CompileShaders() {
 
   auto stock_mat = lib_graphics::AddMaterialCommand(CreateTexturedMaterial(
       "stock_albedo.png", "stock_normal.png", "stock_rme.png"));
-  issue_command(stock_mat);
   lib_core::EngineCore::stock_material_textured = stock_mat.MaterialId();
+  issue_command(stock_mat);
 
   stock_mat = lib_graphics::AddMaterialCommand(CreateUntexturedMaterial());
-  issue_command(stock_mat);
   lib_core::EngineCore::stock_material_untextured = stock_mat.MaterialId();
+  issue_command(stock_mat);
 }
 
 uint32_t GlMaterialSystem::GetCurrentShader() { return current_shader_; }
@@ -838,8 +837,8 @@ void GlMaterialSystem::DrawUpdate(lib_graphics::Renderer *renderer,
 
       fb->second.last_command = render_commands->front();
 
-      //mipmap_generation_queue_.emplace_back(fb->second.textures[0].id);
-    } 
+      // mipmap_generation_queue_.emplace_back(fb->second.textures[0].id);
+    }
     render_commands->pop_front();
   }
 
@@ -858,7 +857,7 @@ void GlMaterialSystem::DrawUpdate(lib_graphics::Renderer *renderer,
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
 
       glGenerateMipmap(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, 0); 
+      glBindTexture(GL_TEXTURE_2D, 0);
     }
     mipmap_generation_queue_.pop_back();
   }
@@ -981,7 +980,7 @@ void GlMaterialSystem::Create2DTextureTarget(
                   __LINE__);
   auto *tex = &textures_[fb_command.TextureId()];
   const auto tex_width = GLuint(fb_command.width),
-               tex_height = GLuint(fb_command.height);
+             tex_height = GLuint(fb_command.height);
   glBindTexture(GL_TEXTURE_2D, tex->first);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -1008,11 +1007,11 @@ void GlMaterialSystem::CreateBlurTargets(
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error", __FILE__,
                   __LINE__);
 
-  size_t fb_ids[2];
+  std::array<size_t, 2> fb_ids;
   fb_ids[0] = command.FrameBuffer1Id();
   fb_ids[1] = command.FrameBuffer2Id();
 
-  size_t tex_ids[2];
+  std::array<size_t, 2> tex_ids;
   tex_ids[0] = command.Texture1Id();
   tex_ids[1] = command.Texture2Id();
 
@@ -1109,14 +1108,14 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   glCompileShader(vertex_shader);
 
   GLint success;
-  GLchar info_log[512];
+  std::array<GLchar, 512> info_log;
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(vertex_shader, 512, nullptr, info_log);
+    glGetShaderInfoLog(vertex_shader, 512, nullptr, info_log.data());
 
     ct::string error_str = "Vertex shader compilation failed:\n";
-    error_str += info_log;
+    error_str += info_log.data();
     error_str += "\n\n" + code.vert_shader;
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
@@ -1140,10 +1139,10 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glGetShaderInfoLog(fragment_shader, 512, nullptr, info_log);
+    glGetShaderInfoLog(fragment_shader, 512, nullptr, info_log.data());
 
     ct::string error_str = "Fragment shader compilation failed:\n";
-    error_str += info_log;
+    error_str += info_log.data();
     error_str += "\n\n" + frag_code;
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
@@ -1159,10 +1158,10 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
     glGetShaderiv(geometry_shader, GL_COMPILE_STATUS, &success);
 
     if (!success) {
-      glGetShaderInfoLog(geometry_shader, 512, nullptr, info_log);
+      glGetShaderInfoLog(geometry_shader, 512, nullptr, info_log.data());
 
       ct::string error_str = "Geometry shader compilation failed:\n";
-      error_str += info_log;
+      error_str += info_log.data();
       cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
     }
   }
@@ -1177,10 +1176,10 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
 
   glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
   if (!success) {
-    glGetProgramInfoLog(shader_program, 512, nullptr, info_log);
+    glGetProgramInfoLog(shader_program, 512, nullptr, info_log.data());
 
     ct::string error_str = "Shader linking failed:\n";
-    error_str += info_log;
+    error_str += info_log.data();
     cu::AssertError(success > 0, error_str, __FILE__, __LINE__);
   }
 

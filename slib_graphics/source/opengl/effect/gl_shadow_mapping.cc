@@ -65,15 +65,14 @@ GlShadowMapping::GlShadowMapping(lib_core::EngineCore *engine)
       "}";
 
   Material material;
-
   auto shader_command = AddShaderCommand(vert_shader, frag_shader, geom_shader);
-  issue_command(shader_command);
   shader_ids_.push_back(shader_command.ShaderId());
   material.shader = shader_command.ShaderId();
+  issue_command(shader_command);
 
   auto material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   point_shadow_material_ = material_command.MaterialId();
+  issue_command(material_command);
 
   vert_shader = vertex_header_ +
 
@@ -134,7 +133,7 @@ void GlShadowMapping::DrawShadowMap(std::pair<lib_core::Entity, Light> &light) {
       if (far_plane_loc_ == -1)
         far_plane_loc_ = glGetUniformLocation(shader_id, "far_plane");
 
-      glUniform3fv(light_pos_loc_, 1, (float *)&light.second.data_pos);
+      glUniform3fv(light_pos_loc_, 1, light.second.data_pos.data());
       glUniform1f(far_plane_loc_, light.second.max_radius);
 
       frame_buff = mat_system->Get3DShadowFrameBuffer(
@@ -173,8 +172,7 @@ void GlShadowMapping::DrawShadowMap(std::pair<lib_core::Entity, Light> &light) {
         if (world_loc != -1)
           glUniformMatrix4fv(
               world_loc, count > max_inst ? max_inst : count, GL_FALSE,
-              (float *)&world_matrices[pack.start_ind +
-                                       (pack.mesh_count - count)]);
+              world_matrices[pack.start_ind + (pack.mesh_count - count)].data);
 
         mesh_system->DrawMesh(pack.mesh_id, count > max_inst ? max_inst : count,
                               true);

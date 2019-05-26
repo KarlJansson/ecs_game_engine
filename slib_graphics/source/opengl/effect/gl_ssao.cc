@@ -77,18 +77,18 @@ GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
       "  FragColor = occlusion;\n"
       "}";
 
-  auto shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
-  ssao_shader_ = shader_command.ShaderId();
-
   Material material;
+  auto shader_command = AddShaderCommand(vert_shader, frag_shader);
+  ssao_shader_ = shader_command.ShaderId();
   material.shader = shader_command.ShaderId();
+  issue_command(shader_command);
+
   material.textures.push_back(pos_gbuffer);
   material.textures.push_back(normal_gbuffer);
 
   auto material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   ssao_material_ = material_command.MaterialId();
+  issue_command(material_command);
 
   auto lerp = [](GLfloat a, GLfloat b, GLfloat f) -> GLfloat {
     return a + f * (b - a);
@@ -158,14 +158,15 @@ void GlSsao::ApplySsaoEffect(Camera &cam) {
   mat_system->ApplyMaterial(ssao_material_);
   CheckShaderLocations();
 
-  float ssao_dim[] = {ssao_dim_.first / 4.0f, ssao_dim_.second / 4.0f};
+  std::array<float, 2> ssao_dim = {ssao_dim_.first / 4.0f,
+                                   ssao_dim_.second / 4.0f};
 
   glUniformMatrix4fv(view_loc_, 1, GL_FALSE, cam.view_.data);
   glUniformMatrix4fv(proj_loc_, 1, GL_FALSE, cam.proj_.data);
   glUniform1i(ksize_loc_, kernel_smaples_);
   glUniform1f(radius_loc_, radius_);
   glUniform1f(bias_loc_, bias_);
-  glUniform2fv(nscale_loc_, 1, ssao_dim);
+  glUniform2fv(nscale_loc_, 1, ssao_dim.data());
 
   glUniform3fv(samples_loc_, kernel_smaples_, ssao_kernel_.data());
 

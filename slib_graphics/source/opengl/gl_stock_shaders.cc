@@ -624,8 +624,8 @@ void GlStockShaders::CompileShaders(MaterialSystem *mat_mgr) {
     if (it == forward_shader_ids_.end()) {
       auto shader_command = AddShaderCommand(
           std::get<0>(p.second), std::get<1>(p.second), std::get<2>(p.second));
-      issue_command(shader_command);
       forward_shader_ids_[p.first] = shader_command.ShaderId();
+      issue_command(shader_command);
     } else {
       auto shader_command = AddShaderCommand();
       shader_command.vert_shader = std::get<0>(p.second);
@@ -643,12 +643,11 @@ void GlStockShaders::CompileShaders(MaterialSystem *mat_mgr) {
     if (it == deferred_shader_ids_.end()) {
       auto shader_command = AddShaderCommand(
           std::get<0>(p.second), std::get<1>(p.second), std::get<2>(p.second));
-      issue_command(shader_command);
       deferred_shader_ids_[p.first] = shader_command.ShaderId();
-
       auto f_it = forward_shader_ids_.find(p.first);
       if (f_it != forward_shader_ids_.end())
         def_to_for_map_[shader_command.ShaderId()] = f_it->second;
+      issue_command(shader_command);
     } else {
       auto shader_command = AddShaderCommand();
       shader_command.vert_shader = std::get<0>(p.second);

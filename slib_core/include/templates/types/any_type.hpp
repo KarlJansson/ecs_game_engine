@@ -9,7 +9,7 @@ struct any_type {
   ~any_type() = default;
 
   template <typename T>
-  T& get_value() const {
+  [[nodiscard]] T& get_value() const {
     return std::static_pointer_cast<impl<T>>(ptr)->get_value();
   }
 

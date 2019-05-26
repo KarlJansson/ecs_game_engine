@@ -34,7 +34,7 @@ class Quaternion {
   bool operator!=(const Quaternion& rhs) const;
   bool operator==(const Quaternion& rhs) const;
 
-  float Dot(const Quaternion& quat) const;
+  [[nodiscard]] float Dot(const Quaternion& quat) const;
 
   void FromAngle(const Vector3& vec);
   void FromAxisAngle(const Vector3 axis, const float angle);

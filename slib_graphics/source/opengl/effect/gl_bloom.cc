@@ -44,25 +44,23 @@ GlBloom::GlBloom(std::pair<size_t, size_t> dim, lib_core::EngineCore *engine,
 
   Material material;
   auto shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
   bloom_shader_ = shader_command.ShaderId();
-
   material.shader = shader_command.ShaderId();
+  issue_command(shader_command);
+
   material.textures.push_back(hdr_buffer);
   material.textures.push_back(rme_gbuffer);
 
   auto material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   bloom_extract_material_ = material_command.MaterialId();
+  issue_command(material_command);
 
   auto bloom_fbs = CreateBlurFrameBufferCommand(
       bloom_dim_.first, bloom_dim_.second, GL_RGB, false);
-  issue_command(bloom_fbs);
-
   bloom_buffer_.push_back(bloom_fbs.FrameBuffer1Id());
   bloom_buffer_.push_back(bloom_fbs.FrameBuffer2Id());
-
   bloom_return_desc_ = {bloom_fbs.Texture1Id(), "bloom_buffer"};
+  issue_command(bloom_fbs);
 }
 
 GlBloom::~GlBloom() {

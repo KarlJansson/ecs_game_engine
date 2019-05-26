@@ -49,6 +49,6 @@ class SoundSystem : public lib_core::System {
   ct::hash_map<size_t, SoundBank> sound_banks_;
   ct::hash_map<size_t, size_t> sound_bank_map_;
 
-  size_t callback_ids[3];
+  std::array<size_t, 3> callback_ids;
 };
 }  // namespace lib_sound

@@ -10,7 +10,7 @@ class Transform {
             lib_core::Vector3 rot = {0.f}, lib_core::Vector3 scale = {1.f},
             lib_core::Vector3 orb = {0.f}, lib_core::Vector3 orb_rot = {0.f});
 
-  lib_core::Vector3 Position() const;
+  [[nodiscard]] lib_core::Vector3 Position() const;
 
   void MoveForward(float amount);
   void MoveBackward(float amount);

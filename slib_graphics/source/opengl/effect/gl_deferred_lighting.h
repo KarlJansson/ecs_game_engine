@@ -17,21 +17,24 @@ class GlDeferredLighting {
                      const TextureDesc& depth_tex);
   ~GlDeferredLighting();
 
-  void DrawLights(Camera &cam, lib_core::Entity cam_entity, float cam_pos[3]);
+  void DrawLights(Camera& cam, lib_core::Entity cam_entity,
+                  lib_core::Vector3 cam_pos);
   void SetScreenQuad(unsigned quad);
 
  protected:
  private:
-  void StencilDraw(Camera &cam, lib_core::Entity cam_entity, float cam_pos[3]);
-  void InstanceDraw(Camera &cam, lib_core::Entity cam_entity, float cam_pos[3]);
+  void StencilDraw(Camera& cam, lib_core::Entity cam_entity,
+                   lib_core::Vector3 cam_pos);
+  void InstanceDraw(Camera& cam, lib_core::Entity cam_entity,
+                    lib_core::Vector3 cam_pos);
 
-  lib_core::EngineCore *engine_;
+  lib_core::EngineCore* engine_;
   ct::dyn_array<size_t> shader_ids_;
 
   unsigned screen_quad_;
 
   int stencil_vp_loc_ = -1, stencil_world_loc_ = -1;
-  ct::hash_map<unsigned, int[4]> shader_locations_;
+  ct::hash_map<unsigned, std::array<int, 4>> shader_locations_;
   std::unique_ptr<GlShadowMapping> shadow_mapper_;
 
   ct::hash_map<size_t, ct::dyn_array<std::pair<lib_core::Entity, Light>>>

@@ -18,11 +18,11 @@ class Camera {
   struct FrustumInfo {
     float neard, fard;
     float fov, ratio;
-    lib_core::Vector3 point[8];
+    std::array<lib_core::Vector3, 8> point;
   };
 
   struct FrustumPlanes {
-    Plane planes[6];
+    std::array<Plane, 6> planes;
   };
 
   static ct::dyn_array<FrustumPlanes> CalculateFrustumGrid(FrustumInfo& frustum,
@@ -43,17 +43,17 @@ class Camera {
   void SetRotation(lib_core::Vector3 rot);
   void SetExposure(float exposure);
 
-  lib_core::Vector3 Forward(const Camera& old) const;
-  lib_core::Vector3 Up(const Camera& old) const;
-  lib_core::Vector3 Left(const Camera& old) const;
-  lib_core::Vector3 Rotation(const Camera& old) const;
-  lib_core::Vector3 Position(const Camera& old) const;
+  [[nodiscard]] lib_core::Vector3 Forward(const Camera& old) const;
+  [[nodiscard]] lib_core::Vector3 Up(const Camera& old) const;
+  [[nodiscard]] lib_core::Vector3 Left(const Camera& old) const;
+  [[nodiscard]] lib_core::Vector3 Rotation(const Camera& old) const;
+  [[nodiscard]] lib_core::Vector3 Position(const Camera& old) const;
 
   lib_core::Vector3 position_, rotation_;
   lib_core::Vector3 forward_, up_, left_;
   lib_core::Vector3 delta_pos_, delta_rot_;
   float fov_, a_ratio_, near_, far_;
-  bool set_flags_[6];
+  std::array<bool, 6> set_flags_;
 
   float exposure_;
   lib_core::Matrix4x4 view_, proj_, view_proj_;

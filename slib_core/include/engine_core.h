@@ -45,21 +45,21 @@ class EngineCore {
   void SetTimeMultiplier(float multiplier);
   float TimeMultiplier();
 
-  lib_graphics::Renderer* GetRenderer() const;
-  lib_physics::PhysicsSystem* GetPhysics() const;
-  lib_input::InputSystem* GetInput() const;
-  lib_graphics::MaterialSystem* GetMaterial() const;
-  lib_gui::TextSystem* GetText() const;
-  lib_gui::RectSystem* GetRect() const;
-  lib_graphics::MeshSystem* GetMesh() const;
-  lib_graphics::Window* GetWindow() const;
-  lib_graphics::CullingSystem* GetCulling() const;
-  lib_sound::SoundSystem* GetSound() const;
-  lib_graphics::TransformSystem* TransformSystem() const;
-  lib_graphics::ParticleSystem* ParticleSystem() const;
-  lib_graphics::CameraSystem* CameraSystem() const;
+  [[nodiscard]] lib_graphics::Renderer* GetRenderer() const;
+  [[nodiscard]] lib_physics::PhysicsSystem* GetPhysics() const;
+  [[nodiscard]] lib_input::InputSystem* GetInput() const;
+  [[nodiscard]] lib_graphics::MaterialSystem* GetMaterial() const;
+  [[nodiscard]] lib_gui::TextSystem* GetText() const;
+  [[nodiscard]] lib_gui::RectSystem* GetRect() const;
+  [[nodiscard]] lib_graphics::MeshSystem* GetMesh() const;
+  [[nodiscard]] lib_graphics::Window* GetWindow() const;
+  [[nodiscard]] lib_graphics::CullingSystem* GetCulling() const;
+  [[nodiscard]] lib_sound::SoundSystem* GetSound() const;
+  [[nodiscard]] lib_graphics::TransformSystem* TransformSystem() const;
+  [[nodiscard]] lib_graphics::ParticleSystem* ParticleSystem() const;
+  [[nodiscard]] lib_graphics::CameraSystem* CameraSystem() const;
 
-  EngineDebugOutput* GetDebugOutput() const;
+  [[nodiscard]] EngineDebugOutput* GetDebugOutput() const;
 
   static size_t stock_box_mesh, stock_sphere_mesh, stock_material_textured,
       stock_texture, stock_material_untextured;

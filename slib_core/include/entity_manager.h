@@ -303,8 +303,8 @@ class EntityManager {
   short GetBufferIndex(BufferId id);
 
   struct Scene {
-    ct::hash_map<size_t, any_type> components_[2];
-    ct::hash_map<size_t, ct::dyn_array<uint8_t>> update_vecs_[2];
+    std::array<ct::hash_map<size_t, any_type>, 2> components_;
+    std::array<ct::hash_map<size_t, ct::dyn_array<uint8_t>>, 2> update_vecs_;
     ct::hash_map<size_t, ct::dyn_array<Entity>> entity_vecs_;
     ct::hash_map<Entity, ct::hash_map<size_t, size_t>> entity_comps_;
   };
@@ -339,8 +339,8 @@ class EntityManager {
       comp_add_callbacks_;
 
   std::atomic<size_t> entity_id_ = {0}, scene_id_ = {0};
-  ct::hash_map<size_t, any_type> components_[2];
-  ct::hash_map<size_t, ct::dyn_array<uint8_t>> update_vecs_[2];
+  std::array<ct::hash_map<size_t, any_type>, 2> components_;
+  std::array<ct::hash_map<size_t, ct::dyn_array<uint8_t>>, 2> update_vecs_;
   ct::hash_map<size_t, ct::dyn_array<Entity>> entity_vecs_;
   ct::hash_map<Entity, ct::hash_map<size_t, size_t>> entity_comps_;
 

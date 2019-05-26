@@ -37,6 +37,6 @@ class InputSystem : public lib_core::System {
   std::atomic<bool> cursor_disabled_ = {true};
 
   ct::dyn_array<int> present_sticks_;
-  ct::dyn_array<float> stick_pos_[16];
+  std::array<ct::dyn_array<float>, 16> stick_pos_;
 };
 }  // namespace lib_input

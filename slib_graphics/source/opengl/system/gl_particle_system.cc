@@ -115,8 +115,8 @@ GlParticleSystem::GlParticleSystem(const lib_core::EngineCore *engine)
       "}\n";
 
   auto shader_cmd = lib_graphics::AddShaderCommand(vert_shader_, frag_shader_);
-  issue_command(shader_cmd);
   shader_id_ = shader_cmd.ShaderId();
+  issue_command(shader_cmd);
 
   particle_material_.shader = shader_id_;
   particle_material_.textures.push_back({0, "particle_texture"});
@@ -426,8 +426,8 @@ void GlParticleSystem::PurgeGpuResources() {
 
 void GlParticleSystem::RebuildGpuResources() {
   auto shader_cmd = lib_graphics::AddShaderCommand(vert_shader_, frag_shader_);
-  issue_command(shader_cmd);
   shader_id_ = shader_cmd.ShaderId();
+  issue_command(shader_cmd);
   particle_material_.shader = shader_id_;
 
   for (auto &e : emitter_data_) {

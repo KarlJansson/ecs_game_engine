@@ -57,7 +57,7 @@ void GlDeferredShading::DrawGBuffers(
                     __FILE__, __LINE__);
 
     if (it->second[0] != -1)
-      glUniform3fv(it->second[0], 1, (float *)&cam.position_);
+      glUniform3fv(it->second[0], 1, cam.position_.data());
     if (it->second[1] != -1)
       glUniformMatrix4fv(it->second[1], 1, GL_FALSE, cam.view_proj_.data);
 
@@ -68,25 +68,24 @@ void GlDeferredShading::DrawGBuffers(
     while (count > 0) {
       glUniformMatrix4fv(
           it->second[2], count > max_inst_ ? max_inst_ : count, GL_FALSE,
-          (float *)&world_matrices[pack.start_ind + (pack.mesh_count - count)]);
+          world_matrices[pack.start_ind + (pack.mesh_count - count)].data);
       glUniformMatrix4fv(
           it->second[3], count > max_inst_ ? max_inst_ : count, GL_FALSE,
-          (float *)&world_inv_trans_matrices[pack.start_ind +
-                                             (pack.mesh_count - count)]);
+          world_inv_trans_matrices[pack.start_ind + (pack.mesh_count - count)]
+              .data);
       glUniform3fv(
           it->second[4], count > max_inst_ ? max_inst_ : count,
-          (float *)&albedo_vecs[pack.start_ind + (pack.mesh_count - count)]);
-      glUniform3fv(
-          it->second[5], count > max_inst_ ? max_inst_ : count,
-          (float *)&rme_vecs[pack.start_ind + (pack.mesh_count - count)]);
+          albedo_vecs[pack.start_ind + (pack.mesh_count - count)].data());
+      glUniform3fv(it->second[5], count > max_inst_ ? max_inst_ : count,
+                   rme_vecs[pack.start_ind + (pack.mesh_count - count)].data());
       if (it->second[6])
         glUniform2fv(
             it->second[6], count > max_inst_ ? max_inst_ : count,
-            (float *)&tex_scale[pack.start_ind + (pack.mesh_count - count)]);
+            tex_scale[pack.start_ind + (pack.mesh_count - count)].data());
       if (it->second[7])
         glUniform2fv(
             it->second[7], count > max_inst_ ? max_inst_ : count,
-            (float *)&tex_offset[pack.start_ind + (pack.mesh_count - count)]);
+            tex_offset[pack.start_ind + (pack.mesh_count - count)].data());
 
       mesh_system->DrawMesh(pack.mesh_id,
                             count > max_inst_ ? max_inst_ : count);
@@ -164,7 +163,7 @@ void GlDeferredShading::DrawTranslucents(
                     "OpenGL error - Draw translucent", __FILE__, __LINE__);
 
     if (it->second[0] != -1)
-      glUniform3fv(it->second[0], 1, (float *)&cam.position_);
+      glUniform3fv(it->second[0], 1, cam.position_.data());
     if (it->second[1] != -1)
       glUniformMatrix4fv(it->second[1], 1, GL_FALSE, cam.view_proj_.data);
 
@@ -175,29 +174,27 @@ void GlDeferredShading::DrawTranslucents(
     while (count > 0) {
       glUniformMatrix4fv(
           it->second[2], count > max_inst_ ? max_inst_ : count, GL_FALSE,
-          (float *)&world_matrices[pack.start_ind + (pack.mesh_count - count)]);
+          world_matrices[pack.start_ind + (pack.mesh_count - count)].data);
       glUniformMatrix4fv(
           it->second[3], count > max_inst_ ? max_inst_ : count, GL_FALSE,
-          (float *)&world_inv_trans_matrices[pack.start_ind +
-                                             (pack.mesh_count - count)]);
+          world_inv_trans_matrices[pack.start_ind + (pack.mesh_count - count)]
+              .data);
       glUniform3fv(
           it->second[4], count > max_inst_ ? max_inst_ : count,
-          (float *)&albedo_vecs[pack.start_ind + (pack.mesh_count - count)]);
-      glUniform3fv(
-          it->second[5], count > max_inst_ ? max_inst_ : count,
-          (float *)&rme_vecs[pack.start_ind + (pack.mesh_count - count)]);
+          albedo_vecs[pack.start_ind + (pack.mesh_count - count)].data());
+      glUniform3fv(it->second[5], count > max_inst_ ? max_inst_ : count,
+                   rme_vecs[pack.start_ind + (pack.mesh_count - count)].data());
       if (it->second[6])
         glUniform2fv(
             it->second[6], count > max_inst_ ? max_inst_ : count,
-            (float *)&tex_scale[pack.start_ind + (pack.mesh_count - count)]);
+            tex_scale[pack.start_ind + (pack.mesh_count - count)].data());
       if (it->second[7])
         glUniform2fv(
             it->second[7], count > max_inst_ ? max_inst_ : count,
-            (float *)&tex_offset[pack.start_ind + (pack.mesh_count - count)]);
+            tex_offset[pack.start_ind + (pack.mesh_count - count)].data());
       if (it->second[8])
-        glUniform1fv(
-            it->second[8], count > max_inst_ ? max_inst_ : count,
-            (float *)&transparency[pack.start_ind + (pack.mesh_count - count)]);
+        glUniform1fv(it->second[8], count > max_inst_ ? max_inst_ : count,
+                     &transparency[pack.start_ind + (pack.mesh_count - count)]);
 
       mesh_system->DrawMesh(pack.mesh_id, count > max_inst_ ? max_inst_ : count,
                             true);

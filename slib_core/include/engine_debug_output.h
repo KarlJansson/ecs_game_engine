@@ -29,10 +29,10 @@ class EngineDebugOutput {
   void ToggleDebugText(int i);
   void UpdateActiveText(int i, int line);
 
-  ct::dyn_array<ct::string> text_strings_[4];
-  ct::dyn_array<class Entity> text_ents_[4];
-  bool toggles_[4];
-  float text_scale_[4];
+  std::array<ct::dyn_array<ct::string>, 4> text_strings_;
+  std::array<ct::dyn_array<class Entity>, 4> text_ents_;
+  std::array<bool, 4> toggles_;
+  std::array<float, 4> text_scale_;
   size_t font_ = -1;
 };
 }  // namespace lib_core

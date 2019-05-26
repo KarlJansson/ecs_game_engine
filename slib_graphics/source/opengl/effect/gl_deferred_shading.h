@@ -18,7 +18,7 @@ class GlDeferredShading {
  private:
   lib_core::EngineCore *engine_;
 
-  ct::hash_map<unsigned, int[9]> shader_locations_;
+  ct::hash_map<unsigned, std::array<int, 9>> shader_locations_;
   int draw_calls_, max_inst_;
 };
 }  // namespace lib_graphics

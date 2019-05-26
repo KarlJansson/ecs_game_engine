@@ -13,8 +13,8 @@ class GlWindow : public Window {
   int ShouldClose() override;
   void SetRenderContext() override;
   void SetLoadContext() override;
-  void *GetWindowHandle() const override;
-  bool NeedsRestart() const override;
+  [[nodiscard]] void *GetWindowHandle() const override;
+  [[nodiscard]] bool NeedsRestart() const override;
   void Rebuild() override;
   bool CheckCapabilities() override;
 

@@ -38,8 +38,8 @@ GlSkyboxShading::GlSkyboxShading(lib_core::EngineCore *engine)
       "}";
 
   auto shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
   skybox_material_.shader = shader_command.ShaderId();
+  issue_command(shader_command);
 }
 
 GlSkyboxShading::~GlSkyboxShading() {

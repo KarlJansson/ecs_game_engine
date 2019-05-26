@@ -6,7 +6,7 @@ struct Vertex {
   lib_core::Vector3 position;
   lib_core::Vector3 normal;
   lib_core::Vector3 tangent;
-  float texcoord[2];
+  std::array<float, 2> texcoord;
 };
 
 struct PosVertex {

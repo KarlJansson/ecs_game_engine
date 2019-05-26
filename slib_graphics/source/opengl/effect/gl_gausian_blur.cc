@@ -82,8 +82,8 @@ GlGausianBlur::GlGausianBlur(lib_core::EngineCore *engine) : engine_(engine) {
       "}";
 
   auto shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
   blur_material_.shader = shader_command.ShaderId();
+  issue_command(shader_command);
   blur_material_.textures.push_back({0, "blur_image"});
 }
 

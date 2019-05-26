@@ -115,8 +115,8 @@ void LightSystem::CalculateDirLightCascades(
   Camera* old_cam;
   old_cam = &g_ent_mgr.GetOldCbt<Camera>()->at(0);
 
-  Camera::FrustumInfo f[3];
-  for (auto & i : f) {
+  std::array<Camera::FrustumInfo, 3> f;
+  for (auto& i : f) {
     i.fov = old_cam->fov_ * (PI / 180.f) + .2f;
     i.ratio = old_cam->a_ratio_;
   }

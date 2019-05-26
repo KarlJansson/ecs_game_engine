@@ -28,6 +28,6 @@ class Matrix4x4 {
                     float znear, float zfar);
   void Orthographic(float left, float right, float bottom, float top);
 
-  float data[16];
+  float data[16]; // NOLINT
 };
 }  // namespace lib_core

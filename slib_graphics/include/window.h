@@ -20,13 +20,13 @@ public:
   virtual int ShouldClose() = 0;
   virtual void SetRenderContext() = 0;
   virtual void SetLoadContext() = 0;
-  virtual void *GetWindowHandle() const = 0;
-  virtual bool NeedsRestart() const = 0;
+  [[nodiscard]] virtual void *GetWindowHandle() const = 0;
+  [[nodiscard]] virtual bool NeedsRestart() const = 0;
   virtual void Rebuild() = 0;
   virtual bool CheckCapabilities() = 0;
 
-  std::pair<int, int> GetWindowDim() const;
-  std::pair<int, int> GetRenderDim() const;
+  [[nodiscard]] std::pair<int, int> GetWindowDim() const;
+  [[nodiscard]] std::pair<int, int> GetRenderDim() const;
   const GpuCapabilities &Capabilities() { return gpu_capabilities_; }
 
 protected:

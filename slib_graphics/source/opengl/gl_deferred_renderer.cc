@@ -23,7 +23,7 @@ namespace lib_graphics {
 GlDeferredRenderer::GlDeferredRenderer(lib_core::EngineCore *engine)
     : engine_(engine) {
   static_cast<GlMaterialSystem *>(engine_->GetMaterial())->CompileShaders();
-  for (int & shader_loc : shader_locs_) shader_loc = -1;
+  for (int &shader_loc : shader_locs_) shader_loc = -1;
 }
 
 GlDeferredRenderer::~GlDeferredRenderer() {
@@ -79,7 +79,7 @@ void GlDeferredRenderer::RenderFrame(float dt) {
       auto shader_program = mat_system->GetCurrentShader();
       if (shader_locs_[0] == -1)
         shader_locs_[0] = glGetUniformLocation(shader_program, "cam_pos");
-      glUniform3fv(shader_locs_[0], 1, (float *)&cam.position_);
+      glUniform3fv(shader_locs_[0], 1, cam.position_.data());
 
       cu::AssertError(glGetError() == GL_NO_ERROR,
                       "OpenGL error - Render Frame", __FILE__, __LINE__);
@@ -110,7 +110,7 @@ void GlDeferredRenderer::RenderFrame(float dt) {
       cu::AssertError(glGetError() == GL_NO_ERROR,
                       "OpenGL error - Render Frame", __FILE__, __LINE__);
       deferred_lighting_effect_->DrawLights(cam, cam_entities->at(i),
-                                            (float *)&cam.position_);
+                                            cam.position_);
 
       skybox_effect_->DrawSkybox(cam, cam_entities->at(i));
       cu::AssertError(glGetError() == GL_NO_ERROR,
@@ -210,9 +210,10 @@ void GlDeferredRenderer::InitRenderer() {
   auto window = engine_->GetWindow();
   auto gui_factory = lib_gui::GuiFactory();
 
-  QuadVert quad_vertices[] = {{{-1.0f, 3.0f}, {0.0f, 2.f}},
-                              {{-1.0f, -1.0f}, {0.0f, 0.0f}},
-                              {{3.0f, -1.0f}, {2.f, 0.0f}}};
+  std::array<QuadVert, 3> quad_vertices = {
+      QuadVert{{-1.0f, 3.0f}, {0.0f, 2.f}},
+      QuadVert{{-1.0f, -1.0f}, {0.0f, 0.0f}},
+      QuadVert{{3.0f, -1.0f}, {2.f, 0.0f}}};
 
   gui_renderer_ = gui_factory.CreateGuiRenderer(engine_);
 
@@ -232,12 +233,12 @@ void GlDeferredRenderer::InitRenderer() {
   auto dim = window->GetRenderDim();
   auto deferred_fb_command =
       CreateDeferedFrameBufferCommand(dim.first, dim.second);
-  issue_command(deferred_fb_command);
   frame_buffer_ = deferred_fb_command.FrameBufferId();
+  issue_command(deferred_fb_command);
 
   auto hdr_fb_command = CreateHdrFrameBufferCommand(dim.first, dim.second);
-  issue_command(hdr_fb_command);
   hdr_buffer_ = hdr_fb_command.FrameBufferId();
+  issue_command(hdr_fb_command);
 
   glViewport(0, 0, dim.first, dim.second);
 

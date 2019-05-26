@@ -67,7 +67,7 @@ void GlRenderer::RenderFrame(float dt) {
         GLint cam_loc = glGetUniformLocation(shader_id, "cam_pos");
         GLint view_loc = glGetUniformLocation(shader_id, "view");
         GLint proj_loc = glGetUniformLocation(shader_id, "projection");
-        if (cam_loc != -1) glUniform3fv(cam_loc, 1, (float *)&cam.position_);
+        if (cam_loc != -1) glUniform3fv(cam_loc, 1, cam.position_.data());
         if (view_loc != -1)
           glUniformMatrix4fv(view_loc, 1, GL_FALSE, cam.view_.data);
         if (proj_loc != -1)
@@ -81,12 +81,12 @@ void GlRenderer::RenderFrame(float dt) {
         while (count > 0) {
           glUniformMatrix4fv(
               world_loc, count > 50 ? 50 : count, GL_FALSE,
-              (float *)&world_matrices[pack.start_ind +
-                                       (pack.mesh_count - count)]);
-          glUniformMatrix4fv(
-              world_inv_trans_loc, count > 50 ? 50 : count, GL_FALSE,
-              (float *)&world_inv_trans_matrices[pack.start_ind +
-                                                 (pack.mesh_count - count)]);
+              world_matrices[pack.start_ind + (pack.mesh_count - count)].data);
+          glUniformMatrix4fv(world_inv_trans_loc, count > 50 ? 50 : count,
+                             GL_FALSE,
+                             world_inv_trans_matrices[pack.start_ind +
+                                                      (pack.mesh_count - count)]
+                                 .data);
 
           mesh_system->DrawMesh(pack.mesh_id, count > 50 ? 50 : count);
           count -= 50;

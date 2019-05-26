@@ -90,8 +90,8 @@ class Light {
   float quadratic = 0.07f;
   float max_radius = 10.f;
 
-  float view_depth[3];
-  int shadow_resolutions[3];
+  std::array<float, 3> view_depth;
+  std::array<int, 3> shadow_resolutions;
 
   static Light Parse(ct::string &buffer, size_t &cursor) {
     Light l;
@@ -111,8 +111,7 @@ class Light {
           }
           l.cast_shadows = true;
         } else if (type.compare("Radius") == 0) {
-          l.max_radius =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor));
+          l.max_radius = cu::Parse<float>(cu::ParseValue(buffer, cursor));
         } else if (type.compare("Type") == 0) {
           auto val = cu::ParseValue(buffer, cursor);
           if (val.compare("kPoint") == 0)
@@ -130,11 +129,9 @@ class Light {
         } else if (type.compare("Linear") == 0) {
           l.linear = cu::Parse<float>(cu::ParseValue(buffer, cursor));
         } else if (type.compare("Constant") == 0) {
-          l.constant =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor));
+          l.constant = cu::Parse<float>(cu::ParseValue(buffer, cursor));
         } else if (type.compare("Quadratic") == 0) {
-          l.quadratic =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor));
+          l.quadratic = cu::Parse<float>(cu::ParseValue(buffer, cursor));
         }
 
         type = cu::ParseType(buffer, cursor);

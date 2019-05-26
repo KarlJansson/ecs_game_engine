@@ -20,8 +20,8 @@ class GlDeferredRenderer : public Renderer {
 
  private:
   struct QuadVert {
-    float pos[2];
-    float tex_coord[2];
+    std::array<float, 2> pos;
+    std::array<float, 2> tex_coord;
   };
 
   lib_core::EngineCore* engine_;
@@ -32,7 +32,7 @@ class GlDeferredRenderer : public Renderer {
   unsigned white_texture_, black_texture_;
 
   TextureDesc depth_desc_;
-  int shader_locs_[20];
+  std::array<int, 20> shader_locs_;
 
   std::unique_ptr<lib_gui::GuiRenderer> gui_renderer_;
   std::unique_ptr<class GlSsao> ssao_effect_;
