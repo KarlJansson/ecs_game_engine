@@ -394,8 +394,8 @@ void EngineCore::InitEngine() {
   issue_command(std::move(camera_command));
   lib_core::AddSystemCommand culling_command(
       std::move(cull_up), lib_core::AddSystemCommand::Prerender);
-  issue_command(std::move(culling_command));
   culling_system_id_ = culling_command.SystemId();
+  issue_command(std::move(culling_command));
 
   lib_core::AddSystemCommand physics_command(std::move(physic_up), 1000);
   physics_system_id_ = physics_command.SystemId();
