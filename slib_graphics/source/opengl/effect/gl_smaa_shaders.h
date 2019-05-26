@@ -1,20 +1,20 @@
 #define STRINGIFY(s) #s
 
-std::string header_vs = 
+std::string header_vs =
 "#define SMAA_PRESET_ULTRA 1\n\
  #define SMAA_GLSL_4 1\n\
  #define SMAA_ONLY_COMPILE_VS 1\n\
  #include \"SMAA.h\"\n\
 ";
 
-std::string header_ps = 
+std::string header_ps =
 "#define SMAA_PRESET_ULTRA 1\n\
  #define SMAA_GLSL_4 1\n\
  #define SMAA_ONLY_COMPILE_PS 1\n\
  #include \"SMAA.h\"\n\
 ";
 
-std::string edge_vs = 
+std::string edge_vs =
 header_vs +
 STRINGIFY(
 layout(location = 0) in vec2 position;\n
@@ -33,7 +33,7 @@ void main()\n
 }\n
 );
 
-std::string edge_ps = 
+std::string edge_ps =
 header_ps +
 STRINGIFY(
 uniform sampler2D albedo_tex; \n
@@ -50,7 +50,7 @@ void main() \n
 } \n
 );
 
-std::string blend_vs = 
+std::string blend_vs =
 header_vs +
 STRINGIFY(
 layout(location = 0) in vec2 position; \n
@@ -70,7 +70,7 @@ void main()\n
 } \n
 );
 
-std::string blend_ps = 
+std::string blend_ps =
 header_ps +
 STRINGIFY(
 uniform sampler2D edge_tex; \n
@@ -86,7 +86,7 @@ void main() \n
 } \n
 );
 
-std::string neighborhood_vs = 
+std::string neighborhood_vs =
 header_vs +
 STRINGIFY(
 layout(location = 0) in vec2 position; \n
@@ -105,7 +105,7 @@ void main()\n
 } \n
 );
 
-std::string neighborhood_ps = 
+std::string neighborhood_ps =
 header_ps +
 STRINGIFY(
 uniform sampler2D albedo_tex; \n

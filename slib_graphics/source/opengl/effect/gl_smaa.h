@@ -18,20 +18,21 @@ class GlSmaa {
                   const std::string &to);
   void CreateShader(std::string vs_text, std::string ps_text,
                     unsigned *program);
+  void InitializeShaders();
 
-  unsigned edge_tex_;
-  unsigned blend_tex_;
-  unsigned area_tex_;
-  unsigned search_tex_;
-  unsigned albedo_tex_;
+  unsigned edge_tex_{0};
+  unsigned blend_tex_{0};
+  unsigned area_tex_{0};
+  unsigned search_tex_{0};
+  unsigned albedo_tex_{0};
 
-  unsigned edge_fbo_;
-  unsigned blend_fbo_;
-  unsigned output_fbo_;
+  unsigned edge_fbo_{0};
+  unsigned blend_fbo_{0};
+  unsigned output_fbo_{0};
 
-  unsigned edge_shader_;
-  unsigned blend_shader_;
-  unsigned neighborhood_shader_;
+  unsigned edge_shader_{0};
+  unsigned blend_shader_{0};
+  unsigned neighborhood_shader_{0};
 
   lib_core::EngineCore *engine_;
 };

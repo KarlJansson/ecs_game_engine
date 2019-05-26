@@ -1,37 +1,37 @@
 /**
  * Copyright (C) 2011 Jorge Jimenez (jorge@iryoku.com)
- * Copyright (C) 2011 Belen Masia (bmasia@unizar.es) 
- * Copyright (C) 2011 Jose I. Echevarria (joseignacioechevarria@gmail.com) 
- * Copyright (C) 2011 Fernando Navarro (fernandn@microsoft.com) 
+ * Copyright (C) 2011 Belen Masia (bmasia@unizar.es)
+ * Copyright (C) 2011 Jose I. Echevarria (joseignacioechevarria@gmail.com)
+ * Copyright (C) 2011 Fernando Navarro (fernandn@microsoft.com)
  * Copyright (C) 2011 Diego Gutierrez (diegog@unizar.es)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  *    1. Redistributions of source code must retain the above copyright notice,
  *       this list of conditions and the following disclaimer.
- * 
+ *
  *    2. Redistributions in binary form must reproduce the following disclaimer
- *       in the documentation and/or other materials provided with the 
+ *       in the documentation and/or other materials provided with the
  *       distribution:
- * 
+ *
  *      "Uses SMAA. Copyright (C) 2011 by Jorge Jimenez, Jose I. Echevarria,
  *       Belen Masia, Fernando Navarro and Diego Gutierrez."
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS 
- * IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS OR CONTRIBUTORS 
- * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS
+ * IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS OR CONTRIBUTORS
+ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * 
- * The views and conclusions contained in the software and documentation are 
+ *
+ * The views and conclusions contained in the software and documentation are
  * those of the authors and should not be interpreted as representing official
  * policies, either expressed or implied, of the copyright holders.
  */
@@ -44,14 +44,14 @@
  *                 \   \    |  |\/|  |   /  /_\  \     /  /_\  \
  *              ----)   |   |  |  |  |  /  _____  \   /  _____  \
  *             |_______/    |__|  |__| /__/     \__\ /__/     \__\
- * 
+ *
  *                               E N H A N C E D
  *       S U B P I X E L   M O R P H O L O G I C A L   A N T I A L I A S I N G
  *
  *                         http://www.iryoku.com/smaa/
  *
  * Hi, welcome aboard!
- * 
+ *
  * Here you'll find instructions to get the shader up and running as fast as
  * possible.
  *
@@ -119,19 +119,19 @@
  *     exception of 'searchTex', which must be set to point filtering.
  *
  *  5. All texture reads and buffer writes must be non-sRGB, with the exception
- *     of the input read and the output write of input in 
+ *     of the input read and the output write of input in
  *     'SMAANeighborhoodBlending' (and only in this pass!). If sRGB reads in
  *     this last pass are not possible, the technique will work anyway, but
- *     will perform antialiasing in gamma space. 
+ *     will perform antialiasing in gamma space.
  *
- *     IMPORTANT: for best results the input read for the color/luma edge 
+ *     IMPORTANT: for best results the input read for the color/luma edge
  *     detection should *NOT* be sRGB.
  *
  *  6. Before including SMAA.h you'll have to setup the framebuffer pixel size,
  *     the target and any optional configuration defines. Optionally you can
  *     use a preset.
  *
- *     You have three targets available: 
+ *     You have three targets available:
  *         SMAA_HLSL_3
  *         SMAA_HLSL_4
  *         SMAA_HLSL_4_1
@@ -148,7 +148,7 @@
  *
  *     For example:
  *         #define SMAA_PIXEL_SIZE float2(1.0 / 1280.0, 1.0 / 720.0)
- *         #define SMAA_HLSL_4 1 
+ *         #define SMAA_HLSL_4 1
  *         #define SMAA_PRESET_HIGH 1
  *         #include "SMAA.h"
  *
@@ -307,7 +307,7 @@
 /**
  * SMAA_THRESHOLD specifies the threshold or sensitivity to edges.
  * Lowering this value you will be able to detect more edges at the expense of
- * performance. 
+ * performance.
  *
  * Range: [0, 0.5]
  *   0.1 is a reasonable value, and allows to catch most visible edges.
@@ -322,7 +322,7 @@
 
 /**
  * SMAA_DEPTH_THRESHOLD specifies the threshold for depth edge detection.
- * 
+ *
  * Range: depends on the depth range of the scene.
  */
 #ifndef SMAA_DEPTH_THRESHOLD
@@ -350,7 +350,7 @@
  *
  * Range: [0, 20]; set it to 0 to disable diagonal processing.
  *
- * On high-end machines it is cheap (between a 0.8x and 0.9x slower for 16 
+ * On high-end machines it is cheap (between a 0.8x and 0.9x slower for 16
  * steps), but it can have a significant impact on older machines.
  */
 #ifndef SMAA_MAX_SEARCH_STEPS_DIAG
@@ -376,16 +376,16 @@
  * It locally decreases the luma or color threshold if an edge is found in an
  * additional buffer (so the global threshold can be higher).
  *
- * This method was developed by Playstation EDGE MLAA team, and used in 
+ * This method was developed by Playstation EDGE MLAA team, and used in
  * Killzone 3, by using the light accumulation buffer. More information here:
- *     http://iryoku.com/aacourse/downloads/06-MLAA-on-PS3.pptx 
+ *     http://iryoku.com/aacourse/downloads/06-MLAA-on-PS3.pptx
  */
 #ifndef SMAA_PREDICATION
 #define SMAA_PREDICATION 0
 #endif
 
 /**
- * Threshold to be used in the additional predication buffer. 
+ * Threshold to be used in the additional predication buffer.
  *
  * Range: depends on the input, so you'll have to find the magic number that
  * works for you.
@@ -612,7 +612,7 @@ void SMAABlendingWeightCalculationVS(float4 position,
     offset[1] = texcoord.xyxy + SMAA_PIXEL_SIZE.xyxy * float4(-0.125, -0.25, -0.125,  1.25);
 
     // And these for the searches, they indicate the ends of the loops:
-    offset[2] = float4(offset[0].xz, offset[1].yw) + 
+    offset[2] = float4(offset[0].xz, offset[1].yw) +
                 float4(-2.0, 2.0, -2.0, 2.0) *
                 SMAA_PIXEL_SIZE.xxyy * float(SMAA_MAX_SEARCH_STEPS);
 }
@@ -712,7 +712,7 @@ float4 SMAALumaEdgeDetectionPS(float2 texcoord,
      * contrast in a direction, that will hide contrast in the other
      * neighbors.
      * This is done after the discard intentionally as this situation doesn't
-     * happen too frequently (but it's important to do as it prevents some 
+     * happen too frequently (but it's important to do as it prevents some
      * edges from going undetected).
      */
     edges.xy *= step(0.5 * maxDelta, delta.xy);
@@ -838,7 +838,7 @@ float SMAASearchDiag2(SMAATexture2D edgesTex, float2 texcoord, float2 dir, float
     return i + float(e.g > 0.9) * c;
 }
 
-/** 
+/**
  * Similar to SMAAArea, this calculates the area corresponding to a certain
  * diagonal distance and crossing edges 'e'.
  */
@@ -916,14 +916,14 @@ float2 SMAACalculateDiagWeights(SMAATexture2D edgesTex, SMAATexture2D areaTex, f
 
 /**
  * This allows to determine how much length should we add in the last step
- * of the searches. It takes the bilinearly interpolated edge (see 
+ * of the searches. It takes the bilinearly interpolated edge (see
  * @PSEUDO_GATHER4), and adds 0, 1 or 2, depending on which edges and
  * crossing edges are active.
  */
 float SMAASearchLength(SMAATexture2D searchTex, float2 e, float bias, float scale) {
     // Not required if searchTex accesses are set to point:
     // float2 SEARCH_TEX_PIXEL_SIZE = 1.0 / float2(66.0, 33.0);
-    // e = float2(bias, 0.0) + 0.5 * SEARCH_TEX_PIXEL_SIZE + 
+    // e = float2(bias, 0.0) + 0.5 * SEARCH_TEX_PIXEL_SIZE +
     //     e * float2(scale, 1.0) * float2(64.0, 32.0) * SEARCH_TEX_PIXEL_SIZE;
     e.r = bias + e.r * scale;
 	e.g = -e.g;
@@ -942,7 +942,7 @@ float SMAASearchXLeft(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 te
      * which edges are active from the four fetched ones.
      */
     float2 e = float2(0.0, 1.0);
-    while (texcoord.x > end && 
+    while (texcoord.x > end &&
            e.g > 0.8281 && // Is there some edge not activated?
            e.r == 0.0) { // Or is there a crossing edge that breaks the line?
         e = SMAASampleLevelZero(edgesTex, texcoord).rg;
@@ -964,7 +964,7 @@ float SMAASearchXLeft(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 te
 
 float SMAASearchXRight(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 texcoord, float end) {
     float2 e = float2(0.0, 1.0);
-    while (texcoord.x < end && 
+    while (texcoord.x < end &&
            e.g > 0.8281 && // Is there some edge not activated?
            e.r == 0.0) { // Or is there a crossing edge that breaks the line?
         e = SMAASampleLevelZero(edgesTex, texcoord).rg;
@@ -980,7 +980,7 @@ float SMAASearchXRight(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 t
 
 float SMAASearchYUp(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 texcoord, float end) {
     float2 e = float2(1.0, 0.0);
-    while (texcoord.y > end && 
+    while (texcoord.y > end &&
            e.r > 0.8281 && // Is there some edge not activated?
            e.g == 0.0) { // Or is there a crossing edge that breaks the line?
         e = SMAASampleLevelZero(edgesTex, texcoord).rg;
@@ -996,13 +996,13 @@ float SMAASearchYUp(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 texc
 
 float SMAASearchYDown(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 texcoord, float end) {
     float2 e = float2(1.0, 0.0);
-    while (texcoord.y < end && 
+    while (texcoord.y < end &&
            e.r > 0.8281 && // Is there some edge not activated?
            e.g == 0.0) { // Or is there a crossing edge that breaks the line?
         e = SMAASampleLevelZero(edgesTex, texcoord).rg;
         texcoord += float2(0.0, 2.0) * SMAA_PIXEL_SIZE;
     }
-    
+
     texcoord.y -= 0.25 * SMAA_PIXEL_SIZE.y;
     texcoord.y -= SMAA_PIXEL_SIZE.y;
     texcoord.y -= 2.0 * SMAA_PIXEL_SIZE.y;
@@ -1010,14 +1010,14 @@ float SMAASearchYDown(SMAATexture2D edgesTex, SMAATexture2D searchTex, float2 te
     return texcoord.y;
 }
 
-/** 
+/**
  * Ok, we have the distance and both crossing edges. So, what are the areas
  * at each side of current edge?
  */
 float2 SMAAArea(SMAATexture2D areaTex, float2 dist, float e1, float e2, float offset) {
     // Rounding prevents precision errors of bilinear filtering:
     float2 texcoord = float(SMAA_AREATEX_MAX_DISTANCE) * round(4.0 * float2(e1, e2)) + dist;
-    
+
     // We do a scale and bias for mapping to texel space:
     texcoord = SMAA_AREATEX_PIXEL_SIZE * texcoord + (0.5 * SMAA_AREATEX_PIXEL_SIZE);
 
@@ -1073,8 +1073,8 @@ void SMAADetectVerticalCornerPattern(SMAATexture2D edgesTex, inout float2 weight
 float4 SMAABlendingWeightCalculationPS(float2 texcoord,
                                        float2 pixcoord,
                                        float4 offset[3],
-                                       SMAATexture2D edgesTex, 
-                                       SMAATexture2D areaTex, 
+                                       SMAATexture2D edgesTex,
+                                       SMAATexture2D areaTex,
                                        SMAATexture2D searchTex,
                                        int4 subsampleIndices) { // Just pass zero for SMAA 1x, see @SUBSAMPLE_INDICES.
     float4 weights = float4(0.0, 0.0, 0.0, 0.0);
@@ -1088,7 +1088,7 @@ float4 SMAABlendingWeightCalculationPS(float2 texcoord,
         // one of the boundaries is enough.
         weights.rg = SMAACalculateDiagWeights(edgesTex, areaTex, texcoord, e, subsampleIndices);
 
-        // We give priority to diagonals, so if we find a diagonal we skip 
+        // We give priority to diagonals, so if we find a diagonal we skip
         // horizontal/vertical processing.
         SMAA_BRANCH
         if (dot(weights.rg, float2(1.0, 1.0)) == 0.0) {
@@ -1115,7 +1115,7 @@ float4 SMAABlendingWeightCalculationPS(float2 texcoord,
         // better interleave arithmetic and memory accesses):
         d = d / SMAA_PIXEL_SIZE.x - pixcoord.x;
 
-        // SMAAArea below needs a sqrt, as the areas texture is compressed 
+        // SMAAArea below needs a sqrt, as the areas texture is compressed
         // quadratically:
         float2 sqrt_d = sqrt(abs(d));
 
@@ -1155,7 +1155,7 @@ float4 SMAABlendingWeightCalculationPS(float2 texcoord,
         // We want the distances to be in pixel units:
         d = d / SMAA_PIXEL_SIZE.y - pixcoord.y;
 
-        // SMAAArea below needs a sqrt, as the areas texture is compressed 
+        // SMAAArea below needs a sqrt, as the areas texture is compressed
         // quadratically:
         float2 sqrt_d = sqrt(abs(d));
 
@@ -1196,7 +1196,7 @@ float4 SMAANeighborhoodBlendingPS(float2 texcoord,
         // favor blending by choosing the line with the maximum weight for each
         // direction:
         float2 offset;
-        offset.x = a.a > a.b? a.a : -a.b; // left vs. right 
+        offset.x = a.a > a.b? a.a : -a.b; // left vs. right
         offset.y = a.g > a.r? a.g : -a.r; // top vs. bottom
 
         // Then we go in the direction that has the maximum weight:
