@@ -26,7 +26,6 @@ set(cpp_files
   ./include/engine_settings.h
   ./include/engine_core.h
   ./include/core_utilities.h
-  ./include/type_template.h
   ./include/scripted_system.h
   ./include/unit.h
   ./include/system_manager.h
@@ -91,7 +90,6 @@ source_group(include FILES
   ./include/engine_settings.h
   ./include/engine_core.h
   ./include/core_utilities.h
-  ./include/type_template.h
   ./include/scripted_system.h
   ./include/unit.h
   ./include/system_manager.h

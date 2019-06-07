@@ -129,6 +129,7 @@ void PhysxTriggerHandler::AddTrigger(lib_core::Entity e) {
     actor = physics_->createRigidStatic(px_transform);
 
     shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+    shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, false);
     shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 
     actor->attachShape(*shape);

@@ -30,7 +30,7 @@ class PhysxSystem : public PhysicsSystem {
     ~TbbCpuDispatcher() noexcept override {}  // NOLINT
 
     void submitTask(physx::PxBaseTask& task) override;
-    uint32_t getWorkerCount() const override;
+    [[nodiscard]] uint32_t getWorkerCount() const override;
 
     tbb::task_group task_group_;
     uint32_t nr_threads_;
@@ -72,7 +72,8 @@ class PhysxSystem : public PhysicsSystem {
   std::unique_ptr<TbbCpuDispatcher> tbb_dispatch_;
 
   std::atomic<uint32_t> ray_cast_id_ = {0};
-  ct::tree_map<uint32_t, std::pair<int, float>> ray_cast_results_[2];
+  std::array<ct::tree_map<uint32_t, std::pair<int, float>>, 2>
+      ray_cast_results_;
   tbb::concurrent_queue<std::pair<int, RayCastDesc>> ray_cast_queue_;
 
   std::unique_ptr<PhysxJointHandler> joint_handler_;

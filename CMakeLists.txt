@@ -65,4 +65,15 @@ if (MSVC)
 endif(MSVC)
 add_custom_command(TARGET ALL_PRE_BUILD PRE_BUILD
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different "${CMAKE_BINARY_DIR}/compile_commands.json" "${CMAKE_SOURCE_DIR}/compile_commands.json"
+  COMMAND cat ${CMAKE_SOURCE_DIR}/compile_commands.json > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "s/-/\\n-/g" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sort ${CMAKE_SOURCE_DIR}/.clang_complete | uniq > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp
+  COMMAND sed "/^-o/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sed "/^-c/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "/^ /d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sed "/^\{/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "/^\}/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sed "/^\\[/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "/^\\]/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND rm ${CMAKE_SOURCE_DIR}/.clang_complete_tmp
 )
