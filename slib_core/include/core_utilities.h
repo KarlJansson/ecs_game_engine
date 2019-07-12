@@ -104,6 +104,7 @@ static T lerp(const T &a, const T &b, float factor) {
 
 class cu {
  public:
+  static ct::string ReadFile(const ct::string &path);
   static void LoadAndDecompress(const ct::string &load_path,
                                 ct::dyn_array<uint8_t> &out_data);
   static void DecompressMemory(ct::dyn_array<uint8_t> &in_data,

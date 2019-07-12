@@ -11,78 +11,14 @@ GlSsao::GlSsao(std::pair<size_t, size_t> dim, GlGausianBlur *blur,
                lib_core::EngineCore *engine, const TextureDesc &pos_gbuffer,
                const TextureDesc &normal_gbuffer)
     : ssao_dim_(std::move(dim)), blur_effect_(blur), engine_(engine) {
-  ct::string vert_shader =
-      "#version 430 core\n"
-      "layout(location = 0) in vec2 position;\n"
-      "layout(location = 1) in vec2 texCoords;\n"
-
-      "out vec2 TexCoords;\n"
-
-      "void main()\n"
-      "{\n"
-      "  gl_Position = vec4(position.x, position.y, 0.0f, 1.0f);\n"
-      "  TexCoords = texCoords;\n"
-      "}";
-
-  ct::string frag_shader =
-      "#version 430 core\n"
-      "out float FragColor;\n"
-      "in vec2 TexCoords;\n"
-
-      "uniform sampler2D g_position;\n"
-      "uniform sampler2D g_normal;\n"
-      "uniform sampler2D tex_noise;\n"
-
-      "uniform vec3 samples[64];\n"
-      "uniform mat4 projection;\n"
-      "uniform mat4 view;\n"
-
-      "uniform int kernelSize;\n"
-      "uniform float radius;\n"
-      "uniform float bias;\n"
-      "uniform vec2 noise_scale;\n"
-
-      "void main()\n"
-      "{\n"
-      "  vec3 fragPos = (view * vec4(texture(g_position, TexCoords).xyz, "
-      "1)).xyz;\n"
-      "  vec3 normal = (view * vec4(texture(g_normal, TexCoords).rgb * 2 - "
-      "1.0, 0)).xyz;\n"
-      "  normal = normalize(normal);\n"
-      "  vec3 randomVec = texture(tex_noise, TexCoords * noise_scale).xyz * 2 "
-      "- 1.0;\n"
-      "  vec3 tangent = normalize(randomVec - normal * dot(randomVec, "
-      "normal));\n"
-      "  vec3 bitangent = cross(normal, tangent);\n"
-      "  mat3 TBN = mat3(tangent, bitangent, normal);\n"
-      "  float occlusion = 0.0;\n"
-      "  for (int i = 0; i < kernelSize; ++i)\n"
-      "  {\n"
-      "    vec3 kernel_sample = TBN * samples[i];\n"
-      "    kernel_sample = fragPos + kernel_sample * radius;\n"
-
-      "    vec4 offset = vec4(kernel_sample, 1.0);\n"
-      "    offset = projection * offset;\n"
-      "    offset.xyz /= offset.w;\n"
-      "    offset.xyz = offset.xyz * 0.5 + 0.5;\n"
-      "    float sampleDepth = (view * vec4(texture(g_position, "
-      "offset.xy))).z;\n"
-
-      "    float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - "
-      "sampleDepth));\n"
-      "    occlusion += (sampleDepth >= kernel_sample.z + bias ? 1.0 : 0.0) * "
-      "rangeCheck;\n"
-      "  }\n"
-      "  occlusion = 1.0 - (occlusion / kernelSize);\n"
-      "  FragColor = occlusion;\n"
-      "}";
-
-  Material material;
-  auto shader_command = AddShaderCommand(vert_shader, frag_shader);
+  auto shader_command =
+      AddShaderCommand(cu::ReadFile("./content/shaders/opengl/ssao_vs.glsl"),
+                       cu::ReadFile("./content/shaders/opengl/ssao_fs.glsl"));
   ssao_shader_ = shader_command.ShaderId();
-  material.shader = shader_command.ShaderId();
   issue_command(shader_command);
 
+  Material material;
+  material.shader = ssao_shader_;
   material.textures.push_back(pos_gbuffer);
   material.textures.push_back(normal_gbuffer);
 

@@ -9,98 +9,29 @@
 namespace lib_graphics {
 GlShadowMapping::GlShadowMapping(lib_core::EngineCore *engine)
     : engine_(engine) {
-  ct::string vertex_header_ =
-      "#version 430 core\n"
-      "layout(location = 0) in vec3 position;\n"
-      "layout(location = 1) in vec3 normal;\n"
-      "layout(location = 2) in vec3 tangent;\n"
-      "layout(location = 3) in vec2 texcoord;\n\n";
-
-  ct::string vert_shader =
-      vertex_header_ +
-
-      "uniform mat4 world[200];\n\n"
-
-      "void main()\n"
-      "{\n"
-      "  gl_Position = world[gl_InstanceID] * vec4(position, 1.0);\n"
-      "}";
-
-  ct::string frag_shader =
-      "#version 430 core\n"
-      "in vec4 FragPos;\n\n"
-
-      "uniform vec3 light_pos;\n"
-      "uniform float far_plane;\n\n"
-
-      "void main()\n"
-      "{\n"
-      "  float lightDistance = length(FragPos.xyz - light_pos);\n"
-      "  lightDistance = lightDistance / far_plane;\n"
-      "  gl_FragDepth = lightDistance;\n"
-      "}";
-
-  ct::string geom_shader =
-      "#version 430 core\n"
-      "layout(triangles) in;\n"
-      "layout(triangle_strip, max_vertices = 18) out;\n\n"
-
-      "uniform mat4 shadow_matrices[6];\n\n"
-
-      "out vec4 FragPos;\n\n"
-
-      "void main()\n"
-      "{\n"
-      "  for (int face = 0; face < 6; ++face)\n"
-      "  {\n"
-      "    gl_Layer = face;\n"
-      "    for (int i = 0; i < 3; ++i)\n"
-      "    {\n"
-      "      FragPos = gl_in[i].gl_Position;\n"
-      "      gl_Position = shadow_matrices[face] * FragPos;\n"
-      "      EmitVertex();\n"
-      "    }\n"
-      "    EndPrimitive();\n"
-      "  }\n"
-      "}";
-
-  Material material;
-  auto shader_command = AddShaderCommand(vert_shader, frag_shader, geom_shader);
+  auto shader_command = AddShaderCommand(
+      cu::ReadFile("./content/shaders/opengl/shadow_mapping_3d_vs.glsl"),
+      cu::ReadFile("./content/shaders/opengl/shadow_mapping_3d_fs.glsl"),
+      cu::ReadFile("./content/shaders/opengl/shadow_mapping_3d_gs.glsl"));
   shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
   issue_command(shader_command);
 
+  Material material;
+  material.shader = shader_ids_.back();
   auto material_command = AddMaterialCommand(material);
   point_shadow_material_ = material_command.MaterialId();
   issue_command(material_command);
 
-  vert_shader = vertex_header_ +
-
-                "uniform mat4 shadow_matrices[3];\n"
-                "uniform mat4 world[200];\n"
-
-                "void main()\n"
-                "{\n"
-                "  gl_Position = shadow_matrices[0] * (world[gl_InstanceID] * "
-                "vec4(position, 1.0f));\n"
-                "}";
-
-  frag_shader =
-      "#version 430 core\n"
-
-      "void main()\n"
-      "{\n"
-      "  gl_FragDepth = gl_FragCoord.z;\n"
-      "}\n";
-
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
+  shader_command = AddShaderCommand(
+      cu::ReadFile("./content/shaders/opengl/shadow_mapping_2d_vs.glsl"),
+      cu::ReadFile("./content/shaders/opengl/shadow_mapping_2d_fs.glsl"));
   shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
+  issue_command(shader_command);
 
+  material.shader = shader_ids_.back();
   material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   dir_shadow_material_ = material_command.MaterialId();
+  issue_command(material_command);
 }
 
 GlShadowMapping::~GlShadowMapping() {

@@ -13,6 +13,18 @@ tbb::concurrent_hash_map<
     size_t, std::chrono::time_point<std::chrono::high_resolution_clock>>
     cu::profile_starts, cu::profile_ends;
 
+ct::string cu::ReadFile(const ct::string &path) {
+  std::ifstream file(path, std::ios::binary | std::ios::ate);
+  size_t size = file.tellg();
+  file.seekg(0, std::ios::beg);
+
+  ct::string content(size, ' ');
+  file.read(content.data(), size);
+  file.close();
+
+  return content;
+}
+
 void cu::LoadAndDecompress(const ct::string &load_path,
                            ct::dyn_array<uint8_t> &out_data) {
   std::ifstream open(load_path, std::ios::binary | std::ios::ate);

@@ -7,37 +7,9 @@
 namespace lib_graphics {
 GlSkyboxShading::GlSkyboxShading(lib_core::EngineCore *engine)
     : engine_(engine) {
-  ct::string vert_shader =
-      "#version 430 core\n"
-      "layout(location = 0) in vec3 position;\n"
-      "layout(location = 1) in vec3 normal;\n"
-      "layout(location = 2) in vec3 tangent;\n"
-      "layout(location = 3) in vec2 texcoord;\n\n"
-      "out vec3 TexCoords;\n\n"
-
-      "uniform mat4 projection;\n"
-      "uniform mat4 view;\n\n"
-
-      "void main()\n"
-      "{\n"
-      "  vec4 pos = projection * view * vec4(position, 1.0);\n"
-      "  gl_Position = pos.xyww;\n"
-      "  TexCoords = position.xyz;\n"
-      "}";
-
-  ct::string frag_shader =
-      "#version 430 core\n"
-      "in vec3 TexCoords;\n"
-      "out vec4 color;\n\n"
-
-      "uniform samplerCube skybox;\n\n"
-
-      "void main()\n"
-      "{\n"
-      "  color = texture(skybox, TexCoords);\n"
-      "}";
-
-  auto shader_command = AddShaderCommand(vert_shader, frag_shader);
+  auto shader_command =
+      AddShaderCommand(cu::ReadFile("./content/shaders/opengl/skybox_vs.glsl"),
+                       cu::ReadFile("./content/shaders/opengl/skybox_fs.glsl"));
   skybox_material_.shader = shader_command.ShaderId();
   issue_command(shader_command);
 }

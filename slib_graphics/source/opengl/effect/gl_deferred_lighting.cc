@@ -14,291 +14,28 @@ GlDeferredLighting::GlDeferredLighting(lib_core::EngineCore *engine,
                                        const TextureDesc &rme_tex,
                                        const TextureDesc &depth_tex)
     : engine_(engine) {
-  ct::string vertex_header_ =
-      "#version 430 core\n"
-      "layout(location = 0) in vec3 position;\n"
-      "layout(location = 1) in vec3 normal;\n"
-      "layout(location = 2) in vec3 tangent;\n"
-      "layout(location = 3) in vec2 texcoord;\n\n";
-
-  ct::string pbr_lighting_attenuation_ =
-      "    vec3 L = normalize(light_position[i] - frag_pos);\n"
-      "    vec3 H = normalize(V + L);\n"
-      "    float distance = length(light_position[i] - frag_pos);\n"
-      "    float attenuation = 1.0 / (light_coeff[i].x + light_coeff[i].y * "
-      "distance + light_coeff[i].z * (distance * distance));\n"
-      "    attenuation *= clamp(1. - ((1. / light_radius[i]) * "
-      "distance),0.,1.);\n"
-      "    vec3 radiance = light_color[i] * clamp(attenuation,0.0,1.0);\n\n"
-
-      "    float NDF = DistributionGGX(N, H, r);\n"
-      "    float G = GeometrySmith(N, V, L, r);\n"
-      "    vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);\n\n"
-
-      "    vec3 kS = F;\n"
-      "    vec3 kD = vec3(1.0) - kS;\n"
-      "    kD *= 1.0 - m;\n"
-
-      "    vec3 nominator = NDF * G * F;\n"
-      "    float denominator = max(dot(N, V), 0.0) * max(dot(N, "
-      "L), 0.0) + 0.001;\n"
-      "    vec3 brdf = nominator / denominator;\n\n"
-
-      "    float NdotL = max(dot(N, L), 0.0);\n";
-
-  ct::string pbr_lighting_spot_ =
-      "    vec3 L = normalize(light_position[i] - frag_pos);\n"
-      "    vec3 H = normalize(V + L);\n"
-
-      "    float theta     = dot(L, normalize(-light_directions[i]));\n"
-      "    float epsilon = light_cutoffs[i].x - light_cutoffs[i].y;\n"
-      "    float intensity = clamp((theta - light_cutoffs[i].y) / epsilon, "
-      "0.0,1.0);\n"
-
-      "    float distance = length(light_position[i] - frag_pos);\n"
-      "    float attenuation = 1.0 / (light_coeff[i].x + light_coeff[i].y * "
-      "distance + light_coeff[i].z * (distance * distance));\n"
-      "    attenuation *= 1.0 - ((1.0 / light_radius[i]) * distance);\n"
-      "    vec3 radiance = light_color[i] * clamp(attenuation,0.0,1.0) "
-      "*intensity;\n\n"
-
-      "    float NDF = DistributionGGX(N, H, r);\n"
-      "    float G = GeometrySmith(N, V, L, r);\n"
-      "    vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);\n\n"
-
-      "    vec3 kS = F;\n"
-      "    vec3 kD = vec3(1.0) - kS;\n"
-      "    kD *= 1.0 - m;\n"
-
-      "    vec3 nominator = NDF * G * F;\n"
-      "    float denominator = max(dot(N, V), 0.0) * max(dot(N, "
-      "L), 0.0) + 0.001;\n"
-      "    vec3 brdf = nominator / denominator;\n\n"
-
-      "    float NdotL = max(dot(N, L), 0.0);\n";
-
-  ct::string pbr_lighting_dir_ =
-      "    vec3 L = normalize(-light_directions[i]);\n"
-      "    vec3 H = normalize(V + L);\n"
-      "    vec3 radiance = light_color[i];\n\n"
-
-      "    float NDF = DistributionGGX(N, H, r);\n"
-      "    float G = GeometrySmith(N, V, L, r);\n"
-      "    vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);\n\n"
-
-      "    vec3 kS = F;\n"
-      "    vec3 kD = vec3(1.0) - kS;\n"
-      "    kD *= 1.0 - m;\n"
-
-      "    vec3 nominator = NDF * G * F;\n"
-      "    float denominator = max(dot(N, V), 0.0) * max(dot(N, "
-      "L), 0.0) + 0.001;\n"
-      "    vec3 brdf = nominator / denominator;\n\n"
-
-      "    float NdotL = max(dot(N, L), 0.0);\n";
-
-  ct::string point_shadows_ =
-      "float ShadowCalculation(vec3 fragPos, int i)\n"
-      "{\n"
-      "  vec3 fragToLight = fragPos - light_position[i];\n"
-      "  float currentDepth = length(fragToLight);\n"
-      "  float bias = 0.05;\n"
-      "  float shadow = 0.0;\n"
-      "  float samples = 4.0;\n"
-      "  float offset = 0.1;\n"
-      "  for (float x = -offset; x < offset; x += offset / (samples * 0.5))\n"
-      "  {\n"
-      "    for (float y = -offset; y < offset; y += offset / (samples * 0.5))\n"
-      "    {\n"
-      "	     for (float z = -offset; z < offset; z += offset / (samples "
-      "* 0.5))\n"
-      "	     {\n"
-      "        float closestDepth = texture(depth_map[i], fragToLight + "
-      "vec3(x, y, z)).r;\n"
-      "		   closestDepth *= far_plane[i];\n"
-      "		   if (currentDepth - bias > closestDepth)\n"
-      "		     shadow += 1.0;\n"
-      "	     }\n"
-      "    }\n"
-      "  }\n"
-      "  shadow /= (samples * samples * samples);\n"
-
-      "  return shadow;\n"
-      "}\n\n";
-
-  ct::string dir_shadows_ =
-      "float ShadowCalculation(vec4 fragPos, float ndotl, int i)\n"
-      "{\n"
-      "  vec3 projCoords = fragPos.xyz / fragPos.w;\n"
-      "  projCoords = projCoords * 0.5 + 0.5;\n"
-      "  float currentDepth = projCoords.z;\n"
-
-      "  float bias;\n"
-      "  if(i == 0) bias = 0.001;\n"
-      "  else if(i == 1) bias = 0.001;\n"
-      "  else if(i == 2) bias = 0.01;\n"
-
-      //"  float bias = 0.001;\n//max(0.01 * (1.0 - ndotl), 0.0001);\n"
-      "  vec2 texelSize = 1.0/textureSize(depth_map[i], 0);\n"
-
-      "  float shadow = 0.0;\n"
-      "  for (int x = -1; x <= 1; ++x)\n"
-      "  {\n"
-      "    for (int y = -1; y <= 1; ++y)\n"
-      "    {\n"
-      "	    shadow += texture(depth_map[i], vec3(projCoords.xy + vec2(x, "
-      "y) * texelSize, currentDepth - bias));\n"
-      "    }\n"
-      "  }\n"
-      "  shadow *= 0.25;\n"
-      "  return shadow;\n"
-      "}";
-
-  ct::string pbr_helper_funcs_ =
-      "const float PI = 3.14159265359;\n\n"
-      "vec3 fresnelSchlick(float cosTheta, vec3 F0)\n"
-      "{\n"
-      "  return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);\n"
-      "}\n\n"
-
-      "float DistributionGGX(vec3 N, vec3 H, float roughness)\n"
-      "{\n"
-      "  float a = roughness*roughness;\n"
-      "  float a2 = a*a;\n"
-      "  float NdotH = max(dot(N, H), 0.0);\n"
-      "  float NdotH2 = NdotH*NdotH;\n\n"
-
-      "  float nom = a2;\n"
-      "  float denom = (NdotH2 * (a2 - 1.0) + 1.0);\n"
-      "  denom = PI * denom * denom;\n\n"
-
-      "  return nom / denom;\n"
-      "}\n\n"
-
-      "float "
-      "GeometrySchlickGGX(float NdotV, float roughness)\n"
-      "{\n"
-      "  float r = (roughness + 1.0);\n"
-      "  float k = (r*r) / 8.0;\n\n"
-
-      "  float nom = NdotV;\n"
-      "  float denom = NdotV * (1.0 - k) + k;\n\n"
-
-      "  return nom / denom;\n"
-      "}\n\n"
-
-      "float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)\n"
-      "{\n"
-      "  float NdotV = max(dot(N, V), 0.0);\n"
-      "  float NdotL = max(dot(N, L), 0.0);\n"
-      "  float ggx2 = GeometrySchlickGGX(NdotV, roughness);\n"
-      "  float ggx1 = GeometrySchlickGGX(NdotL, roughness);\n\n"
-
-      "  return ggx1 * ggx2;\n"
-      "}\n\n";
-
-  ct::string light_variables_point_ =
-      "uniform vec3 light_position[50];\n"
-      "uniform vec3 light_coeff[50];\n"
-      "uniform float light_radius[50];\n"
-      "uniform vec3 light_color[50];\n\n";
-
-  ct::string light_shadows_variables_point_ =
-      "uniform samplerCube depth_map[5];\n"
-      "uniform float far_plane[5];\n";
-
-  ct::string light_variables_dir_ =
-      "uniform vec3 light_directions[50];\n"
-      "uniform vec3 light_color[50];\n\n";
-
-  ct::string light_shadows_variables_dir_ =
-      "uniform mat4 world[3];\n"
-      "uniform sampler2DShadow depth_map[3];\n"
-      "uniform float cascade_depth[3];\n";
-
-  ct::string light_variables_spot_ =
-      light_variables_dir_ + "uniform vec2 light_cutoffs[50];\n\n";
-
-  ct::string deferred_fragment_header =
-      "#version 430 core\n"
-      "out vec4 FragColor;\n"
-      "flat in int inst_id;\n"
-
-      "uniform sampler2D g_position;\n"
-      "uniform sampler2D g_normal;\n"
-      "uniform sampler2D g_albedo;\n"
-      "uniform sampler2D g_rma;\n"
-      "uniform sampler2D g_depth;\n";
-
-  ct::string deferred_fragment_start =
-      "  vec3 frag_pos = texture(g_position, frag_coord).rgb;\n"
-      "  vec3 N = normalize(texture(g_normal, frag_coord).rgb * 2 - 1);\n"
-
-      "  vec3 V = normalize(cam_pos - frag_pos);\n\n"
-
-      "  vec3 rma = texture(g_rma, frag_coord).rgb;\n"
-      "  vec3 albedo = pow(texture(g_albedo, frag_coord).rgb, vec3(2.2));\n"
-
-      "  float r = clamp(rma.r, 0.05, 1.0);\n"
-      "  float m = rma.g;\n"
-      "  float e = rma.b;\n\n"
-      "  int i = inst_id;\n"
-
-      "  vec3 F0 = vec3(0.04);\n"
-      "  F0 = mix(F0, albedo, m);\n"
-      "  vec3 Lo = vec3(0.0);\n";
-
   ct::string vert_shader =
-      vertex_header_ +
-
-      "uniform mat4 world[50];\n"
-      "uniform mat4 view_proj;\n"
-
-      "flat out int inst_id;\n"
-
-      "void main()\n"
-      "{\n"
-      "  gl_Position = view_proj * (world[gl_InstanceID] * "
-      "vec4(position, 1.0));\n"
-      "  inst_id = gl_InstanceID;\n"
-      "}";
-
-  ct::string frag_shader =
-      deferred_fragment_header +
-
-      "uniform vec3 cam_pos;\n"
-      "uniform vec2 screen_dim;\n"
-
-      + light_shadows_variables_point_ + light_variables_point_ +
-      point_shadows_ + pbr_helper_funcs_ +
-
-      "void main()\n"
-      "{\n"
-      "  vec2 frag_coord = gl_FragCoord.xy / screen_dim;\n"
-
-      + deferred_fragment_start + pbr_lighting_attenuation_ +
-
-      "  float shadow = 1.0 - ShadowCalculation(frag_pos, i);\n"
-      "  Lo = shadow * (kD * albedo / PI + brdf) * radiance * NdotL;\n"
-      "  FragColor = vec4(Lo, 1.0);\n"
-      "}";
-
-  Material material;
+      cu::ReadFile("./content/shaders/opengl/deferred_lighting_world_vs.glsl");
 
   auto shader_command = AddShaderCommand(vert_shader);
-  issue_command(shader_command);
   shader_ids_.push_back(shader_command.ShaderId());
+  issue_command(shader_command);
 
-  material.shader = shader_command.ShaderId();
+  Material material;
+  material.shader = shader_ids_.back();
 
   auto material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   stencil_pass_ = material_command.MaterialId();
+  issue_command(material_command);
 
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
+  shader_command = AddShaderCommand(
+      vert_shader,
+      cu::ReadFile("./content/shaders/opengl/"
+                   "deferred_lighting_point_shadow_world_fs.glsl"));
   shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
+  issue_command(shader_command);
+
+  material.shader = shader_ids_.back();
   material.textures.push_back(position_tex);
   material.textures.push_back(normal_tex);
   material.textures.push_back(albedo_tex);
@@ -306,171 +43,71 @@ GlDeferredLighting::GlDeferredLighting(lib_core::EngineCore *engine,
   material.textures.push_back(depth_tex);
 
   material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   deferred_lighting_point_shadow_volume_ = material_command.MaterialId();
-
-  frag_shader = deferred_fragment_header +
-
-                "uniform vec3 cam_pos;\n"
-                "uniform vec2 screen_dim;\n"
-
-                + light_variables_point_ + pbr_helper_funcs_ +
-
-                "void main()\n"
-                "{\n"
-                "  vec2 frag_coord = gl_FragCoord.xy / screen_dim;\n"
-
-                + deferred_fragment_start + pbr_lighting_attenuation_ +
-
-                "  Lo = (kD * albedo / PI + brdf) * radiance * NdotL;\n"
-                "  FragColor = vec4(Lo, 1.0);\n"
-                "}";
-
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
-  shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
-
-  material_command = AddMaterialCommand(material);
   issue_command(material_command);
+
+  shader_command = AddShaderCommand(
+      vert_shader,
+      cu::ReadFile(
+          "./content/shaders/opengl/deferred_lighting_point_world_fs.glsl"));
+  shader_ids_.push_back(shader_command.ShaderId());
+  issue_command(shader_command);
+
+  material.shader = shader_ids_.back();
+  material_command = AddMaterialCommand(material);
   deferred_lighting_volume_ = material_command.MaterialId();
+  issue_command(material_command);
 
   vert_shader =
-      "#version 430 core\n"
-      "layout(location = 0) in vec2 position;\n"
-      "layout(location = 1) in vec2 texCoords;\n"
+      cu::ReadFile("./content/shaders/opengl/deferred_lighting_screen_vs.glsl");
 
-      "out vec2 TexCoords;\n"
-      "flat out int inst_id;\n"
-
-      "void main()\n"
-      "{\n"
-      "  gl_Position = vec4(position.x, position.y, 0.0f, 1.0f);\n"
-      "  TexCoords = texCoords;\n"
-      "  inst_id = gl_InstanceID;\n"
-      "}";
-
-  frag_shader =
-      deferred_fragment_header +
-      "in vec2 TexCoords;\n"
-
-      "uniform vec3 cam_pos;\n"
-
-      + light_shadows_variables_point_ + light_variables_point_ +
-      point_shadows_ + pbr_helper_funcs_ +
-
-      "void main()\n"
-      "{\n"
-      "  vec2 frag_coord = TexCoords;\n"
-
-      + deferred_fragment_start + pbr_lighting_attenuation_ +
-
-      "  float shadow = 1.0 - ShadowCalculation(frag_pos, i);\n"
-      "  Lo = shadow * (kD * albedo / PI + brdf) * radiance * NdotL;\n"
-      "  FragColor = vec4(Lo, 1.0);\n"
-      "}";
-
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
+  shader_command = AddShaderCommand(
+      vert_shader,
+      cu::ReadFile("./content/shaders/opengl/"
+                   "deferred_lighting_point_shadow_screen_fs.glsl"));
   shader_ids_.push_back(shader_command.ShaderId());
+  issue_command(shader_command);
 
-  material.shader = shader_command.ShaderId();
-
+  material.shader = shader_ids_.back();
   material_command = AddMaterialCommand(material);
-  issue_command(material_command);
   deferred_lighting_point_shadow_quad_ = material_command.MaterialId();
-
-  frag_shader = deferred_fragment_header +
-                "in vec2 TexCoords;\n"
-
-                "uniform vec3 cam_pos;\n"
-
-                + light_variables_point_ + pbr_helper_funcs_ +
-
-                "void main()\n"
-                "{\n"
-                "  vec2 frag_coord = TexCoords;\n"
-
-                + deferred_fragment_start + pbr_lighting_attenuation_ +
-
-                "  Lo = (kD * albedo / PI + brdf) * radiance * NdotL;\n"
-                "  FragColor = vec4(Lo, 1.0);\n"
-                "}";
-
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
-  shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
-
-  material_command = AddMaterialCommand(material);
   issue_command(material_command);
+
+  shader_command = AddShaderCommand(
+      vert_shader,
+      cu::ReadFile(
+          "./content/shaders/opengl/deferred_lighting_point_screen_fs.glsl"));
+  shader_ids_.push_back(shader_command.ShaderId());
+  issue_command(shader_command);
+
+  material.shader = shader_ids_.back();
+  material_command = AddMaterialCommand(material);
   deferred_lighting_quad_ = material_command.MaterialId();
-
-  frag_shader =
-      deferred_fragment_header +
-      "in vec2 TexCoords;\n"
-
-      "uniform vec3 cam_pos;\n"
-
-      + light_variables_dir_ + light_shadows_variables_dir_ + dir_shadows_ +
-      pbr_helper_funcs_ +
-
-      "void main()\n"
-      "{\n"
-      "  vec2 frag_coord = TexCoords;\n"
-
-      + deferred_fragment_start + pbr_lighting_dir_ +
-
-      "  float depth = texture(g_depth, frag_coord).r;\n"
-
-      "  for(int l = 0; l<3; ++l)\n"
-      "  {\n"
-      "    if(depth < cascade_depth[l] || l == 2)\n"
-      "    {\n"
-      "      vec4 light_pos = world[l] * vec4(frag_pos, 1.0);\n"
-      "      float shadow = ShadowCalculation(light_pos, NdotL, l);\n"
-      "      Lo = shadow * (kD * albedo / PI + brdf) * radiance * NdotL;\n"
-      "      break;"
-      "    }\n"
-      "  }\n"
-
-      "  FragColor = vec4(Lo, 1.0);\n"
-      "}";
-
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
-  shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
-
-  material_command = AddMaterialCommand(material);
   issue_command(material_command);
+
+  shader_command = AddShaderCommand(
+      vert_shader,
+      cu::ReadFile("./content/shaders/opengl/"
+                   "deferred_lighting_directional_shadow_fs.glsl"));
+  shader_ids_.push_back(shader_command.ShaderId());
+  issue_command(shader_command);
+
+  material.shader = shader_ids_.back();
+  material_command = AddMaterialCommand(material);
   deferred_lighting_dir_shadow_quad_ = material_command.MaterialId();
-
-  frag_shader = deferred_fragment_header +
-                "in vec2 TexCoords;\n"
-
-                "uniform vec3 cam_pos;\n"
-
-                + light_variables_dir_ + pbr_helper_funcs_ +
-
-                "void main()\n"
-                "{\n"
-                "  vec2 frag_coord = TexCoords;\n"
-
-                + deferred_fragment_start + pbr_lighting_dir_ +
-
-                "  Lo = (kD * albedo / PI + brdf) * radiance * NdotL;\n"
-                "  FragColor = vec4(Lo, 1.0);\n"
-                "}";
-
-  shader_command = AddShaderCommand(vert_shader, frag_shader);
-  issue_command(shader_command);
-  shader_ids_.push_back(shader_command.ShaderId());
-  material.shader = shader_command.ShaderId();
-
-  material_command = AddMaterialCommand(material);
   issue_command(material_command);
+
+  shader_command = AddShaderCommand(
+      vert_shader,
+      cu::ReadFile(
+          "./content/shaders/opengl/deferred_lighting_directional_fs.glsl"));
+  shader_ids_.push_back(shader_command.ShaderId());
+  issue_command(shader_command);
+
+  material.shader = shader_ids_.back();
+  material_command = AddMaterialCommand(material);
   deferred_lighting_dir_quad_ = material_command.MaterialId();
+  issue_command(material_command);
 
   shadow_mapper_ = std::make_unique<GlShadowMapping>(engine_);
 }
