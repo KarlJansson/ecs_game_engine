@@ -2,7 +2,7 @@
 
 namespace lib_input {
 enum class Key {
-  kMouseLeft = 0,
+  kMouseLeft,
   kMouseRight,
   kMouseMiddle,
   kMouse4,
@@ -10,13 +10,12 @@ enum class Key {
   kMouse6,
   kMouse7,
   kMouse8,
-
-  kSpace = 32,
-  kApostrophe = 39, /* ' */
-  kComma = 44,      /* , */
-  kMinus,           /* - */
-  kPeriod,          /* . */
-  kSlash,           /* / */
+  kSpace,
+  kApostrophe,
+  kComma,
+  kMinus,
+  kPeriod,
+  kSlash,
   k0,
   k1,
   k2,
@@ -27,12 +26,9 @@ enum class Key {
   k7,
   k8,
   k9,
-
-  kSemicolon = 59, /* ; */
-
-  kEqual = 61, /* = */
-
-  kA = 65,
+  kSemicolon,
+  kEqual,
+  kA,
   kB,
   kC,
   kD,
@@ -58,17 +54,13 @@ enum class Key {
   kX,
   kY,
   kZ,
-  kLeftBracket,  /* [ */
-  kBackslash,    /* \ */
-  kRightBracket, /* ] */
-
-  kGraveAccent = 96, /* ` */
-
-  kWorld1 = 161, /* non-US #1 */
-  kWorld2,       /* non-US #2 */
-
-  /* Function keys */
-  kEscape = 256,
+  kLeftBracket,
+  kBackslash,
+  kRightBracket,
+  kGraveAccent,
+  kWorld1,
+  kWorld2,
+  kEscape,
   kEnter,
   kTab,
   kBackspace,
@@ -82,14 +74,12 @@ enum class Key {
   kPageDown,
   kHome,
   kEnd,
-
-  kCapsLock = 280,
+  kCapsLock,
   kScrollLock,
   kNumLock,
   kPrintScreen,
   kPause,
-
-  kF1 = 290,
+  kF1,
   kF2,
   kF3,
   kF4,
@@ -114,8 +104,7 @@ enum class Key {
   kF23,
   kF24,
   kF25,
-
-  kKp0 = 320,
+  kKp0,
   kKp1,
   kKp2,
   kKp3,
@@ -132,8 +121,7 @@ enum class Key {
   kKpAdd,
   kKpEnter,
   kKpEqual,
-
-  kLeftShift = 340,
+  kLeftShift,
   kLeftControl,
   kLeftAlt,
   kLeftSuper,
@@ -145,21 +133,25 @@ enum class Key {
 };
 
 enum class PadButton {
-  kButton1 = 0,
-  kButton2,
-  kButton3,
-  kButton4,
+  kButtonA,
+  kButtonB,
+  kButtonX,
+  kButtonY,
   kShoulderL,
   kShoulderR,
-  kButton5,
+  kButtonBack,
+  kButtonStart,
+  kButtonGuide,
   kStickL,
   kStickR,
-  kDigitaly,
-  kDigitalx
+  kDigitalUp,
+  kDigitalRight,
+  kDigitalDown,
+  kDigitalLeft
 };
 
 enum class PadStick {
-  kStickLx = 0,
+  kStickLx,
   kStickLy,
   kTriggerL,
   kStickRx,

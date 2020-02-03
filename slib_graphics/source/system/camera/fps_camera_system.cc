@@ -287,7 +287,7 @@ void FpsCameraSystem::LogicUpdate(float dt) {
     auto trigger = input_system->StickPos(0, lib_input::PadStick::kTriggerR);
     bool action_a =
         input_system->MousePressed(lib_input::Key::kMouseLeft) ||
-        input_system->ButtonPressed(0, lib_input::PadButton::kButton3);
+        input_system->ButtonPressed(0, lib_input::PadButton::kButtonX);
     bool action_b = input_system->MousePressed(lib_input::Key::kMouseRight) ||
                     trigger > .1f;
 

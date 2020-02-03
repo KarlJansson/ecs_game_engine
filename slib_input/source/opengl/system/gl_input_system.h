@@ -21,6 +21,11 @@ class GlInputSystem : public InputSystem {
   bool ButtonPressed(int controller, PadButton button) override;
   bool ButtonReleased(int controller, PadButton button) override;
 
+ protected:
+  int ConvertKey(Key k) override;
+  int ConvertButton(PadButton b) override;
+  int ConvertStick(PadStick s) override;
+
  private:
   lib_core::EngineCore* engine_;
   struct GLFWwindow* window_;

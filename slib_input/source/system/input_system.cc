@@ -74,7 +74,7 @@ lib_core::Vector2 InputSystem::MouseDelta() {
 }
 
 float InputSystem::StickPos(int controller, PadStick stick) {
-  auto casted_stick = static_cast<int>(stick);
+  auto casted_stick = ConvertStick(stick);
   if (controller < 16 && controller > -1 &&
       casted_stick < stick_pos_[controller].size()) {
     if (std::abs(stick_pos_[controller][casted_stick]) > 0.3f)

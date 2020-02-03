@@ -70,7 +70,7 @@ void GroundedState::OnEnter() {
 
       bool jump =
           input_system->KeyPressed(lib_input::Key::kSpace) ||
-          input_system->ButtonPressed(0, lib_input::PadButton::kButton1);
+          input_system->ButtonPressed(0, lib_input::PadButton::kButtonA);
 
       if (actor->grounded && in_air && jump_cooldown_ >= 0.3f) {
         orig_height_ = actor->height;

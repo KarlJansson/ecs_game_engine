@@ -30,6 +30,10 @@ class InputSystem : public lib_core::System {
   int PresentContorllerId(int offset = 0);
 
  protected:
+  virtual int ConvertKey(Key k) = 0;
+  virtual int ConvertButton(PadButton b) = 0;
+  virtual int ConvertStick(PadStick s) = 0;
+
   lib_core::Vector2 delta_ = {.0f, .0f};
   lib_core::Vector2 pos_ = {.0f, .0f};
   lib_core::Vector2 mouse_speed_ = {.0f, .0f};
