@@ -1,26 +1,28 @@
+cpp_version:c++17
+
 {
 	name : "tbb/tbb.h"
-  include_dir : "../../Dependencies/tbb/include"
-  lib_dir : "optimized ../../../Dependencies/tbb/lib/intel64/vc14/tbb" 
-	lib_dir : "debug ../../../Dependencies/tbb/lib/intel64/vc14/tbb_debug"
+	include_dir : "../../Dependencies/tbb/include"
+	lib_dir : "optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb" 
+	lib_dir : "debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug"
 	dll_file : "../../../Dependencies/tbb/bin/intel64/vc14/tbb"
 	debug_suffix : "_debug"
 }
 
 {
 	name : "boost/multiprecision/cpp_int.hpp"
-  include_dir : "../../Dependencies"
+	include_dir : "../../Dependencies"
 }
 
 {
 	name : "GLFW/glfw3.h"
-  include_dir : "../../Dependencies/include"
-	lib_dir : "../../../Dependencies/lib/release/static/glfw3"
+	include_dir : "../../Dependencies/include"
+	lib_dir : "../../Dependencies/lib/release/static/glfw3"
 }
 
 {
 	name : "nvtt/nvtt.h"
-  include_dir : "../../Dependencies/include"
+	include_dir : "../../Dependencies/include"
 	lib_dir : "../../../Dependencies/lib/release/static/nvtt"
 }
 
@@ -40,14 +42,14 @@
 {
 	name : "portaudio/portaudio.h"
   include_dir : "../../Dependencies/include"
-	lib_dir : "optimized ../../../Dependencies/lib/release/static/portaudio" 
-	lib_dir : "debug ../../../Dependencies/lib/debug/static/portaudio"
+	lib_dir : "optimized ../../Dependencies/lib/release/static/portaudio" 
+	lib_dir : "debug ../../Dependencies/lib/debug/static/portaudio"
 }
 
 {
 	name : "GL/glew.h"
   include_dir : "../../Dependencies/include"
-	lib_dir : "../../../Dependencies/lib/release/dynamic/glew32"
+	lib_dir : "../../Dependencies/lib/release/dynamic/glew32"
 	dll_file : "../../../Dependencies/bin/release/glew32"
 }
 
@@ -90,46 +92,46 @@
 
 {
 	name : "glm/glm.hpp"
-  include_dir : "../../Dependencies/include"
+	include_dir : "../../Dependencies/include"
 }
 
 {
 	name : "zlib/zlib.h"
-  include_dir : "../../Dependencies/include"
-	lib_dir : "optimized ../../../Dependencies/lib/release/dynamic/zlib"
-	lib_dir : "debug ../../../Dependencies/lib/debug/dynamic/zlibd"
+	include_dir : "../../Dependencies/include"
+	lib_dir : "optimized ../../Dependencies/lib/release/dynamic/zlib"
+	lib_dir : "debug ../../Dependencies/lib/debug/dynamic/zlibd"
 	dll_file : "../../../Dependencies/bin/release/zlib"
 	dll_debug : "../../../Dependencies/bin/debug/zlibd"
 }
 
 {
 	name : "ft2build.h"
-  include_dir : "../../Dependencies/include/freetype/freetype2 ../../Dependencies/include/freetype"
-	lib_dir : "optimized ../../../Dependencies/lib/release/static/freetype" 
-	lib_dir : "debug ../../../Dependencies/lib/debug/static/freetyped"
+	include_dir : "../../Dependencies/include/freetype/freetype2 ../../Dependencies/include/freetype"
+	lib_dir : "optimized ../../Dependencies/lib/release/static/freetype" 
+	lib_dir : "debug ../../Dependencies/lib/debug/static/freetyped"
 }
 
 {
 	name : "SOIL/SOIL.h"
-  include_dir : "../../Dependencies/include"
+	include_dir : "../../Dependencies/include"
 	lib_dir : "optimized ../../../Dependencies/lib/release/static/SOIL debug ../../../Dependencies/lib/debug/static/SOIL"
 }
 
 {
 	name : "assimp/Importer.hpp"
-  include_dir : "../../Dependencies/include"
-	lib_dir : "../../../Dependencies/lib/release/dynamic/assimp-vc140-mt"
+	include_dir : "../../Dependencies/include"
+	lib_dir : "../../Dependencies/lib/release/dynamic/assimp-vc140-mt"
 	dll_file : "../../../Dependencies/bin/release/assimp-vc140-mt"
 }
 
 {
 	name : "GL/GL.h"
-  lib_dir : ""C:/Program Files (x86)/Windows Kits/10/Lib/10.0.15063.0/um/x64/OpenGL32.Lib""
+  lib_dir : ""C:/Program Files (x86)/Windows Kits/10/Lib/10.0.18362.0/um/x64/OpenGL32.Lib""
 }
 
 {
 	name : "GL/GLU.h"
-  lib_dir : ""C:/Program Files (x86)/Windows Kits/10/Lib/10.0.15063.0/um/x64/GlU32.Lib""
+  lib_dir : ""C:/Program Files (x86)/Windows Kits/10/Lib/10.0.18362.0/um/x64/GlU32.Lib""
 }
 
 {

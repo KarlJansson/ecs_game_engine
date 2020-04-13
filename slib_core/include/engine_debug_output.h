@@ -1,4 +1,7 @@
 #pragma once
+
+#include <array>
+
 #include "core_utilities.h"
 
 namespace lib_core {

@@ -2,7 +2,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -11,7 +11,7 @@
 
 namespace cmd_fract_cooking {
 void ModelCooker::LoadModel(ct::string path) {
-  if (!std::experimental::filesystem::exists(path)) return;
+  if (!std::filesystem::exists(path)) return;
 
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(

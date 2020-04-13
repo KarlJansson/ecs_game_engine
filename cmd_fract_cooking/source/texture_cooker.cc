@@ -1,5 +1,5 @@
 #include "texture_cooker.h"
-#include <experimental/filesystem>
+#include <filesystem>
 #include <fstream>
 #include "../../source_shared/include/serialization_utilities.hpp"
 #include "core_utilities.h"
@@ -9,7 +9,7 @@
 
 namespace cmd_fract_cooking {
 void TextureCooker::LoadTexture(ct::string path) {
-  if (!std::experimental::filesystem::exists(path)) return;
+  if (!std::filesystem::exists(path)) return;
 
   Texture tex;
   tex.name = path.substr(path.find_last_of('/') + 1, path.size());

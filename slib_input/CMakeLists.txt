@@ -8,48 +8,50 @@ set(cpp_files
   ./source/opengl/system/gl_input_system.cc
   ./source/system/input_system.cc
   ./include/input_commands.h
-  ./include/key_definitions.h
   ./include/input_factory.h
+  ./include/key_definitions.h
   ./include/component/contiguous_input.h
   ./include/component/toggle_input.h
   ./include/system/input_system.h
   ./source/opengl/system/gl_input_system.h
+)
+
+source_group(include FILES
+  ./include/input_commands.h
+  ./include/input_factory.h
+  ./include/key_definitions.h
+)
+
+source_group(include/component FILES
+  ./include/component/contiguous_input.h
+  ./include/component/toggle_input.h
+)
+
+source_group(include/system FILES
+  ./include/system/input_system.h
 )
 
 source_group(source FILES
   ./source/input_factory.cc
 )
 
-source_group(source\\system FILES
-  ./source/system/input_system.cc
+source_group(source/opengl FILES
 )
 
-source_group(source\\opengl FILES
-)
-
-source_group(source\\opengl\\system FILES
+source_group(source/opengl/system FILES
   ./source/opengl/system/gl_input_system.cc
   ./source/opengl/system/gl_input_system.h
 )
 
-source_group(include FILES
-  ./include/input_commands.h
-  ./include/key_definitions.h
-  ./include/input_factory.h
-)
-
-source_group(include\\system FILES
-  ./include/system/input_system.h
-)
-
-source_group(include\\component FILES
-  ./include/component/contiguous_input.h
-  ./include/component/toggle_input.h
+source_group(source/system FILES
+  ./source/system/input_system.cc
 )
 
 add_library(input STATIC ${cpp_files})
 
 include_directories(input
+  ../../Dependencies/include
+  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -71,9 +73,9 @@ include_directories(input
 target_link_libraries(input
   core
   graphics
-  glfw
-  tbb
-  libpthread.so
+  ../../Dependencies/lib/release/static/glfw3
+  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
+  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
 )
 
 add_dependencies(input ALL_PRE_BUILD)

@@ -5,92 +5,40 @@ cmake_minimum_required(VERSION 3.6)
 
 set(cpp_files
   ./source/physics_factory.cc
-  ./source/component/joint.cc
-  ./source/component/character.cc
   ./source/component/actor.cc
+  ./source/component/character.cc
+  ./source/component/joint.cc
   ./source/component/trigger.cc
   ./source/physx/handler/physx_actor_handler.cc
-  ./source/physx/handler/physx_trigger_handler.cc
-  ./source/physx/handler/physx_joint_handler.cc
   ./source/physx/handler/physx_character_handler.cc
+  ./source/physx/handler/physx_joint_handler.cc
+  ./source/physx/handler/physx_trigger_handler.cc
   ./source/physx/system/physx_system.cc
   ./source/system/physics_system.cc
   ./include/physics_commands.h
   ./include/physics_factory.h
-  ./include/component/trigger.h
   ./include/component/actor.h
-  ./include/component/joint.h
   ./include/component/character.h
+  ./include/component/joint.h
+  ./include/component/trigger.h
   ./include/handler/actor_handler.h
   ./include/handler/character_handler.h
   ./include/handler/joint_handler.h
   ./include/system/physics_system.h
-  ./source/physx/handler/physx_joint_handler.h
-  ./source/physx/handler/physx_character_handler.h
   ./source/physx/handler/physx_actor_handler.h
+  ./source/physx/handler/physx_character_handler.h
+  ./source/physx/handler/physx_joint_handler.h
   ./source/physx/handler/physx_trigger_handler.h
   ./source/physx/system/physx_system.h
+  ./test/test_actor.h
   ./test/test_physics_factory.h
   ./test/test_physics_system.h
-  ./test/test_actor.h
   ./test/physx/test_physx_system.h
+  ./test/physx/handler/test_actor_handler.h
+  ./test/physx/handler/test_character_handler.h
   ./test/physx/handler/test_joint_handler.h
   ./test/physx/handler/test_physx_character_handler.h
-  ./test/physx/handler/test_character_handler.h
   ./test/physx/handler/test_physx_trigger_handler.h
-  ./test/physx/handler/test_actor_handler.h
-)
-
-source_group(source FILES
-  ./source/physics_factory.cc
-)
-
-source_group(source\\system FILES
-  ./source/system/physics_system.cc
-)
-
-source_group(source\\component FILES
-  ./source/component/joint.cc
-  ./source/component/character.cc
-  ./source/component/actor.cc
-  ./source/component/trigger.cc
-)
-
-source_group(source\\physx FILES
-)
-
-source_group(source\\physx\\handler FILES
-  ./source/physx/handler/physx_actor_handler.cc
-  ./source/physx/handler/physx_trigger_handler.cc
-  ./source/physx/handler/physx_joint_handler.cc
-  ./source/physx/handler/physx_character_handler.cc
-  ./source/physx/handler/physx_joint_handler.h
-  ./source/physx/handler/physx_character_handler.h
-  ./source/physx/handler/physx_actor_handler.h
-  ./source/physx/handler/physx_trigger_handler.h
-)
-
-source_group(source\\physx\\system FILES
-  ./source/physx/system/physx_system.cc
-  ./source/physx/system/physx_system.h
-)
-
-source_group(test FILES
-  ./test/test_physics_factory.h
-  ./test/test_physics_system.h
-  ./test/test_actor.h
-)
-
-source_group(test\\physx FILES
-  ./test/physx/test_physx_system.h
-)
-
-source_group(test\\physx\\handler FILES
-  ./test/physx/handler/test_joint_handler.h
-  ./test/physx/handler/test_physx_character_handler.h
-  ./test/physx/handler/test_character_handler.h
-  ./test/physx/handler/test_physx_trigger_handler.h
-  ./test/physx/handler/test_actor_handler.h
 )
 
 source_group(include FILES
@@ -98,26 +46,79 @@ source_group(include FILES
   ./include/physics_factory.h
 )
 
-source_group(include\\handler FILES
+source_group(include/component FILES
+  ./include/component/actor.h
+  ./include/component/character.h
+  ./include/component/joint.h
+  ./include/component/trigger.h
+)
+
+source_group(include/handler FILES
   ./include/handler/actor_handler.h
   ./include/handler/character_handler.h
   ./include/handler/joint_handler.h
 )
 
-source_group(include\\system FILES
+source_group(include/system FILES
   ./include/system/physics_system.h
 )
 
-source_group(include\\component FILES
-  ./include/component/trigger.h
-  ./include/component/actor.h
-  ./include/component/joint.h
-  ./include/component/character.h
+source_group(source FILES
+  ./source/physics_factory.cc
+)
+
+source_group(source/component FILES
+  ./source/component/actor.cc
+  ./source/component/character.cc
+  ./source/component/joint.cc
+  ./source/component/trigger.cc
+)
+
+source_group(source/physx FILES
+)
+
+source_group(source/physx/handler FILES
+  ./source/physx/handler/physx_actor_handler.cc
+  ./source/physx/handler/physx_character_handler.cc
+  ./source/physx/handler/physx_joint_handler.cc
+  ./source/physx/handler/physx_trigger_handler.cc
+  ./source/physx/handler/physx_actor_handler.h
+  ./source/physx/handler/physx_character_handler.h
+  ./source/physx/handler/physx_joint_handler.h
+  ./source/physx/handler/physx_trigger_handler.h
+)
+
+source_group(source/physx/system FILES
+  ./source/physx/system/physx_system.cc
+  ./source/physx/system/physx_system.h
+)
+
+source_group(source/system FILES
+  ./source/system/physics_system.cc
+)
+
+source_group(test FILES
+  ./test/test_actor.h
+  ./test/test_physics_factory.h
+  ./test/test_physics_system.h
+)
+
+source_group(test/physx FILES
+  ./test/physx/test_physx_system.h
+)
+
+source_group(test/physx/handler FILES
+  ./test/physx/handler/test_actor_handler.h
+  ./test/physx/handler/test_character_handler.h
+  ./test/physx/handler/test_joint_handler.h
+  ./test/physx/handler/test_physx_character_handler.h
+  ./test/physx/handler/test_physx_trigger_handler.h
 )
 
 add_library(physics STATIC ${cpp_files})
 
 include_directories(physics
+  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -144,21 +145,30 @@ include_directories(physics
   ./test
   ./test/physx
   ./test/physx/handler
+  D:/API/PhysX/PhysX_3.4/Include
+  D:/API/PhysX/PxShared/include
 )
 
 target_link_libraries(physics
   core
   graphics
   gui
-  libPhysX3_x64.so
-  libPhysX3Common_x64.so
-  libPhysX3Cooking_x64.so
-  libPhysX3Extensions.a
-  libPhysX3CharacterKinematic_x64.so
-  libPxFoundation_x64.so
-  libPxPvdSDK_x64.so
-  tbb
-  libpthread.so
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
+  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
+  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
 )
 
 add_dependencies(physics ALL_PRE_BUILD)

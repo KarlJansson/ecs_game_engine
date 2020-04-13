@@ -8,20 +8,7 @@ endif()
 project(cmakemaker_solution CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-macro(add_msvc_precompiled_header PrecompiledHeader 
-PrecompiledSource SourcesVar)
-  if(MSVC)
-    get_filename_component(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-    set(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
-    set(Sources ${${SourcesVar}})
-    set_source_files_properties(${Sources}
-      PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-      OBJECT_DEPENDS "${PrecompiledBinary}")
-    set_source_files_properties(${PrecompiledSource}
-      PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-      OBJECT_OUTPUTS "${PrecompiledBinary}")
-    list(APPEND ${SourcesVar} ${PrecompiledSource})
-  endif(MSVC)
+macro(add_msvc_precompiled_header PrecompiledHeader PrecompiledSource SourcesVar)
 endmacro(add_msvc_precompiled_header)
 
 set(LIBRARY_OUTPUT_PATH Build_Output/libs CACHE PATH "Lib path")
@@ -31,7 +18,7 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 if (WIN32)
   add_definitions(-DWindowsBuild)
-  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -MP")
+  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -MP /std:c++17")
 else(WIN32)
   add_definitions(-DUnixBuild)
   set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17")
@@ -52,28 +39,14 @@ else()
   )
 endif()
 
+add_subdirectory(./app_example)
 add_subdirectory(./cmd_fract_cooking)
-add_subdirectory(./app_ecs_game_engine)
-add_subdirectory(./slib_input)
-add_subdirectory(./slib_sound)
 add_subdirectory(./slib_core)
 add_subdirectory(./slib_graphics)
 add_subdirectory(./slib_gui)
+add_subdirectory(./slib_input)
 add_subdirectory(./slib_physics)
+add_subdirectory(./slib_sound)
 if (MSVC)
-  set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT fract_cooking)
+  set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT example)
 endif(MSVC)
-add_custom_command(TARGET ALL_PRE_BUILD PRE_BUILD
-  COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different "${CMAKE_BINARY_DIR}/compile_commands.json" "${CMAKE_SOURCE_DIR}/compile_commands.json"
-  COMMAND cat ${CMAKE_SOURCE_DIR}/compile_commands.json > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
-  COMMAND sed "s/-/\\n-/g" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
-  COMMAND sort ${CMAKE_SOURCE_DIR}/.clang_complete | uniq > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp
-  COMMAND sed "/^-o/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
-  COMMAND sed "/^-c/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
-  COMMAND sed "/^ /d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
-  COMMAND sed "/^\{/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
-  COMMAND sed "/^\}/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
-  COMMAND sed "/^\\[/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
-  COMMAND sed "/^\\]/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
-  COMMAND rm ${CMAKE_SOURCE_DIR}/.clang_complete_tmp
-)

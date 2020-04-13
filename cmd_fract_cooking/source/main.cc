@@ -1,4 +1,4 @@
-#include <experimental/filesystem>
+#include <filesystem>
 #include <iostream>
 #include <sstream>
 #include "core_utilities.h"
@@ -75,8 +75,8 @@ int main(int argc, char** argv) {
   }
   for (auto& path : assets[2]) {
     for (auto& file :
-         std::experimental::filesystem::recursive_directory_iterator(path)) {
-      if (std::experimental::filesystem::is_regular_file(file)) {
+         std::filesystem::recursive_directory_iterator(path)) {
+      if (std::filesystem::is_regular_file(file)) {
         ct::stringstream path_str_stream;
         path_str_stream << file;
         ct::string path_str = path_str_stream.str();
@@ -95,8 +95,8 @@ int main(int argc, char** argv) {
   }
   for (auto& path : assets[3]) {
     for (auto& file :
-         std::experimental::filesystem::recursive_directory_iterator(path)) {
-      if (std::experimental::filesystem::is_regular_file(file)) {
+         std::filesystem::recursive_directory_iterator(path)) {
+      if (std::filesystem::is_regular_file(file)) {
         ct::stringstream path_str_stream;
         path_str_stream << file;
         ct::string path_str = path_str_stream.str();
@@ -115,8 +115,8 @@ int main(int argc, char** argv) {
   }
   for (auto& path : assets[5]) {
     for (auto& file :
-         std::experimental::filesystem::recursive_directory_iterator(path)) {
-      if (std::experimental::filesystem::is_regular_file(file)) {
+         std::filesystem::recursive_directory_iterator(path)) {
+      if (std::filesystem::is_regular_file(file)) {
         ct::stringstream path_str_stream;
         path_str_stream << file;
         ct::string path_str = path_str_stream.str();

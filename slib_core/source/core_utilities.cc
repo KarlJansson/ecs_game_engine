@@ -19,7 +19,7 @@ ct::string cu::ReadFile(const ct::string &path) {
   file.seekg(0, std::ios::beg);
 
   ct::string content(size, ' ');
-  file.read(content.data(), size);
+  file.read(&content[0], size);
   file.close();
 
   return content;

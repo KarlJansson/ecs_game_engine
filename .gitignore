@@ -1,6 +1,7 @@
 /compile_commands.json
 /_build_release_
 /_build_debug_
+/build
 /cscope.out
 /cscope.files
 /_stock_assets_/_stock_assets_
@@ -13,4 +14,11 @@
 /slib_physics/slib_physics
 /slib_sound/slib_sound
 /source_shared/source_shared
+/content
+/.vscode
 .clang_complete
+config.ini
+logfile.txt
+profiling.txt
+*.pdb
+CMakeLists.txt

@@ -4,10 +4,10 @@ cmake_minimum_required(VERSION 3.6)
 
 
 set(cpp_files
-  ./source/texture_cooker.cc
+  ./source/main.cc
   ./source/model_cooker.cc
   ./source/sound_cooker.cc
-  ./source/main.cc
+  ./source/texture_cooker.cc
   ./source/model_cooker.h
   ./source/sound_cooker.h
   ./source/texture_cooker.h
@@ -17,10 +17,10 @@ set(cpp_files
 )
 
 source_group(source FILES
-  ./source/texture_cooker.cc
+  ./source/main.cc
   ./source/model_cooker.cc
   ./source/sound_cooker.cc
-  ./source/main.cc
+  ./source/texture_cooker.cc
   ./source/model_cooker.h
   ./source/sound_cooker.h
   ./source/texture_cooker.h
@@ -35,6 +35,8 @@ source_group(test FILES
 add_executable(fract_cooking ${cpp_files})
 
 include_directories(fract_cooking
+  ../../Dependencies/include
+  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/include
   ../source_shared
@@ -44,10 +46,21 @@ include_directories(fract_cooking
 
 target_link_libraries(fract_cooking
   core
-  assimp
-  libstdc++fs.a
-  tbb
-  libpthread.so
+  ../../Dependencies/lib/release/dynamic/assimp-vc140-mt
+  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
+  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+)
+
+add_custom_command(TARGET fract_cooking POST_BUILD
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
+    "$<$<CONFIG:Release>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:Debug>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/assimp-vc140-mt.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/assimp-vc140-mt.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/assimp-vc140-mt.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/assimp-vc140-mt.dll>"
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
+    "$<$<CONFIG:Release>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:Debug>:../../../Dependencies/tbb/bin/intel64/vc14/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/tbb.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/tbb.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/tbb.dll>"
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
+    "$<$<CONFIG:Release>:../../../Dependencies/bin/release/zlib.dll>$<$<CONFIG:Debug>:../../../Dependencies/bin/debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/bin/release/zlib.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/bin/release/zlib.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/zlib.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/zlib.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/zlib.dll>"
 )
 
 add_dependencies(fract_cooking ALL_PRE_BUILD)

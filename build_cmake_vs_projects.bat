@@ -5,7 +5,7 @@ if not exist .\_build_release_\ (
 )
 
 cd .\_build_release_\ 
-cmake -G "Visual Studio 15 2017 Win64" .. 
+cmake -G "Visual Studio 16 2019" -A x64 .. 
 cd .. 
 
 cd .\_stock_assets_\
