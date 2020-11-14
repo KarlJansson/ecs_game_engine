@@ -10,7 +10,7 @@
 namespace lib_core {
 class EntityManager {
  private:
-  EntityManager() = default;
+  EntityManager();
 
   struct ComponentFunction {
     size_t hash;
@@ -47,6 +47,11 @@ class EntityManager {
 
   Entity CreateEntity();
   size_t CreateScene();
+
+  template <typename T>
+  void AddComponent(T comp) {
+    AddComponent<T>(lib_core::Entity(0), comp);
+  }
 
   template <typename T>
   void AddComponent(Entity entity, T comp) {
@@ -121,6 +126,11 @@ class EntityManager {
   }
 
   template <typename T>
+  void RemoveComponent() {
+    RemoveComponent<T>(lib_core::Entity(0));
+  }
+
+  template <typename T>
   void RemoveComponent(Entity entity) {
     auto hash = typeid(T).hash_code();
     comp_remove_funcs_.push({hash, entity});
@@ -161,8 +171,18 @@ class EntityManager {
   }
 
   template <typename T>
+  T* const GetNewCbeW() {
+    return GetNewCbeW<T>(lib_core::Entity(0));
+  }
+
+  template <typename T>
   T* const GetOldCbeW(Entity entity) {
     return GetComponentByEntity<T>(entity, kOld, true);
+  }
+
+  template <typename T>
+  T* const GetOldCbeW() {
+    return GetOldCbeW<T>(lib_core::Entity(0));
   }
 
   template <typename T>
@@ -171,8 +191,18 @@ class EntityManager {
   }
 
   template <typename T>
+  T const* const GetNewCbeR() {
+    return GetNewCbeR<T>(lib_core::Entity(0));
+  }
+
+  template <typename T>
   T const* const GetOldCbeR(Entity entity) {
     return GetComponentByEntity<T>(entity, kOld, false);
+  }
+
+  template <typename T>
+  T const* const GetOldCbeR() {
+    return GetOldCbeR<T>(lib_core::Entity(0));
   }
 
   template <typename T>

@@ -50,8 +50,6 @@ source_group(test/port_audio FILES
 add_library(sound STATIC ${cpp_files})
 
 include_directories(sound
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -64,14 +62,16 @@ include_directories(sound
   ./source/port_audio
   ./test
   ./test/port_audio
+  D:/API/include
+  D:/API/tbb/include
 )
 
 target_link_libraries(sound
   core
-  optimized ../../Dependencies/lib/release/static/portaudio
-  debug ../../Dependencies/lib/debug/static/portaudio
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  optimized D:/API/lib/release/static/portaudio.lib
+  debug D:/API/lib/debug/static/portaudio.lib
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_dependencies(sound ALL_PRE_BUILD)

@@ -121,8 +121,6 @@ source_group(test FILES
 add_library(core STATIC ${cpp_files})
 
 include_directories(core
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_graphics/./include/
   ../slib_graphics/./include/component/
   ../slib_graphics/./include/system/
@@ -160,6 +158,10 @@ include_directories(core
   ./source/math
   ./source/state_machine
   ./test
+  D:/API/PhysX/PhysX_3.4/Include
+  D:/API/PhysX/PxShared/include
+  D:/API/include
+  D:/API/tbb/include
 )
 
 target_link_libraries(core
@@ -168,10 +170,24 @@ target_link_libraries(core
   input
   physics
   sound
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
-  optimized ../../Dependencies/lib/release/dynamic/zlib
-  debug ../../Dependencies/lib/debug/dynamic/zlibd
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
+  optimized D:/API/lib/release/dynamic/zlib.lib
+  debug D:/API/lib/debug/dynamic/zlibd.lib
 )
 
 add_dependencies(core ALL_PRE_BUILD)

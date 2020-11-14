@@ -2,6 +2,8 @@
 #include "system_manager.h"
 
 namespace lib_core {
+EntityManager::EntityManager() { add_entity_queue_.push(Entity(0)); }
+
 bool EntityManager::FullyLoaded() {
   return comp_add_funcs_.empty() && comp_remove_funcs_.empty() &&
          remove_entity_queue_.empty();

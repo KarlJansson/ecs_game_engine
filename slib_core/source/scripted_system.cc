@@ -34,7 +34,7 @@ ScriptedSystem::ScriptedSystem(lib_core::EngineCore *engine,
 void ScriptedSystem::InitSystem() {
   if (!script_path_.empty()) {
     auto timestamp = std::filesystem::last_write_time(script_path_);
-    time_stamp_ = 0;  // std::chrono::system_clock::to_time_t(timestamp);
+    time_stamp_ = timestamp.time_since_epoch().count();
     ParseScript();
   }
 }
@@ -45,7 +45,7 @@ void ScriptedSystem::LogicUpdate(float dt) {
   check_timer_ -= dt;
   if (!script_path_.empty() && check_timer_ < 0.f) {
     auto timestamp = std::filesystem::last_write_time(script_path_);
-    size_t mod_time = 0;  // decltype(timestamp)::clock::to_time_t(timestamp);
+    size_t mod_time = timestamp.time_since_epoch().count();
     if (time_stamp_ != mod_time) {
       PurgeEntities();
       PurgeSystem();

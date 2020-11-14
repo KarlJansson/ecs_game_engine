@@ -13,12 +13,13 @@
 #include <GL/GL.h>
 #endif
 
+#include "core_utilities.h"
 #include "entity_manager.h"
 #include "gl_rect_system.h"
 #include "gui_rect.h"
 
 namespace lib_gui {
-GlRectSystem::GlRectSystem() = default;
+GlRectSystem::GlRectSystem(lib_core::EngineCore *engine) : RectSystem(engine) {}
 
 GlRectSystem::~GlRectSystem() = default;
 
@@ -44,12 +45,12 @@ void GlRectSystem::DrawRect(GuiRect &rect, lib_core::Vector2 screen_dim) {
   glUniform4fv(color_loc_, 1, &rect.rgba_[0]);
   glUniformMatrix4fv(proj_loc_, 1, GL_FALSE, projection.data);
 
-  auto a_ratio = screen_dim[0] / screen_dim[1];
+  auto a_ratio = screen_dim[1] / screen_dim[0];
 
-  auto x_pos = rect.position_[0] * screen_dim[0];
-  auto x_half = rect.half_size_[0] * screen_dim[0];
+  auto x_pos = rect.position_[0] * screen_dim[0] * a_ratio;
+  auto x_half = rect.half_size_[0] * screen_dim[0] * a_ratio;
   auto y_pos = rect.position_[1] * screen_dim[1];
-  auto y_half = rect.half_size_[1] * screen_dim[1] * a_ratio;
+  auto y_half = rect.half_size_[1] * screen_dim[1];
   GLfloat vertices[6][2] = {
       {x_pos - x_half, y_pos + y_half}, {x_pos - x_half, y_pos - y_half},
       {x_pos + x_half, y_pos - y_half}, {x_pos - x_half, y_pos + y_half},
@@ -73,24 +74,9 @@ void GlRectSystem::PurgeGpuResources() {
 
 void GlRectSystem::CreateRectResources() {
   ct::string vert_shader =
-      "#version 430 core\n"
-      "layout(location = 0) in vec2 vertex;\n"
-
-      "uniform mat4 projection;\n\n"
-
-      "void main(){\n"
-      "  gl_Position = projection * vec4(vertex, 0.0, 1.0);\n"
-      "}";
-
+      cu::ReadFile("./content/shaders/opengl/rect_untextured_vs.glsl");
   ct::string frag_shader =
-      "#version 430 core\n"
-      "out vec4 color;\n\n"
-
-      "uniform vec4 rect_color;\n\n"
-
-      "void main() {\n"
-      "  color = rect_color;\n"
-      "}";
+      cu::ReadFile("./content/shaders/opengl/rect_untextured_fs.glsl");
 
   glGenVertexArrays(1, &rect_vao_);
   glGenBuffers(1, &rect_vbo_);

@@ -1,4 +1,5 @@
 #pragma once
+#include "engine_core.h"
 #include "gui_rect.h"
 #include "rect_system.h"
 #include "vector_def.h"
@@ -6,7 +7,7 @@
 namespace lib_gui {
 class GlRectSystem : public RectSystem {
  public:
-  GlRectSystem();
+  GlRectSystem(lib_core::EngineCore *engine);
   ~GlRectSystem() override;
 
   void DrawUpdate(lib_graphics::Renderer *renderer,

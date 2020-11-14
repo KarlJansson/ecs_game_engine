@@ -171,7 +171,7 @@ void MeshSystem::ModelLoaderThread() {
       compressed.clear();
 
       auto it = decompressed.begin();
-      for (unsigned long mesh_id : job.mesh_ids) {
+      for (auto mesh_id : job.mesh_ids) {
         MeshInit mesh_init;
         SerializationUtilities::ReadFromBuffer(it, mesh_init.center);
         SerializationUtilities::ReadFromBuffer(it, mesh_init.extent);

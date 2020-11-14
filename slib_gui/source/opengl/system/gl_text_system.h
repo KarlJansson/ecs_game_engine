@@ -1,11 +1,12 @@
 #pragma once
+#include "engine_core.h"
 #include "gui_text.h"
 #include "text_system.h"
 
 namespace lib_gui {
 class GlTextSystem : public TextSystem {
  public:
-  GlTextSystem() = default;
+  GlTextSystem(lib_core::EngineCore *engine);
   ~GlTextSystem() override = default;
 
   void DrawUpdate(lib_graphics::Renderer *renderer,

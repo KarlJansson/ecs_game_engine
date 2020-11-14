@@ -87,15 +87,10 @@ void PhysxSystem::LogicUpdate(float dt) {
       // HACK: avoid infinite looping when physx shits the bed.
       dur = std::chrono::high_resolution_clock::now() - start;
       if (dur.count() > max_wait) {
-        cu::AssertWarning(false, "PhysX failed to fetch results in time.",
-                          __FILE__, __LINE__);
+        cu::Log("PhysX failed to fetch results in time.", __FILE__, __LINE__);
         break;
       }
     }
-
-    cu::AssertWarning(error == 0,
-                      "PhysX simulation error: " + std::to_string(error),
-                      __FILE__, __LINE__);
 
     active_actors = scene_->getActiveActors(nb_active_actors);
     for (physx::PxU32 i = 0; i < nb_active_actors; ++i)
@@ -212,7 +207,7 @@ void PhysxSystem::PhysxErrorCallback::reportError(physx::PxErrorCode::Enum code,
   out << file << std::endl;
   out << line << std::endl;
   out.close();*/
-  cu::AssertWarning(false, message, __FILE__, __LINE__);
+  cu::Log(message, __FILE__, __LINE__);
 }
 
 void *PhysxSystem::PhysxAllocatorCallback::allocate(size_t size,

@@ -118,7 +118,6 @@ source_group(test/physx/handler FILES
 add_library(physics STATIC ${cpp_files})
 
 include_directories(physics
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -147,6 +146,7 @@ include_directories(physics
   ./test/physx/handler
   D:/API/PhysX/PhysX_3.4/Include
   D:/API/PhysX/PxShared/include
+  D:/API/tbb/include
 )
 
 target_link_libraries(physics
@@ -167,8 +167,8 @@ target_link_libraries(physics
   debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
   debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
   debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_dependencies(physics ALL_PRE_BUILD)

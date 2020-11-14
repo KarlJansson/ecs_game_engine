@@ -335,8 +335,8 @@ void EngineCore::InitEngine() {
 
   auto mesh_up = gfx_mgr.CreateMeshSystem(this);
   auto material_up = gfx_mgr.CreateMaterialSystem(this);
-  auto text_up = gui_mgr.CreateTextSystem();
-  auto rect_up = gui_mgr.CreateRectSystem();
+  auto text_up = gui_mgr.CreateTextSystem(this);
+  auto rect_up = gui_mgr.CreateRectSystem(this);
   auto sound_up = sou_mgr.CreateSoundSystem();
   auto input_up = inp_mgr.CreateInputSystem(this);
   auto camera_up = gfx_mgr.CreateCameraSystem();

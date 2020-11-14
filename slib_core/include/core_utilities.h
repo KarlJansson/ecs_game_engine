@@ -229,8 +229,8 @@ class cu {
       if (line != -1) desc_str += "(" + std::to_string(line) + ") ";
 
       errors.push_back(desc_str + cause);
-      assert(condition);
       PrintLogFile("./logfile.txt");
+      assert(condition);
       try {
         throw TerminatingException(desc_str + cause);
       } catch (...) {
@@ -248,9 +248,9 @@ class cu {
       if (line != -1) desc_str += "(" + std::to_string(line) + ") ";
 
       std::cout << desc_str + cause << "\n";
-      assert(condition);
-
       warnings.push_back(desc_str + cause);
+      PrintLogFile("./logfile.txt");
+      assert(condition);
     }
   }
 

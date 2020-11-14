@@ -7,7 +7,6 @@
 #include "engine_settings.h"
 #include "entity_manager.h"
 #include "grounded_state.h"
-#include "gui_rect.h"
 #include "input_system.h"
 #include "joint.h"
 #include "light.h"
@@ -29,14 +28,16 @@ FpsCameraSystem::FpsCameraSystem(lib_core::EngineCore *engine)
 }
 
 void FpsCameraSystem::InitSystem() {
+  auto win_dim = engine_->GetWindow()->GetWindowDim();
+  auto a_ratio = float(win_dim.first) / float(win_dim.second);
   reticule_entity_1 = CreateScopedEntity();
   reticule_entity_2 = CreateScopedEntity();
-  g_ent_mgr.AddComponent<lib_gui::GuiRect>(
-      reticule_entity_1,
-      lib_gui::GuiRect({.5f, .5f}, {.01f, .01f}, {0.f, 0.f, 0.f, .2f}, 0));
-  g_ent_mgr.AddComponent<lib_gui::GuiRect>(
-      reticule_entity_2,
-      lib_gui::GuiRect({.5f, .5f}, {.009f, .009f}, {1.f, 1.f, 1.f, .2f}, 1));
+  reticule1_ = lib_gui::GuiRect({.5f * a_ratio, .5f}, {.02f, .02f},
+                                {0.f, 0.f, 0.f, .2f}, 0);
+  reticule2_ = lib_gui::GuiRect({.5f * a_ratio, .5f}, {.017f, .017f},
+                                {1.f, 1.f, 1.f, .2f}, 1);
+  g_ent_mgr.AddComponent<lib_gui::GuiRect>(reticule_entity_1, reticule1_);
+  g_ent_mgr.AddComponent<lib_gui::GuiRect>(reticule_entity_2, reticule2_);
 
   cam_entity_ = CreateScopedEntity();
   auto cam_comp = lib_graphics::Camera(start_location, start_rotation);
@@ -180,6 +181,20 @@ void FpsCameraSystem::LogicUpdate(float dt) {
     set_height_commands->clear();
   }
 
+  auto set_reticule_commands = g_sys_mgr.GetCommands<SetReticuleVisability>();
+  if (set_reticule_commands && actor && !set_reticule_commands->empty()) {
+    if (set_reticule_commands->back().visible) {
+      g_ent_mgr.AddComponent<lib_gui::GuiRect>(reticule_entity_1, reticule1_);
+      g_ent_mgr.AddComponent<lib_gui::GuiRect>(reticule_entity_2, reticule2_);
+    } else {
+      reticule1_ = *g_ent_mgr.GetNewCbeR<lib_gui::GuiRect>(reticule_entity_1);
+      reticule2_ = *g_ent_mgr.GetNewCbeR<lib_gui::GuiRect>(reticule_entity_2);
+      g_ent_mgr.RemoveComponent<lib_gui::GuiRect>(reticule_entity_1);
+      g_ent_mgr.RemoveComponent<lib_gui::GuiRect>(reticule_entity_2);
+    }
+    set_reticule_commands->clear();
+  }
+
   if (camera) {
     if (input_system->KeyPressed(lib_input::Key::kP))
       cam_exposure_ += dt * 5.0f;
@@ -291,7 +306,7 @@ void FpsCameraSystem::LogicUpdate(float dt) {
     bool action_b = input_system->MousePressed(lib_input::Key::kMouseRight) ||
                     trigger > .1f;
 
-    auto gui_rect = g_ent_mgr.GetNewCbeR<lib_gui::GuiRect>(reticule_entity_1);
+    auto gui_rect = g_ent_mgr.GetNewCbeR<lib_gui::GuiRect>(reticule_entity_2);
     if (pickup_feeler_.first != -1) {
       auto pullable = g_ent_mgr.GetNewCbeR<Pullable>(
           lib_core::Entity(pickup_feeler_.first));
@@ -302,7 +317,7 @@ void FpsCameraSystem::LogicUpdate(float dt) {
         if (gui_rect && actor_pickup == -1 &&
             gui_rect->rgba_ != lib_core::Vector4(0.f, 1.f, 0.f, .2f)) {
           auto gui_rect_w =
-              g_ent_mgr.GetNewCbeW<lib_gui::GuiRect>(reticule_entity_1);
+              g_ent_mgr.GetNewCbeW<lib_gui::GuiRect>(reticule_entity_2);
           gui_rect_w->rgba_ = {0.f, 1.f, 0.f, .2f};
         }
 
@@ -324,16 +339,16 @@ void FpsCameraSystem::LogicUpdate(float dt) {
         if (gui_rect &&
             gui_rect->rgba_ != lib_core::Vector4(0.f, 0.f, 0.f, .2f)) {
           auto gui_rect_w =
-              g_ent_mgr.GetNewCbeW<lib_gui::GuiRect>(reticule_entity_1);
-          gui_rect_w->rgba_ = {0.f, 0.f, 0.f, .2f};
+              g_ent_mgr.GetNewCbeW<lib_gui::GuiRect>(reticule_entity_2);
+          gui_rect_w->rgba_ = {1.f, 1.f, 1.f, .2f};
         }
       }
     } else {
       if (gui_rect &&
           gui_rect->rgba_ != lib_core::Vector4(0.f, 0.f, 0.f, .2f)) {
         auto gui_rect_w =
-            g_ent_mgr.GetNewCbeW<lib_gui::GuiRect>(reticule_entity_1);
-        gui_rect_w->rgba_ = {0.f, 0.f, 0.f, .2f};
+            g_ent_mgr.GetNewCbeW<lib_gui::GuiRect>(reticule_entity_2);
+        gui_rect_w->rgba_ = {1.f, 1.f, 1.f, .2f};
       }
     }
 

@@ -35,31 +35,31 @@ source_group(test FILES
 add_executable(fract_cooking ${cpp_files})
 
 include_directories(fract_cooking
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/include
   ../source_shared
   ./source
   ./test
+  D:/API/include
+  D:/API/tbb/include
 )
 
 target_link_libraries(fract_cooking
   core
-  ../../Dependencies/lib/release/dynamic/assimp-vc140-mt
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  D:/API/lib/release/dynamic/assimp-vc140-mt.lib
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_custom_command(TARGET fract_cooking POST_BUILD
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    "$<$<CONFIG:Release>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:Debug>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/bin/release/assimp-vc140-mt.dll>"
+    "$<$<CONFIG:Release>:D:/API/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:Debug>:D:/API/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:MinSizeRel>:D:/API/bin/release/assimp-vc140-mt.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/bin/release/assimp-vc140-mt.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/assimp-vc140-mt.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/assimp-vc140-mt.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/assimp-vc140-mt.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/assimp-vc140-mt.dll>"
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    "$<$<CONFIG:Release>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:Debug>:../../../Dependencies/tbb/bin/intel64/vc14/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>"
+    "$<$<CONFIG:Release>:D:/API/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:Debug>:D:/API/tbb/bin/intel64/vc14/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:D:/API/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/tbb/bin/intel64/vc14/tbb.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/tbb.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/tbb.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/tbb.dll>"
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    "$<$<CONFIG:Release>:../../../Dependencies/bin/release/zlib.dll>$<$<CONFIG:Debug>:../../../Dependencies/bin/debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/bin/release/zlib.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/bin/release/zlib.dll>"
+    "$<$<CONFIG:Release>:D:/API/bin/release/zlib.dll>$<$<CONFIG:Debug>:D:/API/bin/debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:D:/API/bin/release/zlib.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/bin/release/zlib.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/zlib.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/zlib.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/zlib.dll>"
 )
 

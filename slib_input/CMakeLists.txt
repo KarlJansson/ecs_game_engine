@@ -11,6 +11,7 @@ set(cpp_files
   ./include/input_factory.h
   ./include/key_definitions.h
   ./include/component/contiguous_input.h
+  ./include/component/cursor_input.h
   ./include/component/toggle_input.h
   ./include/system/input_system.h
   ./source/opengl/system/gl_input_system.h
@@ -24,6 +25,7 @@ source_group(include FILES
 
 source_group(include/component FILES
   ./include/component/contiguous_input.h
+  ./include/component/cursor_input.h
   ./include/component/toggle_input.h
 )
 
@@ -50,8 +52,6 @@ source_group(source/system FILES
 add_library(input STATIC ${cpp_files})
 
 include_directories(input
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -68,14 +68,33 @@ include_directories(input
   ./source/opengl
   ./source/opengl/system
   ./source/system
+  D:/API/PhysX/PhysX_3.4/Include
+  D:/API/PhysX/PxShared/include
+  D:/API/include
+  D:/API/tbb/include
+  F:/Dependencies/1.2.141.2/Include
 )
 
 target_link_libraries(input
   core
   graphics
-  ../../Dependencies/lib/release/static/glfw3
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  D:/API/lib/release/static/glfw3.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_dependencies(input ALL_PRE_BUILD)

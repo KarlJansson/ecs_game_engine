@@ -1,10 +1,13 @@
 #include "input_system.h"
 #include "contiguous_input.h"
+#include "cursor_input.h"
 #include "engine_settings.h"
 #include "entity_manager.h"
 #include "toggle_input.h"
 
 namespace lib_input {
+InputSystem::InputSystem() { g_ent_mgr.AddComponent(lib_input::CursorInput()); }
+
 void InputSystem::LogicUpdate(float dt) {
   auto contig_comps = g_ent_mgr.GetNewCbt<ContiguousInput>();
   if (contig_comps) {
@@ -63,8 +66,6 @@ void InputSystem::LogicUpdate(float dt) {
 }
 
 void InputSystem::SetCursor(bool enable) { cursor_disabled_ = !enable; }
-
-lib_core::Vector2 InputSystem::MousePos() { return pos_; }
 
 lib_core::Vector2 InputSystem::MouseDelta() {
   if (mouse_speed_.Zero()) return mouse_speed_;

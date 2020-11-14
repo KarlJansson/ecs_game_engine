@@ -15,6 +15,7 @@ class GuiRect {
   lib_core::Vector2 half_size_;
   lib_core::Vector4 rgba_;
 
-  uint8_t layer = 0;
+  uint8_t layer{0};
+  bool hover{false};
 };
 }  // namespace lib_gui

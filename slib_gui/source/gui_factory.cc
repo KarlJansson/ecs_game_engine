@@ -9,11 +9,13 @@ std::unique_ptr<GuiRenderer> GuiFactory::CreateGuiRenderer(
   return std::make_unique<GlGuiRenderer>(engine);
 }
 
-std::unique_ptr<RectSystem> GuiFactory::CreateRectSystem() {
-  return std::make_unique<GlRectSystem>();
+std::unique_ptr<RectSystem> GuiFactory::CreateRectSystem(
+    lib_core::EngineCore* engine) {
+  return std::make_unique<GlRectSystem>(engine);
 }
 
-std::unique_ptr<TextSystem> GuiFactory::CreateTextSystem() {
-  return std::make_unique<GlTextSystem>();
+std::unique_ptr<TextSystem> GuiFactory::CreateTextSystem(
+    lib_core::EngineCore* engine) {
+  return std::make_unique<GlTextSystem>(engine);
 }
 }  // namespace lib_gui

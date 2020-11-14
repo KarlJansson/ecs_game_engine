@@ -6,6 +6,8 @@
 #endif
 
 #include <GLFW/glfw3.h>
+#include "core_utilities.h"
+#include "cursor_input.h"
 #include "engine_settings.h"
 #include "gl_input_system.h"
 #include "key_definitions.h"
@@ -32,7 +34,15 @@ void GlInputSystem::LogicUpdate(float dt) {
 
   last_x_pos_ = x_pos_, last_y_pos_ = y_pos_;
   glfwGetCursorPos(window_, &x_pos_, &y_pos_);
-  pos_ = {float(x_pos_), float(y_pos_)};
+
+  auto win_dim = engine_->GetWindow()->GetWindowDim();
+  auto cursor_comp = g_ent_mgr.GetNewCbeW<lib_input::CursorInput>();
+  auto a_ratio = float(win_dim.second) / float(win_dim.first);
+  cursor_comp->pos = {
+      float((co::clamp(0, win_dim.first, int(x_pos_)) / float(win_dim.first)) /
+            a_ratio),
+      float(1.f -
+            co::clamp(0, win_dim.second, int(y_pos_)) / float(win_dim.second))};
 
   if (!first_update_) {
     if (cursor_disabled_)
@@ -65,6 +75,17 @@ void GlInputSystem::LogicUpdate(float dt) {
 
 bool GlInputSystem::KeyPressed(Key key) {
   if (!window_) return false;
+  switch (key) {
+    case Key::kMouseLeft:
+    case Key::kMouseRight:
+    case Key::kMouseMiddle:
+    case Key::kMouse4:
+    case Key::kMouse5:
+    case Key::kMouse6:
+    case Key::kMouse7:
+    case Key::kMouse8:
+      return MousePressed(key);
+  };
   return glfwGetKey(window_, ConvertKey(key)) > 0;
 }
 
@@ -350,6 +371,7 @@ int GlInputSystem::ConvertKey(Key k) {
     case Key::kMenu:
       return GLFW_KEY_MENU;
   }
+  return -1;
 }
 
 int GlInputSystem::ConvertButton(PadButton b) {
@@ -385,6 +407,7 @@ int GlInputSystem::ConvertButton(PadButton b) {
     case PadButton::kDigitalLeft:
       return GLFW_GAMEPAD_BUTTON_DPAD_LEFT;
   }
+  return -1;
 }
 
 int GlInputSystem::ConvertStick(PadStick s) {
@@ -402,6 +425,7 @@ int GlInputSystem::ConvertStick(PadStick s) {
     case PadStick::kTriggerR:
       return GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER;
   }
+  return -1;
 }
 
 }  // namespace lib_input

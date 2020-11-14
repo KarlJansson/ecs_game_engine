@@ -31,5 +31,6 @@ void main() {
 
   float ambient_occ = clamp(texture(ssao_tex, frag_coord).r + 0.05, 0.0, 1.0);
   vec3 color = albedo * e + (vec3(0.05) * albedo) * ambient_occ;
+
   FragColor = vec4(color, 1.0);
 }

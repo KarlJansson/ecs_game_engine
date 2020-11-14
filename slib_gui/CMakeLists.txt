@@ -94,9 +94,6 @@ source_group(test/systems FILES
 add_library(gui STATIC ${cpp_files})
 
 include_directories(gui
-  ../../Dependencies/include
-  ../../Dependencies/include/freetype/freetype2 ../../Dependencies/include/freetype
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
@@ -115,6 +112,8 @@ include_directories(gui
   ../slib_graphics/source/opengl
   ../slib_graphics/source/opengl/effect
   ../slib_graphics/source/opengl/system
+  ../slib_input/./include/component/
+  ../slib_input/include/component
   ../source_shared
   ./include
   ./include/component
@@ -127,17 +126,37 @@ include_directories(gui
   ./test/opengl
   ./test/opengl/systems
   ./test/systems
+  D:/API/PhysX/PhysX_3.4/Include
+  D:/API/PhysX/PxShared/include
+  D:/API/include
+  D:/API/include/freetype/freetype2 D:/API/include/freetype
+  D:/API/tbb/include
 )
 
 target_link_libraries(gui
   core
   graphics
+  input
   "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.18362.0/um/x64/OpenGL32.Lib"
-  ../../Dependencies/lib/release/dynamic/glew32
-  optimized ../../Dependencies/lib/release/static/freetype
-  debug ../../Dependencies/lib/debug/static/freetyped
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  D:/API/lib/release/dynamic/glew32.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
+  optimized D:/API/lib/release/static/freetype.lib
+  debug D:/API/lib/debug/static/freetyped.lib
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_dependencies(gui ALL_PRE_BUILD)

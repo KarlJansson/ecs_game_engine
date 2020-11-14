@@ -1,11 +1,12 @@
 #pragma once
+#include "engine_core.h"
 #include "gui_commands.h"
 #include "system.h"
 
 namespace lib_gui {
 class TextSystem : public lib_core::System {
  public:
-  TextSystem() = default;
+  TextSystem(lib_core::EngineCore* engine);
   ~TextSystem() override = default;
 
   void DrawUpdate(lib_graphics::Renderer* renderer,
@@ -35,6 +36,9 @@ class TextSystem : public lib_core::System {
 
   ct::hash_map<size_t, LoadFontCommand> loaded_fonts_;
   ct::hash_set<size_t> missing_removed_;
+
+ protected:
+  lib_core::EngineCore* engine_;
 
  private:
   virtual void HandleUnloadCommand(UnloadFontCommand& command) = 0;

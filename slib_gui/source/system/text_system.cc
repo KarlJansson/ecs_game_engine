@@ -3,6 +3,9 @@
 #include "gui_text.h"
 
 namespace lib_gui {
+
+TextSystem::TextSystem(lib_core::EngineCore* engine) : engine_(engine) {}
+
 void TextSystem::DrawUpdate(lib_graphics::Renderer* renderer,
                             TextSystem* text_renderer) {
   auto unload_font_commands = g_sys_mgr.GetCommands<UnloadFontCommand>();

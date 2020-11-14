@@ -38,6 +38,7 @@ set(cpp_files
   ./source/system/camera/states/grounded_state.cc
   ./source/system/camera/states/jump_state.cc
   ./source/system/camera/states/shared_state.cc
+  ./source/vulkan/vl_window.cc
   ./include/graphics_commands.h
   ./include/graphics_factory.h
   ./include/renderer.h
@@ -83,6 +84,7 @@ set(cpp_files
   ./source/opengl/system/gl_material_system.h
   ./source/opengl/system/gl_mesh_system.h
   ./source/opengl/system/gl_particle_system.h
+  ./source/vulkan/vl_window.h
 )
 
 source_group(include FILES
@@ -209,14 +211,14 @@ source_group(source/system/camera/states FILES
   ./source/system/camera/states/shared_state.cc
 )
 
-source_group(test FILES
+source_group(source/vulkan FILES
+  ./source/vulkan/vl_window.cc
+  ./source/vulkan/vl_window.h
 )
 
 add_library(graphics STATIC ${cpp_files})
 
 include_directories(graphics
-  ../../Dependencies/include
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/state_machine/
@@ -263,7 +265,12 @@ include_directories(graphics
   ./source/system
   ./source/system/camera
   ./source/system/camera/states
-  ./test
+  ./source/vulkan
+  D:/API/PhysX/PhysX_3.4/Include
+  D:/API/PhysX/PxShared/include
+  D:/API/include
+  D:/API/tbb/include
+  F:/Dependencies/1.2.141.2/Include
 )
 
 target_link_libraries(graphics
@@ -271,10 +278,24 @@ target_link_libraries(graphics
   gui
   input
   physics
-  ../../Dependencies/lib/release/dynamic/glew32
-  ../../Dependencies/lib/release/static/glfw3
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  D:/API/lib/release/dynamic/glew32.lib
+  D:/API/lib/release/static/glfw3.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
+  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
+  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
+  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
+  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_dependencies(graphics ALL_PRE_BUILD)

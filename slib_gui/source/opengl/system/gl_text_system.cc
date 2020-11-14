@@ -20,6 +20,9 @@
 #include FT_FREETYPE_H
 
 namespace lib_gui {
+
+GlTextSystem::GlTextSystem(lib_core::EngineCore *engine) : TextSystem(engine) {}
+
 void GlTextSystem::RenderText(GuiText text, lib_core::Vector2 screen_dim) {
   cu::AssertError(glGetError() == GL_NO_ERROR, "OpenGL error - Draw Text.",
                   __FILE__, __LINE__);

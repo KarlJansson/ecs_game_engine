@@ -2,6 +2,7 @@
 #include "character.h"
 #include "engine_core.h"
 #include "entity.h"
+#include "gui_rect.h"
 #include "state_machine.h"
 #include "system.h"
 #include "system_manager.h"
@@ -60,6 +61,13 @@ class FpsCameraSystem : public lib_core::System {
     float exposure;
   };
 
+  class SetReticuleVisability : public lib_core::Command {
+   public:
+    SetReticuleVisability() = default;
+    SetReticuleVisability(bool visible) : visible(visible) {}
+    bool visible;
+  };
+
  private:
   lib_core::EngineCore *engine_;
   lib_core::Entity cam_entity_;
@@ -102,6 +110,7 @@ class FpsCameraSystem : public lib_core::System {
   std::pair<int, float> pickup_feeler_;
 
   lib_core::Entity phys_id_tmp_, reticule_entity_1, reticule_entity_2;
+  lib_gui::GuiRect reticule1_, reticule2_;
 
   std::unique_ptr<lib_core::StateMachine> camera_state_graph;
 };

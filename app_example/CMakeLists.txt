@@ -18,7 +18,6 @@ source_group(source FILES
 add_executable(example WIN32 ${cpp_files})
 
 include_directories(example
-  ../../Dependencies/tbb/include
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/state_machine/
@@ -35,6 +34,8 @@ include_directories(example
   ../slib_graphics/include
   ../slib_graphics/include/component
   ../slib_graphics/include/system/canera
+  ../slib_gui/./include/component/
+  ../slib_gui/include/component
   ../slib_input/./include/
   ../slib_input/./include/component/
   ../slib_input/include
@@ -43,20 +44,22 @@ include_directories(example
   ../slib_physics/include/component
   ../source_shared
   ./source
+  D:/API/tbb/include
 )
 
 target_link_libraries(example
   core
   graphics
+  gui
   input
   physics
-  optimized ../../Dependencies/tbb/lib/intel64/vc14/tbb
-  debug ../../Dependencies/tbb/lib/intel64/vc14/tbb_debug
+  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
+  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
 )
 
 add_custom_command(TARGET example POST_BUILD
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    "$<$<CONFIG:Release>:../../../Dependencies/bin/release/glew32.dll>$<$<CONFIG:Debug>:../../../Dependencies/bin/release/glew32.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/bin/release/glew32.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/bin/release/glew32.dll>"
+    "$<$<CONFIG:Release>:D:/API/bin/release/glew32.dll>$<$<CONFIG:Debug>:D:/API/bin/release/glew32.dll>$<$<CONFIG:MinSizeRel>:D:/API/bin/release/glew32.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/bin/release/glew32.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/glew32.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/glew32.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/glew32.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/glew32.dll>"
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
     "$<$<CONFIG:Release>:D:/API/PhysX/PhysX_3.4/Bin/vc15win64/PhysX3_x64.dll>$<$<CONFIG:Debug>:D:/API/PhysX/PhysX_3.4/Bin/vc15win64/PhysX3DEBUG_x64.dll>$<$<CONFIG:MinSizeRel>:D:/API/PhysX/PhysX_3.4/Bin/vc15win64/PhysX3_x64.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/PhysX/PhysX_3.4/Bin/vc15win64/PhysX3_x64.dll>"
@@ -80,10 +83,10 @@ add_custom_command(TARGET example POST_BUILD
     "$<$<CONFIG:Release>:D:/API/PhysX/Externals/nvToolsExt/1/bin/x64/nvToolsExt64_1.dll>$<$<CONFIG:Debug>:D:/API/PhysX/Externals/nvToolsExt/1/bin/x64/nvToolsExt64_1.dll>$<$<CONFIG:MinSizeRel>:D:/API/PhysX/Externals/nvToolsExt/1/bin/x64/nvToolsExt64_1.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/PhysX/Externals/nvToolsExt/1/bin/x64/nvToolsExt64_1.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/nvToolsExt64_1.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/nvToolsExt64_1.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/nvToolsExt64_1.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/nvToolsExt64_1.dll>"
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    "$<$<CONFIG:Release>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:Debug>:../../../Dependencies/tbb/bin/intel64/vc14/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/tbb/bin/intel64/vc14/tbb.dll>"
+    "$<$<CONFIG:Release>:D:/API/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:Debug>:D:/API/tbb/bin/intel64/vc14/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:D:/API/tbb/bin/intel64/vc14/tbb.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/tbb/bin/intel64/vc14/tbb.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/tbb.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/tbb_debug.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/tbb.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/tbb.dll>"
   COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    "$<$<CONFIG:Release>:../../../Dependencies/bin/release/zlib.dll>$<$<CONFIG:Debug>:../../../Dependencies/bin/debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:../../../Dependencies/bin/release/zlib.dll>$<$<CONFIG:RelWithDebInfo>:../../../Dependencies/bin/release/zlib.dll>"
+    "$<$<CONFIG:Release>:D:/API/bin/release/zlib.dll>$<$<CONFIG:Debug>:D:/API/bin/debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:D:/API/bin/release/zlib.dll>$<$<CONFIG:RelWithDebInfo>:D:/API/bin/release/zlib.dll>"
     "$<$<CONFIG:Release>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Release/zlib.dll>$<$<CONFIG:Debug>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/Debug/zlibd.dll>$<$<CONFIG:MinSizeRel>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/MinSizeRel/zlib.dll>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CURRENT_BINARY_DIR}/Build_Output/bin/RelWithDebInfo/zlib.dll>"
 )
 
