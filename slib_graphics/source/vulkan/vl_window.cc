@@ -337,16 +337,15 @@ void VlWindow::CreateRenderWindow() {
 }
 
 std::string VlWindow::VersionString(uint32_t version_bitmask) {
-  char versio_string[128];
-
   uint32_t major_api_version = version_bitmask >> 22;
   uint32_t minor_api_version = ((version_bitmask << 10) >> 10) >> 12;
   uint32_t patch_api_version = (version_bitmask << 20) >> 20;
-  sprintf_s(versio_string, 128, "%d.%d.%d", static_cast<int>(major_api_version),
-            static_cast<int>(minor_api_version),
-            static_cast<int>(patch_api_version));
 
-  return versio_string;
+  std::string version_string =
+      std::to_string(static_cast<int>(major_api_version)) + "." +
+      std::to_string(static_cast<int>(minor_api_version)) + "." +
+      std::to_string(static_cast<int>(patch_api_version));
+  return version_string;
 }
 
 }  // namespace lib_graphics

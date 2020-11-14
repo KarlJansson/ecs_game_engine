@@ -40,13 +40,14 @@ cpp_version : c++17
 {
 	name : "PxPhysicsAPI.h"
 	
-	lib_dir : "libPhysX3_x64.so"
-	lib_dir : "libPhysX3Common_x64.so"
-	lib_dir : "libPhysX3Cooking_x64.so"
-	lib_dir : "libPhysX3Extensions.a"
-	lib_dir : "libPhysX3CharacterKinematic_x64.so"
-	lib_dir : "libPxFoundation_x64.so"
-	lib_dir : "libPxPvdSDK_x64.so"
+	lib_dir : "libPhysXFoundation_64.so"
+	lib_dir : "libPhysX_64.so"
+	lib_dir : "libPhysXCharacterKinematic_static_64.a"
+	lib_dir : "libPhysXPvdSDK_static_64.a"
+	lib_dir : "libPhysXCommon_64.so"
+	lib_dir : "libPhysXCooking_64.so"
+	lib_dir : "libPhysXExtensions_static_64.a"
+	lib_dir : "libPhysXVehicle_static_64.a"
 }
 
 {

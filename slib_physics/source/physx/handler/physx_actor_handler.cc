@@ -306,7 +306,7 @@ physx::PxActor* PhysxActorHandler::CreateStaticTriangleMeshActor(
   physx::PxCookingParams params(tol_scale);
   params.meshPreprocessParams |=
       physx::PxMeshPreprocessingFlag::eDISABLE_ACTIVE_EDGES_PRECOMPUTE;
-  params.meshCookingHint = physx::PxMeshCookingHint::eCOOKING_PERFORMANCE;
+  // params.meshCookingHint = physx::PxMeshCookingHint::eCOOKING_PERFORMANCE;
 
   cooking_->setParams(params);
 
@@ -362,7 +362,7 @@ physx::PxActor* PhysxActorHandler::CreateDynamicConvexMeshActor(
   physx::PxCookingParams params(tol_scale);
   params.meshPreprocessParams |=
       physx::PxMeshPreprocessingFlag::eDISABLE_ACTIVE_EDGES_PRECOMPUTE;
-  params.meshCookingHint = physx::PxMeshCookingHint::eCOOKING_PERFORMANCE;
+  // params.meshCookingHint = physx::PxMeshCookingHint::eCOOKING_PERFORMANCE;
 
   cooking_->setParams(params);
 
@@ -418,7 +418,7 @@ physx::PxActor* PhysxActorHandler::CreateDynamicTriangleMeshActor(
   physx::PxCookingParams params(tol_scale);
   params.meshPreprocessParams |=
       physx::PxMeshPreprocessingFlag::eDISABLE_ACTIVE_EDGES_PRECOMPUTE;
-  params.meshCookingHint = physx::PxMeshCookingHint::eCOOKING_PERFORMANCE;
+  // params.meshCookingHint = physx::PxMeshCookingHint::eCOOKING_PERFORMANCE;
 
   cooking_->setParams(params);
 
