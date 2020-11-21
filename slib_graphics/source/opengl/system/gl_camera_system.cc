@@ -91,7 +91,9 @@ void GlCameraSystem::UpdateCamera(Camera &cam, Camera &old,
   q.RotateVector(cam.up_);
   q.RotateVector(cam.left_);
 
-  cam.view_.Lookat(cam.position_, cam.position_ + cam.forward_, cam.up_);
+  auto orbit = (cam.forward_ * -1.) * cam.orbit_;
+  cam.view_.Lookat(cam.position_ + orbit, cam.position_ + cam.forward_,
+                   cam.up_);
   cam.proj_.Perspective(cam.fov_ * (PI / 180.0f), cam.a_ratio_, cam.near_,
                         cam.far_);
 

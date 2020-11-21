@@ -5,8 +5,12 @@
 
 namespace lib_graphics {
 Camera::Camera(lib_core::Vector3 pos, lib_core::Vector3 rot, float a_ratio,
-               float fov, float n_plane, float f_plane)
-    : fov_(fov), a_ratio_(a_ratio), near_(n_plane), far_(f_plane) {
+               float fov, float n_plane, float f_plane, float orbit)
+    : fov_(fov),
+      a_ratio_(a_ratio),
+      near_(n_plane),
+      far_(f_plane),
+      orbit_(orbit) {
   position_ = pos;
 
   memset(view_.data, 0, sizeof(float) * 16);
@@ -15,7 +19,7 @@ Camera::Camera(lib_core::Vector3 pos, lib_core::Vector3 rot, float a_ratio,
 
   exposure_ = 1.0f;
 
-  for (bool & set_flag : set_flags_) set_flag = false;
+  for (bool& set_flag : set_flags_) set_flag = false;
 
   constexpr auto rad_convert = (PI / 180.0f);
   rotation_ = rot;

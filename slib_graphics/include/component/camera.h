@@ -7,7 +7,7 @@ class Camera {
  public:
   Camera(lib_core::Vector3 pos, lib_core::Vector3 rot,
          float a_ratio = 16.0f / 9.0f, float fov = 55.0f, float n_plane = 0.1f,
-         float f_plane = 650.0f);
+         float f_plane = 650.0f, float orbit = 0.f);
   ~Camera() = default;
 
   struct Plane {
@@ -52,7 +52,7 @@ class Camera {
   lib_core::Vector3 position_, rotation_;
   lib_core::Vector3 forward_, up_, left_;
   lib_core::Vector3 delta_pos_, delta_rot_;
-  float fov_, a_ratio_, near_, far_;
+  float fov_, a_ratio_, near_, far_, orbit_;
   std::array<bool, 6> set_flags_;
 
   float exposure_;
