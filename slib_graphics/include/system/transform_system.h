@@ -3,7 +3,8 @@
 
 namespace lib_physics {
 class Actor;
-}
+class Character;
+}  // namespace lib_physics
 
 namespace lib_graphics {
 class TransformSystem : public lib_core::System {
@@ -14,6 +15,6 @@ class TransformSystem : public lib_core::System {
   void LogicUpdate(float dt) override;
   void UpdateTransform(class Transform& trans, class Transform& old,
                        const lib_physics::Actor* actor,
-                       const lib_physics::Actor* old_actor);
+                       const lib_physics::Character* character);
 };
 }  // namespace lib_graphics

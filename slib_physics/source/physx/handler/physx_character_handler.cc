@@ -4,6 +4,7 @@
 #include "character.h"
 #include "entity_manager.h"
 #include "gui_text.h"
+#include "transform.h"
 
 namespace lib_physics {
 PhysxCharacterHandler::PhysxCharacterHandler(physx::PxPhysics* phys,
@@ -43,6 +44,7 @@ void PhysxCharacterHandler::UpdateCharacters(float dt) {
       if (!(*char_update)[i]) continue;
 
       g_ent_mgr.MarkForUpdate<lib_graphics::Camera>(char_ents->at(i));
+      g_ent_mgr.MarkForUpdate<lib_graphics::Transform>(char_ents->at(i));
 
       auto& c = characters->at(i);
       auto& old_c = old_characters->at(i);

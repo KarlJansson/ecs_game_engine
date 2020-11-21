@@ -1,5 +1,6 @@
 #include "transform_system.h"
 #include "actor.h"
+#include "character.h"
 #include "culling_system.h"
 #include "light.h"
 #include "mesh.h"
@@ -21,10 +22,10 @@ void TransformSystem::LogicUpdate(float dt) {
 
         auto actor =
             g_ent_mgr.GetNewCbeR<lib_physics::Actor>(entity_vec->at(i));
-        auto old_actor =
-            g_ent_mgr.GetOldCbeR<lib_physics::Actor>(entity_vec->at(i));
+        auto character =
+            g_ent_mgr.GetOldCbeR<lib_physics::Character>(entity_vec->at(i));
         UpdateTransform(trans_comps->at(i), trans_comps_old->at(i), actor,
-                        old_actor);
+                        character);
         g_ent_mgr.MarkForUpdate<lib_graphics::Light>(entity_vec->at(i));
         g_ent_mgr.MarkForUpdate<lib_graphics::CullingSystem::LightOctreeFlag>(
             entity_vec->at(i));
@@ -43,11 +44,11 @@ void TransformSystem::LogicUpdate(float dt) {
 
 void TransformSystem::UpdateTransform(Transform& trans, Transform& old,
                                       const lib_physics::Actor* actor,
-                                      const lib_physics::Actor* old_actor) {
+                                      const lib_physics::Character* character) {
   lib_core::Quaternion q, orb_q;
   trans.scale_ = old.scale_;
 
-  if (!actor) {
+  if (!actor && !character) {
     trans.position_ = old.position_;
     trans.rotation_ = old.rotation_;
     trans.orbit_offset_ = old.orbit_offset_;
@@ -69,9 +70,13 @@ void TransformSystem::UpdateTransform(Transform& trans, Transform& old,
     if (!trans.orbit_rotation_.Zero()) orb_q.FromAngle(trans.orbit_rotation_);
     q.FromAngle(trans.rotation_);
   } else {
-    trans.position_ = actor->pos;
-    q = actor->rot;
-    q.GetAngles(trans.rotation_);
+    if (actor) {
+      trans.position_ = actor->pos;
+      q = actor->rot;
+      q.GetAngles(trans.rotation_);
+    } else if (character) {
+      trans.position_ = character->pos;
+    }
   }
 
   trans.world_.Identity();

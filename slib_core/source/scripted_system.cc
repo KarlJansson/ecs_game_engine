@@ -32,7 +32,7 @@ ScriptedSystem::ScriptedSystem(lib_core::EngineCore *engine,
 }
 
 void ScriptedSystem::InitSystem() {
-  if (!script_path_.empty()) {
+  if (!script_path_.empty() && std::filesystem::exists(script_path_)) {
     auto timestamp = std::filesystem::last_write_time(script_path_);
     time_stamp_ = timestamp.time_since_epoch().count();
     ParseScript();

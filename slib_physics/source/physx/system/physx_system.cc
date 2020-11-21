@@ -7,7 +7,7 @@
 
 namespace lib_physics {
 PhysxSystem::PhysxSystem() {
-  foundation_ = PxCreateFoundation(PX_PHYSICS_VERSION, allocator_callback_,
+  foundation_ = PxCreateFoundation(PX_FOUNDATION_VERSION, allocator_callback_,
                                    error_callback_);
   if (!foundation_) return;
 
