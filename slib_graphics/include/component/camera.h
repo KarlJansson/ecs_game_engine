@@ -42,6 +42,7 @@ class Camera {
   void SetFarPlane(float far_plane);
   void SetRotation(lib_core::Vector3 rot);
   void SetExposure(float exposure);
+  void SetOrbit(float orbit);
 
   [[nodiscard]] lib_core::Vector3 Forward(const Camera& old) const;
   [[nodiscard]] lib_core::Vector3 Up(const Camera& old) const;
@@ -53,7 +54,7 @@ class Camera {
   lib_core::Vector3 forward_, up_, left_;
   lib_core::Vector3 delta_pos_, delta_rot_;
   float fov_, a_ratio_, near_, far_, orbit_;
-  std::array<bool, 6> set_flags_;
+  std::array<bool, 7> set_flags_;
 
   float exposure_;
   lib_core::Matrix4x4 view_, proj_, view_proj_;

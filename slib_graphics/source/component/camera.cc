@@ -195,6 +195,11 @@ void Camera::SetExposure(float exposure) {
   set_flags_[1] = true;
 }
 
+void Camera::SetOrbit(float orbit) {
+  orbit_ = orbit;
+  set_flags_[6] = true;
+}
+
 lib_core::Vector3 Camera::Forward(const Camera& old) const {
   auto result = lib_core::Vector3(0.f, 0.f, 1.f);
   lib_core::Quaternion q;

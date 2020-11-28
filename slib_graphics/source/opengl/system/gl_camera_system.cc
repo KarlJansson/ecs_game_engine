@@ -59,6 +59,11 @@ void GlCameraSystem::UpdateCamera(Camera &cam, Camera &old,
   else
     cam.set_flags_[5] = false;
 
+  if (!cam.set_flags_[6])
+    cam.orbit_ = old.orbit_;
+  else
+    cam.set_flags_[6] = false;
+
   cam.delta_rot_.ZeroMem();
   old.delta_pos_.ZeroMem();
 
