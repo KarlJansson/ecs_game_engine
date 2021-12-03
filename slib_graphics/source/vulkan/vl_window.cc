@@ -134,13 +134,7 @@ void VlWindow::CreateRenderWindow() {
         case VK_PHYSICAL_DEVICE_TYPE_OTHER:
           std::cout << "Device Type:\tOther" << std::endl;
           break;
-        case VK_PHYSICAL_DEVICE_TYPE_MAX_ENUM:
-          std::cout << "Device Type:\tVK_PHYSICAL_DEVICE_TYPE_MAX_ENUM"
-                    << std::endl;
-          break;
-        case VK_PHYSICAL_DEVICE_TYPE_RANGE_SIZE:
-          std::cout << "Device Type:\tVK_PHYSICAL_DEVICE_TYPE_RANGE_SIZE"
-                    << std::endl;
+        default:
           break;
       }
 

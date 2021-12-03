@@ -184,7 +184,7 @@ physx::PxFilterFlags PhysxSystem::FilterShader(
 }
 
 PhysxSystem::TbbCpuDispatcher::TbbCpuDispatcher() noexcept {
-  nr_threads_ = tbb::task_scheduler_init::default_num_threads();
+  nr_threads_ = std::thread::hardware_concurrency();
 }
 
 void PhysxSystem::TbbCpuDispatcher::submitTask(physx::PxBaseTask &task) {
