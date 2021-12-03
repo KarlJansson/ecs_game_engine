@@ -14,7 +14,6 @@ void RectSystem::LogicUpdate(float dt) {
   auto rect_comps = g_ent_mgr.GetNewCbt<GuiRect>();
 
   if (rect_comps) {
-    auto win_dim = engine_->GetWindow()->GetWindowDim();
     auto old_comps = g_ent_mgr.GetOldCbt<GuiRect>();
     auto cursor_comp = g_ent_mgr.GetNewCbeR<lib_input::CursorInput>();
     auto rect_update = g_ent_mgr.GetNewUbt<GuiRect>();

@@ -10,8 +10,8 @@ set(cpp_files
   ./include/ambient_sound.h
   ./include/effect_sound.h
   ./include/music.h
-  ./include/sound_commands.h
   ./include/sound_factory.h
+  ./include/sound_commands.h
   ./include/sound_system.h
   ./source/port_audio/port_audio_system.h
   ./test/test_sound_factory.h
@@ -23,8 +23,8 @@ source_group(include FILES
   ./include/ambient_sound.h
   ./include/effect_sound.h
   ./include/music.h
-  ./include/sound_commands.h
   ./include/sound_factory.h
+  ./include/sound_commands.h
   ./include/sound_system.h
 )
 
@@ -62,16 +62,13 @@ include_directories(sound
   ./source/port_audio
   ./test
   ./test/port_audio
-  D:/API/include
-  D:/API/tbb/include
 )
 
 target_link_libraries(sound
   core
-  optimized D:/API/lib/release/static/portaudio.lib
-  debug D:/API/lib/debug/static/portaudio.lib
-  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
-  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
+  portaudio
+  tbb
+  libpthread.so
 )
 
 add_dependencies(sound ALL_PRE_BUILD)

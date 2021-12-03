@@ -1,4 +1,4 @@
-cpp_version : c++17
+cpp_version : c++17 -O3 -Wall -Werror
 
 {
 	name : "tbb/tbb.h"
@@ -40,14 +40,16 @@ cpp_version : c++17
 {
 	name : "PxPhysicsAPI.h"
 	
-	lib_dir : "libPhysXFoundation_64.so"
-	lib_dir : "libPhysX_64.so"
 	lib_dir : "libPhysXCharacterKinematic_static_64.a"
-	lib_dir : "libPhysXPvdSDK_static_64.a"
-	lib_dir : "libPhysXCommon_64.so"
-	lib_dir : "libPhysXCooking_64.so"
 	lib_dir : "libPhysXExtensions_static_64.a"
+	lib_dir : "libPhysX_static_64.a"
+	lib_dir : "libPhysXPvdSDK_static_64.a"
+	lib_dir : "libPhysXCooking_static_64.a"
+	lib_dir : "libPhysXCommon_static_64.a"
+	lib_dir : "libPhysXFoundation_static_64.a"
 	lib_dir : "libPhysXVehicle_static_64.a"
+
+  lib_dir : "-ldl"
 }
 
 {

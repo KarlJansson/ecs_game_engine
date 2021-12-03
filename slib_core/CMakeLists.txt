@@ -4,118 +4,118 @@ cmake_minimum_required(VERSION 3.6)
 
 
 set(cpp_files
-  ./source/core_utilities.cc
+  ./source/entity_manager.cc
+  ./source/system_manager.cc
+  ./source/entity.cc
   ./source/engine_core.cc
   ./source/engine_debug_output.cc
-  ./source/engine_settings.cc
-  ./source/entity.cc
-  ./source/entity_manager.cc
-  ./source/scripted_system.cc
-  ./source/system_manager.cc
   ./source/unit.cc
-  ./source/math/matrix3x3.cc
+  ./source/scripted_system.cc
+  ./source/core_utilities.cc
+  ./source/engine_settings.cc
   ./source/math/matrix4x4.cc
+  ./source/math/matrix3x3.cc
   ./source/math/quaternion.cc
   ./source/math/vector_def.cc
-  ./source/state_machine/state.cc
   ./source/state_machine/state_machine.cc
-  ./include/command.h
-  ./include/core_commands.h
+  ./source/state_machine/state.cc
   ./include/core_utilities.h
-  ./include/engine_core.h
   ./include/engine_debug_output.h
+  ./include/system_manager.h
+  ./include/engine_core.h
   ./include/engine_settings.h
-  ./include/entity.h
   ./include/entity_manager.h
   ./include/scripted_system.h
-  ./include/system.h
-  ./include/system_manager.h
+  ./include/core_commands.h
+  ./include/entity.h
   ./include/unit.h
-  ./include/math/matrix3x3.h
-  ./include/math/matrix4x4.h
+  ./include/command.h
+  ./include/system.h
   ./include/math/quaternion.h
+  ./include/math/matrix4x4.h
   ./include/math/vector_def.h
-  ./include/state_machine/state.h
+  ./include/math/matrix3x3.h
   ./include/state_machine/state_machine.h
-  ./test/test_core_utilities.h
-  ./test/test_engine_core.h
-  ./test/test_engine_debug_output.h
+  ./include/state_machine/state.h
   ./test/test_engine_settings.h
   ./test/test_entity.h
-  ./test/test_entity_manager.h
+  ./test/test_engine_debug_output.h
   ./test/test_system.h
+  ./test/test_engine_core.h
+  ./test/test_entity_manager.h
   ./test/test_system_manager.h
+  ./test/test_core_utilities.h
 )
 
 source_group(include FILES
-  ./include/command.h
-  ./include/core_commands.h
   ./include/core_utilities.h
-  ./include/engine_core.h
   ./include/engine_debug_output.h
+  ./include/system_manager.h
+  ./include/engine_core.h
   ./include/engine_settings.h
-  ./include/entity.h
   ./include/entity_manager.h
   ./include/scripted_system.h
-  ./include/system.h
-  ./include/system_manager.h
+  ./include/core_commands.h
+  ./include/entity.h
   ./include/unit.h
-)
-
-source_group(include/math FILES
-  ./include/math/matrix3x3.h
-  ./include/math/matrix4x4.h
-  ./include/math/quaternion.h
-  ./include/math/vector_def.h
-)
-
-source_group(include/state_machine FILES
-  ./include/state_machine/state.h
-  ./include/state_machine/state_machine.h
+  ./include/command.h
+  ./include/system.h
 )
 
 source_group(include/templates FILES
 )
 
-source_group(include/templates/patterns FILES
-)
-
 source_group(include/templates/types FILES
 )
 
+source_group(include/templates/patterns FILES
+)
+
+source_group(include/state_machine FILES
+  ./include/state_machine/state_machine.h
+  ./include/state_machine/state.h
+)
+
+source_group(include/math FILES
+  ./include/math/quaternion.h
+  ./include/math/matrix4x4.h
+  ./include/math/vector_def.h
+  ./include/math/matrix3x3.h
+)
+
 source_group(source FILES
-  ./source/core_utilities.cc
+  ./source/entity_manager.cc
+  ./source/system_manager.cc
+  ./source/entity.cc
   ./source/engine_core.cc
   ./source/engine_debug_output.cc
-  ./source/engine_settings.cc
-  ./source/entity.cc
-  ./source/entity_manager.cc
-  ./source/scripted_system.cc
-  ./source/system_manager.cc
   ./source/unit.cc
+  ./source/scripted_system.cc
+  ./source/core_utilities.cc
+  ./source/engine_settings.cc
+)
+
+source_group(source/state_machine FILES
+  ./source/state_machine/state_machine.cc
+  ./source/state_machine/state.cc
 )
 
 source_group(source/math FILES
-  ./source/math/matrix3x3.cc
   ./source/math/matrix4x4.cc
+  ./source/math/matrix3x3.cc
   ./source/math/quaternion.cc
   ./source/math/vector_def.cc
 )
 
-source_group(source/state_machine FILES
-  ./source/state_machine/state.cc
-  ./source/state_machine/state_machine.cc
-)
-
 source_group(test FILES
-  ./test/test_core_utilities.h
-  ./test/test_engine_core.h
-  ./test/test_engine_debug_output.h
   ./test/test_engine_settings.h
   ./test/test_entity.h
-  ./test/test_entity_manager.h
+  ./test/test_engine_debug_output.h
   ./test/test_system.h
+  ./test/test_engine_core.h
+  ./test/test_entity_manager.h
   ./test/test_system_manager.h
+  ./test/test_core_utilities.h
 )
 
 add_library(core STATIC ${cpp_files})
@@ -158,10 +158,6 @@ include_directories(core
   ./source/math
   ./source/state_machine
   ./test
-  D:/API/PhysX/PhysX_3.4/Include
-  D:/API/PhysX/PxShared/include
-  D:/API/include
-  D:/API/tbb/include
 )
 
 target_link_libraries(core
@@ -170,24 +166,9 @@ target_link_libraries(core
   input
   physics
   sound
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
-  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
-  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
-  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
-  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
-  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
-  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
-  optimized D:/API/lib/release/dynamic/zlib.lib
-  debug D:/API/lib/debug/dynamic/zlibd.lib
+  tbb
+  libpthread.so
+  libz.so
 )
 
 add_dependencies(core ALL_PRE_BUILD)

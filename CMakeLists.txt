@@ -18,11 +18,10 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 if (WIN32)
   add_definitions(-DWindowsBuild)
-  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -MP /std:c++17")
+  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -MP /std:c++17 -O3 -Wall -Werror")
 else(WIN32)
   add_definitions(-DUnixBuild)
-  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17")
-  set(CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
+  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -Wall -Werror")
 endif(WIN32)
 
 find_program(CMAKEMAKER_CMD cmakemaker)
@@ -39,14 +38,28 @@ else()
   )
 endif()
 
-add_subdirectory(./app_example)
+add_subdirectory(./app_ecs_game_engine)
 add_subdirectory(./cmd_fract_cooking)
-add_subdirectory(./slib_core)
-add_subdirectory(./slib_graphics)
-add_subdirectory(./slib_gui)
-add_subdirectory(./slib_input)
-add_subdirectory(./slib_physics)
 add_subdirectory(./slib_sound)
+add_subdirectory(./slib_gui)
+add_subdirectory(./slib_physics)
+add_subdirectory(./slib_core)
+add_subdirectory(./slib_input)
+add_subdirectory(./slib_graphics)
 if (MSVC)
-  set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT example)
+  set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ecs_game_engine)
 endif(MSVC)
+add_custom_command(TARGET ALL_PRE_BUILD PRE_BUILD
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different "${CMAKE_BINARY_DIR}/compile_commands.json" "${CMAKE_SOURCE_DIR}/compile_commands.json"
+  COMMAND cat ${CMAKE_SOURCE_DIR}/compile_commands.json > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "s/-/\\n-/g" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sort ${CMAKE_SOURCE_DIR}/.clang_complete | uniq > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp
+  COMMAND sed "/^-o/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sed "/^-c/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "/^ /d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sed "/^\{/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "/^\}/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND sed "/^\\[/d" ${CMAKE_SOURCE_DIR}/.clang_complete > ${CMAKE_SOURCE_DIR}/.clang_complete_tmp VERBATIM
+  COMMAND sed "/^\\]/d" ${CMAKE_SOURCE_DIR}/.clang_complete_tmp > ${CMAKE_SOURCE_DIR}/.clang_complete VERBATIM
+  COMMAND rm ${CMAKE_SOURCE_DIR}/.clang_complete_tmp
+)

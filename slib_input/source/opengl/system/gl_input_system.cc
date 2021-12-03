@@ -85,6 +85,8 @@ bool GlInputSystem::KeyPressed(Key key) {
     case Key::kMouse7:
     case Key::kMouse8:
       return MousePressed(key);
+    default:
+      return glfwGetKey(window_, ConvertKey(key)) > 0;
   };
   return glfwGetKey(window_, ConvertKey(key)) > 0;
 }

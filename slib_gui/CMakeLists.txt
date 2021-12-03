@@ -12,18 +12,18 @@ set(cpp_files
   ./source/system/rect_system.cc
   ./source/system/text_system.cc
   ./include/gui_commands.h
-  ./include/gui_factory.h
   ./include/gui_renderer.h
-  ./include/component/gui_button.h
-  ./include/component/gui_checkbox.h
-  ./include/component/gui_mouse_area.h
-  ./include/component/gui_progress_bar.h
-  ./include/component/gui_rect.h
-  ./include/component/gui_scroll_list.h
-  ./include/component/gui_slider.h
+  ./include/gui_factory.h
   ./include/component/gui_text.h
-  ./include/system/rect_system.h
+  ./include/component/gui_scroll_list.h
+  ./include/component/gui_checkbox.h
+  ./include/component/gui_button.h
+  ./include/component/gui_rect.h
+  ./include/component/gui_progress_bar.h
+  ./include/component/gui_slider.h
+  ./include/component/gui_mouse_area.h
   ./include/system/text_system.h
+  ./include/system/rect_system.h
   ./source/opengl/gl_gui_renderer.h
   ./source/opengl/system/gl_rect_system.h
   ./source/opengl/system/gl_text_system.h
@@ -34,29 +34,34 @@ set(cpp_files
 
 source_group(include FILES
   ./include/gui_commands.h
-  ./include/gui_factory.h
   ./include/gui_renderer.h
-)
-
-source_group(include/component FILES
-  ./include/component/gui_button.h
-  ./include/component/gui_checkbox.h
-  ./include/component/gui_mouse_area.h
-  ./include/component/gui_progress_bar.h
-  ./include/component/gui_rect.h
-  ./include/component/gui_scroll_list.h
-  ./include/component/gui_slider.h
-  ./include/component/gui_text.h
+  ./include/gui_factory.h
 )
 
 source_group(include/system FILES
-  ./include/system/rect_system.h
   ./include/system/text_system.h
+  ./include/system/rect_system.h
+)
+
+source_group(include/component FILES
+  ./include/component/gui_text.h
+  ./include/component/gui_scroll_list.h
+  ./include/component/gui_checkbox.h
+  ./include/component/gui_button.h
+  ./include/component/gui_rect.h
+  ./include/component/gui_progress_bar.h
+  ./include/component/gui_slider.h
+  ./include/component/gui_mouse_area.h
 )
 
 source_group(source FILES
   ./source/gui_factory.cc
   ./source/gui_renderer.cc
+)
+
+source_group(source/system FILES
+  ./source/system/rect_system.cc
+  ./source/system/text_system.cc
 )
 
 source_group(source/opengl FILES
@@ -71,12 +76,11 @@ source_group(source/opengl/system FILES
   ./source/opengl/system/gl_text_system.h
 )
 
-source_group(source/system FILES
-  ./source/system/rect_system.cc
-  ./source/system/text_system.cc
+source_group(test FILES
 )
 
-source_group(test FILES
+source_group(test/systems FILES
+  ./test/systems/test_rect_system.h
 )
 
 source_group(test/opengl FILES
@@ -85,10 +89,6 @@ source_group(test/opengl FILES
 
 source_group(test/opengl/systems FILES
   ./test/opengl/systems/test_gl_rect_system.h
-)
-
-source_group(test/systems FILES
-  ./test/systems/test_rect_system.h
 )
 
 add_library(gui STATIC ${cpp_files})
@@ -126,37 +126,17 @@ include_directories(gui
   ./test/opengl
   ./test/opengl/systems
   ./test/systems
-  D:/API/PhysX/PhysX_3.4/Include
-  D:/API/PhysX/PxShared/include
-  D:/API/include
-  D:/API/include/freetype/freetype2 D:/API/include/freetype
-  D:/API/tbb/include
 )
 
 target_link_libraries(gui
   core
   graphics
   input
-  "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.18362.0/um/x64/OpenGL32.Lib"
-  D:/API/lib/release/dynamic/glew32.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3_x64.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Common_x64.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Cooking_x64.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3Extensions.lib
-  optimized D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematic_x64.lib
-  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxFoundation_x64.lib
-  optimized D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDK_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3DEBUG_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CommonDEBUG_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CookingDEBUG_x64.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3ExtensionsDEBUG.lib
-  debug D:/API/PhysX/PhysX_3.4/Lib/vc15win64/PhysX3CharacterKinematicDEBUG_x64.lib
-  debug D:/API/PhysX/PxShared/lib/vc15win64/PxFoundationDEBUG_x64.lib
-  debug D:/API/PhysX/PxShared/lib/vc15win64/PxPvdSDKDEBUG_x64.lib
-  optimized D:/API/lib/release/static/freetype.lib
-  debug D:/API/lib/debug/static/freetyped.lib
-  optimized D:/API/tbb/lib/intel64/vc14/tbb.lib
-  debug D:/API/tbb/lib/intel64/vc14/tbb_debug.lib
+  libOpenGL.so
+  libGLEW.so
+  freetype
+  tbb
+  libpthread.so
 )
 
 add_dependencies(gui ALL_PRE_BUILD)
