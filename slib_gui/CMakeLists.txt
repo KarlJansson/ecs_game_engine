@@ -132,11 +132,11 @@ target_link_libraries(gui
   core
   graphics
   input
+  tbb
+  libpthread.so
   libOpenGL.so
   libGLEW.so
   freetype
-  tbb
-  libpthread.so
 )
 
 add_dependencies(gui ALL_PRE_BUILD)

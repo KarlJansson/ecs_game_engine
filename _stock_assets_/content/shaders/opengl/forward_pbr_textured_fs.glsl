@@ -1,4 +1,4 @@
-#version 430 core
+#version 420 core
 
 out vec4 FragColor;
 flat in int inst_id;

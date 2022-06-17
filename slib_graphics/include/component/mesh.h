@@ -11,6 +11,13 @@ class Mesh {
   explicit Mesh(size_t mesh, size_t material, lib_core::Vector3 alb,
                 lib_core::Vector3 rme)
       : mesh(mesh), material(material), albedo(alb), rme(rme) {}
+  explicit Mesh(size_t mesh, size_t material, lib_core::Vector3 alb,
+                lib_core::Vector3 rme, lib_core::Vector2 tx_scale)
+      : mesh(mesh),
+        material(material),
+        albedo(alb),
+        rme(rme),
+        texture_scale(tx_scale) {}
   ~Mesh() = default;
 
   size_t mesh = 0;
@@ -43,8 +50,7 @@ class Mesh {
           m.texture_offset = cu::ParseVector<lib_core::Vector2, 2>(
               cu::ParseValue(buffer, cursor));
         } else if (type.compare("Translucency") == 0) {
-          m.translucency =
-              cu::Parse<float>(cu::ParseValue(buffer, cursor));
+          m.translucency = cu::Parse<float>(cu::ParseValue(buffer, cursor));
         }
 
         type = cu::ParseType(buffer, cursor);

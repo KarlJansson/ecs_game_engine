@@ -268,7 +268,7 @@ void GlSmaa::InitializeShaders() {
   glBindTexture(GL_TEXTURE_2D, 0);
 
   ct::string header =
-      "#version 410 compatibility\n\
+      "#version 410\n\
  #ifndef SMAA_PIXEL_SIZE\n\
  #define SMAA_PIXEL_SIZE vec2(" +
       std::to_string(1.f / float(render_dim.first)) + ", " +

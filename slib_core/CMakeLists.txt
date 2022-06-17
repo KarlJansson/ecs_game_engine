@@ -71,6 +71,9 @@ source_group(include/templates/types FILES
 source_group(include/templates/patterns FILES
 )
 
+source_group(include/templates/utility FILES
+)
+
 source_group(include/state_machine FILES
   ./include/state_machine/state_machine.h
   ./include/state_machine/state.h
@@ -154,6 +157,7 @@ include_directories(core
   ./include/templates
   ./include/templates/patterns
   ./include/templates/types
+  ./include/templates/utility
   ./source
   ./source/math
   ./source/state_machine

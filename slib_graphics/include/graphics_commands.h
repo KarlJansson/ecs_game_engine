@@ -1,6 +1,7 @@
 #pragma once
 #include <utility>
 
+#include "command.h"
 #include "system_manager.h"
 #include "vector_def.h"
 #include "vertex.h"

@@ -20,6 +20,8 @@ void GlInputSystem::InitSystem() {
   first_update_ = true;
   window_ = static_cast<GLFWwindow *>(engine_->GetWindow()->GetWindowHandle());
   glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  // if (glfwRawMouseMotionSupported())
+  //   glfwSetInputMode(window_, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 }
 
 void GlInputSystem::LogicUpdate(float dt) {
@@ -29,8 +31,11 @@ void GlInputSystem::LogicUpdate(float dt) {
   auto cursor_mode = glfwGetInputMode(window_, GLFW_CURSOR);
   if (cursor_mode == GLFW_CURSOR_DISABLED && !cursor_disabled_)
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-  else if (cursor_mode == GLFW_CURSOR_NORMAL && cursor_disabled_)
+  else if (cursor_mode == GLFW_CURSOR_NORMAL && cursor_disabled_) {
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // if (glfwRawMouseMotionSupported())
+    //   glfwSetInputMode(window_, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+  }
 
   last_x_pos_ = x_pos_, last_y_pos_ = y_pos_;
   glfwGetCursorPos(window_, &x_pos_, &y_pos_);
@@ -45,9 +50,9 @@ void GlInputSystem::LogicUpdate(float dt) {
             co::clamp(0, win_dim.second, int(y_pos_)) / float(win_dim.second))};
 
   if (!first_update_) {
-    if (cursor_disabled_)
+    if (cursor_disabled_) {
       delta_ = {float(x_pos_ - last_x_pos_), float(last_y_pos_ - y_pos_)};
-    else
+    } else
       delta_ = {0.f};
 
     mouse_speed_ =

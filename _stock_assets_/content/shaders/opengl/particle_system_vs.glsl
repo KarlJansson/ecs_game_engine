@@ -1,4 +1,4 @@
-#version 430 core
+#version 420 core
 
 layout(location = 0) in vec4 random;
 layout(location = 1) in vec3 position;

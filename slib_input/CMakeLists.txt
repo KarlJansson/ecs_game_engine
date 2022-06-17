@@ -73,9 +73,9 @@ include_directories(input
 target_link_libraries(input
   core
   graphics
-  glfw
   tbb
   libpthread.so
+  glfw
 )
 
 add_dependencies(input ALL_PRE_BUILD)

@@ -1126,7 +1126,7 @@ void GlMaterialSystem::CompileShaderRecource(AddShaderCommand &code) {
   ct::string frag_code = code.frag_shader;
   if (frag_code.empty()) {
     frag_code =
-        "#version 430 core\n"
+        "#version 420 core\n"
         "void main()\n"
         "{\n"
         "}";
