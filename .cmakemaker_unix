@@ -1,4 +1,4 @@
-cpp_version : c++17 -O3 -Wall -Werror
+cpp_version : c++2a -O3 -Wall -Werror
 
 {
 	name : "tbb/tbb.h"

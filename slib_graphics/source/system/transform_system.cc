@@ -4,8 +4,11 @@
 #include "culling_system.h"
 #include "light.h"
 #include "mesh.h"
+#include "range_iterator.hpp"
 #include "transform.h"
 #include "trigger.h"
+
+#include <execution>
 
 namespace lib_graphics {
 void TransformSystem::LogicUpdate(float dt) {
@@ -16,29 +19,27 @@ void TransformSystem::LogicUpdate(float dt) {
     auto trans_update = g_ent_mgr.GetNewUbt<Transform>();
     auto entity_vec = g_ent_mgr.GetEbt<Transform>();
 
-    auto update_func = [&](tbb::blocked_range<size_t>& range) {
-      for (size_t i = range.begin(); i != range.end(); ++i) {
-        if (!(*trans_update)[i]) continue;
+    auto update_func = [&](size_t i) {
+      if (!(*trans_update)[i]) return;
 
-        auto actor =
-            g_ent_mgr.GetNewCbeR<lib_physics::Actor>(entity_vec->at(i));
-        auto character =
-            g_ent_mgr.GetOldCbeR<lib_physics::Character>(entity_vec->at(i));
-        UpdateTransform(trans_comps->at(i), trans_comps_old->at(i), actor,
-                        character);
-        g_ent_mgr.MarkForUpdate<lib_graphics::Light>(entity_vec->at(i));
-        g_ent_mgr.MarkForUpdate<lib_graphics::CullingSystem::LightOctreeFlag>(
-            entity_vec->at(i));
-        g_ent_mgr.MarkForUpdate<lib_graphics::CullingSystem::MeshOctreeFlag>(
-            entity_vec->at(i));
-        g_ent_mgr.MarkForUpdate<lib_physics::Trigger>(entity_vec->at(i));
+      auto actor = g_ent_mgr.GetNewCbeR<lib_physics::Actor>(entity_vec->at(i));
+      auto character =
+          g_ent_mgr.GetOldCbeR<lib_physics::Character>(entity_vec->at(i));
+      UpdateTransform(trans_comps->at(i), trans_comps_old->at(i), actor,
+                      character);
+      g_ent_mgr.MarkForUpdate<lib_graphics::Light>(entity_vec->at(i));
+      g_ent_mgr.MarkForUpdate<lib_graphics::CullingSystem::LightOctreeFlag>(
+          entity_vec->at(i));
+      g_ent_mgr.MarkForUpdate<lib_graphics::CullingSystem::MeshOctreeFlag>(
+          entity_vec->at(i));
+      g_ent_mgr.MarkForUpdate<lib_physics::Trigger>(entity_vec->at(i));
 
-        (*trans_update)[i] = false;
-      }
+      (*trans_update)[i] = false;
     };
 
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, trans_comps->size()),
-                      update_func);
+    auto r = range(0, trans_comps->size());
+    std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                  update_func);
   }
 }
 

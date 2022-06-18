@@ -97,9 +97,11 @@ include_directories(gui
   ../slib_core/./include/
   ../slib_core/./include/math/
   ../slib_core/./include/templates/types/
+  ../slib_core/./include/templates/utility/
   ../slib_core/include
   ../slib_core/include/math
   ../slib_core/include/templates/types
+  ../slib_core/include/templates/utility
   ../slib_graphics/./include/
   ../slib_graphics/./include/component/
   ../slib_graphics/./include/system/

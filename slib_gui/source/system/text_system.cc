@@ -1,6 +1,9 @@
 #include "text_system.h"
 #include "entity_manager.h"
 #include "gui_text.h"
+#include "range_iterator.hpp"
+
+#include <execution>
 
 namespace lib_gui {
 
@@ -50,9 +53,8 @@ void TextSystem::LogicUpdate(float dt) {
     auto old_comps = g_ent_mgr.GetOldCbt<GuiText>();
     auto text_update = g_ent_mgr.GetNewUbt<GuiText>();
 
-    auto update_func = [&](tbb::blocked_range<size_t>& range) {
-      for (size_t i = range.begin(); i != range.end(); ++i) {
-        if (!(*text_update)[i]) continue;
+    auto update_func = [&](size_t i) {
+      if ((*text_update)[i]) {
         (*text_update)[i] = false;
 
         auto& old_text = old_comps->at(i);
@@ -62,8 +64,9 @@ void TextSystem::LogicUpdate(float dt) {
       }
     };
 
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, text_update->size()),
-                      update_func);
+    auto r = range(0, text_update->size());
+    std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                  update_func);
   }
 }
 }  // namespace lib_gui

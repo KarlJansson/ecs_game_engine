@@ -2,7 +2,10 @@
 #include "engine_settings.h"
 #include "entity_manager.h"
 #include "light.h"
+#include "range_iterator.hpp"
 #include "transform.h"
+
+#include <execution>
 
 namespace lib_graphics {
 void LightSystem::LogicUpdate(float dt) {
@@ -13,46 +16,45 @@ void LightSystem::LogicUpdate(float dt) {
     auto lights_ents = g_ent_mgr.GetEbt<Light>();
     auto light_update = g_ent_mgr.GetNewUbt<Light>();
 
-    auto light_thread = [&](tbb::blocked_range<size_t>& range) {
-      for (size_t i = range.begin(); i != range.end(); ++i) {
-        if ((*light_update)[i]) {
-          auto& current_light = lights->at(i);
-          auto& old_light = lights_old->at(i);
-          auto old_transform =
-              g_ent_mgr.GetNewCbeR<lib_graphics::Transform>(lights_ents->at(i));
+    auto light_thread = [&](size_t i) {
+      if ((*light_update)[i]) {
+        auto& current_light = lights->at(i);
+        auto& old_light = lights_old->at(i);
+        auto old_transform =
+            g_ent_mgr.GetNewCbeR<lib_graphics::Transform>(lights_ents->at(i));
 
-          current_light.color = old_light.color;
+        current_light.color = old_light.color;
 
-          if (old_transform)
-            current_light.data_pos = old_transform->Position();
-          else
-            current_light.data_pos = old_light.data_pos + old_light.delta_pos;
+        if (old_transform)
+          current_light.data_pos = old_transform->Position();
+        else
+          current_light.data_pos = old_light.data_pos + old_light.delta_pos;
 
-          if (old_light.update_cast_shadow) {
-            current_light.cast_shadows = old_light.new_cast_shadows;
-            old_light.update_cast_shadow = false;
-          } else
-            current_light.cast_shadows = old_light.cast_shadows;
+        if (old_light.update_cast_shadow) {
+          current_light.cast_shadows = old_light.new_cast_shadows;
+          old_light.update_cast_shadow = false;
+        } else
+          current_light.cast_shadows = old_light.cast_shadows;
 
-          for (int ii = 0; ii < 3; ++ii) {
+        for (int ii = 0; ii < 3; ++ii) {
+          current_light.shadow_resolutions[ii] =
+              old_light.shadow_resolutions[ii];
+
+          if (current_light.shadow_resolutions[ii] >
+              g_settings.MaxShadowTexture()) {
             current_light.shadow_resolutions[ii] =
-                old_light.shadow_resolutions[ii];
-
-            if (current_light.shadow_resolutions[ii] >
-                g_settings.MaxShadowTexture()) {
-              current_light.shadow_resolutions[ii] =
-                  g_settings.MaxShadowTexture();
-            }
+                g_settings.MaxShadowTexture();
           }
-
-          old_light.delta_pos.ZeroMem();
-          (*light_update)[i] = false;
         }
+
+        old_light.delta_pos.ZeroMem();
+        (*light_update)[i] = false;
       }
     };
 
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, light_update->size()),
-                      light_thread);
+    auto r = range(0, light_update->size());
+    std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                  light_thread);
   }
 }
 

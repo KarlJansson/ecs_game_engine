@@ -223,10 +223,12 @@ include_directories(graphics
   ../slib_core/./include/math/
   ../slib_core/./include/state_machine/
   ../slib_core/./include/templates/types/
+  ../slib_core/./include/templates/utility/
   ../slib_core/include
   ../slib_core/include/math
   ../slib_core/include/state_machine
   ../slib_core/include/templates/types
+  ../slib_core/include/templates/utility
   ../slib_gui/./include/
   ../slib_gui/./include/component/
   ../slib_gui/./include/system/

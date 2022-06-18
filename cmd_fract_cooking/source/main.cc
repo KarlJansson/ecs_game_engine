@@ -1,3 +1,4 @@
+#include <execution>
 #include <filesystem>
 #include <iostream>
 #include <sstream>
@@ -74,8 +75,7 @@ int main(int argc, char** argv) {
       std::cout << "Unsupported sound format: " << path << "\n";
   }
   for (auto& path : assets[2]) {
-    for (auto& file :
-         std::filesystem::recursive_directory_iterator(path)) {
+    for (auto& file : std::filesystem::recursive_directory_iterator(path)) {
       if (std::filesystem::is_regular_file(file)) {
         ct::stringstream path_str_stream;
         path_str_stream << file;
@@ -94,8 +94,7 @@ int main(int argc, char** argv) {
     }
   }
   for (auto& path : assets[3]) {
-    for (auto& file :
-         std::filesystem::recursive_directory_iterator(path)) {
+    for (auto& file : std::filesystem::recursive_directory_iterator(path)) {
       if (std::filesystem::is_regular_file(file)) {
         ct::stringstream path_str_stream;
         path_str_stream << file;
@@ -114,8 +113,7 @@ int main(int argc, char** argv) {
     }
   }
   for (auto& path : assets[5]) {
-    for (auto& file :
-         std::filesystem::recursive_directory_iterator(path)) {
+    for (auto& file : std::filesystem::recursive_directory_iterator(path)) {
       if (std::filesystem::is_regular_file(file)) {
         ct::stringstream path_str_stream;
         path_str_stream << file;
@@ -134,16 +132,22 @@ int main(int argc, char** argv) {
     }
   }
 
-  auto tex_thread = [&](int id) { tex_cooker->LoadTexture(textures[id]); };
-  if (!textures.empty()) tbb::parallel_for(0, int(textures.size()), tex_thread);
+  auto tex_thread = [&](auto& tex) { tex_cooker->LoadTexture(tex); };
+  if (!textures.empty())
+    std::for_each(std::execution::par_unseq, std::begin(textures),
+                  std::end(textures), tex_thread);
 
-  auto model_thread = [&](int id) { mod_cooker->LoadModel(models[id]); };
-  if (!models.empty()) tbb::parallel_for(0, int(models.size()), model_thread);
+  auto model_thread = [&](auto& model) { mod_cooker->LoadModel(model); };
+  if (!models.empty())
+    std::for_each(std::execution::par_unseq, std::begin(models),
+                  std::end(models), model_thread);
 
   // for (auto& model : models) mod_cooker->LoadModel(model);
 
-  auto sound_thread = [&](int id) { sound_cooker->LoadSound(sounds[id]); };
-  if (!sounds.empty()) tbb::parallel_for(0, int(sounds.size()), sound_thread);
+  auto sound_thread = [&](auto& sound) { sound_cooker->LoadSound(sound); };
+  if (!sounds.empty())
+    std::for_each(std::execution::par_unseq, std::begin(sounds),
+                  std::end(sounds), sound_thread);
 
   if (!assets[0].empty() || !assets[2].empty())
     tex_cooker->SerializeAndSave(out_path + "_texpack");

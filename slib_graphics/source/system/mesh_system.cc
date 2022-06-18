@@ -10,7 +10,10 @@
 #include "mesh.h"
 #include "physics_commands.h"
 #include "physics_system.h"
+#include "range_iterator.hpp"
 #include "system_manager.h"
+
+#include <execution>
 
 namespace lib_graphics {
 MeshSystem::MeshSystem(const lib_core::EngineCore* engine) : engine_(engine) {}
@@ -23,33 +26,32 @@ void MeshSystem::LogicUpdate(float dt) {
     auto old_meshes = g_ent_mgr.GetOldCbt<Mesh>();
     auto mesh_update = g_ent_mgr.GetNewUbt<Mesh>();
 
-    auto mesh_thread = [&](tbb::blocked_range<size_t>& range) {
-      for (size_t i = range.begin(); i != range.end(); ++i) {
-        if (!(*mesh_update)[i]) continue;
+    auto mesh_thread = [&](size_t i) {
+      if (!(*mesh_update)[i]) return;
 
-        auto& new_mesh = new_meshes->at(i);
-        auto& old_mesh = old_meshes->at(i);
+      auto& new_mesh = new_meshes->at(i);
+      auto& old_mesh = old_meshes->at(i);
 
-        new_mesh.albedo = old_mesh.albedo;
-        new_mesh.rme = old_mesh.rme;
-        new_mesh.texture_scale = old_mesh.texture_scale;
-        new_mesh.texture_offset = old_mesh.texture_offset;
-        if (new_mesh.material != old_mesh.material)
-          new_mesh.material = old_mesh.material;
-        if (new_mesh.mesh != old_mesh.mesh) new_mesh.mesh = old_mesh.mesh;
+      new_mesh.albedo = old_mesh.albedo;
+      new_mesh.rme = old_mesh.rme;
+      new_mesh.texture_scale = old_mesh.texture_scale;
+      new_mesh.texture_offset = old_mesh.texture_offset;
+      if (new_mesh.material != old_mesh.material)
+        new_mesh.material = old_mesh.material;
+      if (new_mesh.mesh != old_mesh.mesh) new_mesh.mesh = old_mesh.mesh;
 
-        if (new_mesh.fade_in < new_mesh.translucency) {
-          new_mesh.fade_in += dt;
-          if (new_mesh.fade_in > new_mesh.translucency)
-            new_mesh.fade_in = new_mesh.translucency;
-        }
-
-        (*mesh_update)[i] = false;
+      if (new_mesh.fade_in < new_mesh.translucency) {
+        new_mesh.fade_in += dt;
+        if (new_mesh.fade_in > new_mesh.translucency)
+          new_mesh.fade_in = new_mesh.translucency;
       }
+
+      (*mesh_update)[i] = false;
     };
 
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, mesh_update->size()),
-                      mesh_thread);
+    auto r = range(0, mesh_update->size());
+    std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                  mesh_thread);
   }
 }
 

@@ -8,8 +8,12 @@
 #include "light.h"
 #include "light_system.h"
 #include "mesh.h"
+#include "range_iterator.hpp"
 #include "system_manager.h"
 #include "transform.h"
+
+#include <execution>
+#include <future>
 
 namespace lib_graphics {
 CullingSystem::CullingSystem(class lib_core::EngineCore *engine)
@@ -76,17 +80,20 @@ void CullingSystem::DrawUpdate(lib_graphics::Renderer *renderer,
 
   UpdateSearchTrees();
   if (cam) {
-    tbb::parallel_invoke(
-        [&]() {
-          tbb::parallel_for(0, int(cam->size()), 1, [&](int id) {
-            AabbMeshCheck(cam->at(id).planes_, cam_ents->at(id));
-          });
-        },
-        [&]() {
-          tbb::parallel_for(0, int(cam->size()), 1, [&](int id) {
-            AabbLightCheck(cam->at(id).planes_, cam_ents->at(id));
-          });
-        });
+    auto aabbmesh_future = std::async([&]() {
+      auto r = range(0, cam->size());
+      std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                    [&](size_t id) {
+                      AabbMeshCheck(cam->at(id).planes_, cam_ents->at(id));
+                    });
+    });
+    auto aabblight_future = std::async([&]() {
+      auto r = range(0, cam->size());
+      std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                    [&](size_t id) {
+                      AabbLightCheck(cam->at(id).planes_, cam_ents->at(id));
+                    });
+    });
   }
 
   shadow_meshes_ = 0;
@@ -287,7 +294,8 @@ void CullingSystem::DrawUpdate(lib_graphics::Renderer *renderer,
         }
       }
     };
-    tbb::parallel_invoke(opeque_ops, translucent_ops);
+    auto opeque_future = std::async(opeque_ops);
+    auto translucent_future = std::async(translucent_ops);
   }
 
   mesh_count_ = 0, light_count_ = 0;
@@ -388,15 +396,18 @@ size_t CullingSystem::AabbLightCheckTiled(Camera &camera,
   auto f_info = Camera::CalculateFrustumInfo(camera);
   auto grid = Camera::CalculateFrustumGrid(f_info, x, y);
   ct::dyn_array<ct::dyn_array<lib_core::Entity>> grid_ents(x * y);
-  auto search_thread = [&](int i) {
+  auto search_thread = [&](size_t i) {
     light_octree_->SearchFrustum(grid[i], grid_ents[i]);
   };
-  tbb::parallel_for(0, x * y, search_thread);
+
+  auto r = range(0, x * y);
+  std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+                search_thread);
   return count;
 }
 
 void CullingSystem::UpdateSearchTrees() {
-  auto mesh_update = [&]() {
+  auto mesh_update_thread = [&]() {
     for (int i = int(add_mesh_vec_.size()) - 1; i >= 0; --i) {
       auto mesh = g_ent_mgr.GetOldCbeR<Mesh>(add_mesh_vec_[i]);
       if (!mesh) continue;
@@ -456,7 +467,7 @@ void CullingSystem::UpdateSearchTrees() {
     }
   };
 
-  auto light_update = [&]() {
+  auto light_update_thread = [&]() {
     BoundingVolume aabb;
     for (int i = int(add_light_vec_.size()) - 1; i >= 0; --i) {
       auto light = g_ent_mgr.GetOldCbeR<Light>(add_light_vec_[i]);
@@ -501,6 +512,7 @@ void CullingSystem::UpdateSearchTrees() {
     }
   };
 
-  tbb::parallel_invoke(mesh_update, light_update);
+  auto mesh_future = std::async(mesh_update_thread);
+  auto light_future = std::async(light_update_thread);
 }
 }  // namespace lib_graphics

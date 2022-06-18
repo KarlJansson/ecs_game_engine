@@ -2,6 +2,8 @@
 #include "core_commands.h"
 #include "entity_manager.h"
 
+#include <execution>
+
 namespace lib_core {
 void SystemManager::DrawUpdate(lib_graphics::Renderer *renderer,
                                lib_gui::TextSystem *text_renderer) {
@@ -95,14 +97,15 @@ void SystemManager::LogicUpdate(float dt) {
   if (!pre_run_sys_vec.empty()) {
     pre_run_sys_vec[0]->LogicUpdate(dt);
     pre_run_sys_vec[0]->temporary_memory_.clear();
-    auto pre_run_systems = [&](int id) {
-      if (pre_run_sys_vec[id]->IsActive() && pre_run_sys_vec[id]->IsUpdated()) {
-        pre_run_sys_vec[id]->LogicUpdate(dt);
-        pre_run_sys_vec[id]->temporary_memory_.clear();
+    auto pre_run_systems = [&](auto &sys) {
+      if (sys->IsActive() && sys->IsUpdated()) {
+        sys->LogicUpdate(dt);
+        sys->temporary_memory_.clear();
       }
     };
     if (pre_run_sys_vec.size() > 1)
-      tbb::parallel_for(1, int(pre_run_sys_vec.size()), 1, pre_run_systems);
+      std::for_each(std::execution::par_unseq, std::begin(pre_run_sys_vec) + 1,
+                    std::end(pre_run_sys_vec), pre_run_systems);
   }
 
   auto update_func = [&](int id) {
@@ -116,16 +119,20 @@ void SystemManager::LogicUpdate(float dt) {
       }
     }
   };
-  tbb::parallel_for(0, int(prio_ids.size()), 1, update_func);
+  std::for_each(std::execution::par_unseq, std::begin(prio_ids),
+                std::end(prio_ids), update_func);
 
   auto &post_run_sys_vec = system_map_[3000];
-  auto post_run_systems = [&](int id) {
+  auto post_run_systems = [&](size_t id) {
     if (post_run_sys_vec[id]->IsActive() && post_run_sys_vec[id]->IsUpdated()) {
       post_run_sys_vec[id]->LogicUpdate(dt);
       post_run_sys_vec[id]->temporary_memory_.clear();
     }
   };
-  for (size_t i = 0; i < post_run_sys_vec.size(); ++i) post_run_systems(int(i));
-  // tbb::parallel_for(0, int(post_run_sys_vec.size()), 1, post_run_systems);
+  for (size_t i = 0; i < post_run_sys_vec.size(); ++i) post_run_systems(i);
+
+  // auto r = range(0, post_run_sys_vec.size());
+  // std::for_each(std::execution::par_unseq, std::begin(r), std::end(r),
+  //               post_run_systems);
 }
 }  // namespace lib_core
