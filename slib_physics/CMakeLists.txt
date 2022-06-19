@@ -150,8 +150,6 @@ target_link_libraries(physics
   core
   graphics
   gui
-  tbb
-  libpthread.so
   libPhysXCharacterKinematic_static_64.a
   libPhysXExtensions_static_64.a
   libPhysX_static_64.a
@@ -161,6 +159,8 @@ target_link_libraries(physics
   libPhysXFoundation_static_64.a
   libPhysXVehicle_static_64.a
   -ldl
+  tbb
+  libpthread.so
 )
 
 add_dependencies(physics ALL_PRE_BUILD)

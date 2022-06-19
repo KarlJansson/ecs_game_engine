@@ -108,8 +108,8 @@ void SystemManager::LogicUpdate(float dt) {
                     std::end(pre_run_sys_vec), pre_run_systems);
   }
 
-  auto update_func = [&](int id) {
-    auto &sys_vec = system_map_[prio_ids[id]];
+  auto update_func = [&](size_t id) {
+    auto &sys_vec = system_map_[id];
     for (auto &s : sys_vec) {
       if (s->Loaded()) {
         if (s->IsActive() && s->IsUpdated()) {

@@ -275,10 +275,10 @@ target_link_libraries(graphics
   gui
   input
   physics
-  tbb
-  libpthread.so
   libGLEW.so
   glfw
+  tbb
+  libpthread.so
 )
 
 add_dependencies(graphics ALL_PRE_BUILD)

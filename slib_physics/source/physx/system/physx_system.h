@@ -8,6 +8,8 @@
 #include "physx_trigger_handler.h"
 #include "vector_def.h"
 
+#include <future>
+
 namespace lib_physics {
 class PhysxSystem : public PhysicsSystem {
  public:
@@ -32,8 +34,8 @@ class PhysxSystem : public PhysicsSystem {
     void submitTask(physx::PxBaseTask& task) override;
     [[nodiscard]] uint32_t getWorkerCount() const override;
 
-    tbb::task_group task_group_;
     uint32_t nr_threads_;
+    ct::dyn_array<std::future<void>> task_group_;
   };
 
   class PhysxErrorCallback : public physx::PxErrorCallback {

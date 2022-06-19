@@ -95,6 +95,7 @@ void PhysxSystem::LogicUpdate(float dt) {
         break;
       }
     }
+    tbb_dispatch_->task_group_.clear();
 
     active_actors = scene_->getActiveActors(nb_active_actors);
     for (physx::PxU32 i = 0; i < nb_active_actors; ++i)
@@ -192,10 +193,10 @@ PhysxSystem::TbbCpuDispatcher::TbbCpuDispatcher() noexcept {
 }
 
 void PhysxSystem::TbbCpuDispatcher::submitTask(physx::PxBaseTask &task) {
-  task_group_.run([&task]() {
+  task_group_.emplace_back(std::async([&task]() {
     task.run();
     task.release();
-  });
+  }));
 }
 
 uint32_t PhysxSystem::TbbCpuDispatcher::getWorkerCount() const {

@@ -66,9 +66,9 @@ include_directories(sound
 
 target_link_libraries(sound
   core
+  portaudio
   tbb
   libpthread.so
-  portaudio
 )
 
 add_dependencies(sound ALL_PRE_BUILD)
